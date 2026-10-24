@@ -31,7 +31,7 @@ Applies to this repository and all descendant folders. Read this file at the sta
 - Check empty/loading/success/validation/error states; keyboard focus; reduced motion; accessibility; responsive overflow; console/network errors; and measured performance. Distinguish simulated faults and local measurements from field evidence.
 - Run `npm run verify`, then start the newly built local preview and run Playwright functional/visual tests. Keep screenshot baselines deterministic and inspect them before approving updates. A passing test is not proof of excellent design or complete security.
 - Fix demonstrable problems autonomously within scope. Document unresolved issues truthfully. Do not claim external/blocked browser pages were inspected.
-- Update design decisions, progress and limitations; commit to an appropriate development branch and prepare/update the PR. Stop at the Phase 01 owner-review gate, without automatic merge.
+- Update design decisions, progress and limitations; commit to an appropriate development branch and prepare/update the PR. Stop at the current Phase 02B owner-review gate, without automatic merge or Phase 03 work.
 
 ## Scope and reading discipline
 

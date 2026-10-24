@@ -56,14 +56,14 @@ Browser tests create synthetic users/data in the local development database. The
 | `apps/web/components` | Landing/auth/workspace presentation                                              |
 | `apps/web/lib`        | Password/session helpers, CSV validation, local database singleton               |
 | `packages/db`         | PostgreSQL schema, restricted role, RLS transaction boundary and isolation tests |
-| `services/forecast`   | Separate Python mock forecasting API and contract tests                          |
+| `services/forecast`   | Persistent model worker, official Timestral inference, evaluation and mock API   |
 | `e2e`                 | Playwright browser and API integration tests                                     |
 | `scripts/dev.py`      | Local process orchestration and generated internal service token                 |
 | `docs`                | Architecture, source verification and Phase 01 gate evidence                     |
 
 See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter verification](docs/STARTER.md), and [Phase 01 gate](docs/PHASE-01.md).
 
-The development workflow and review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md). Changes are proposed through a private pull request; merging does not authorize Phase 02 or production deployment.
+Earlier visual review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md); current model evidence is in [Phase 02B review](docs/phase-02b/REVIEW.md). Changes are proposed through draft pull requests. Production deployment and advancing beyond Phase 02B remain owner-controlled.
 
 The Fieldnotes redesign, primary references, three art directions, before/after captures and three visual critique passes are indexed in [the design review](docs/design/README.md). Project-wide creative/QA expectations persist in [AGENTS.md](AGENTS.md).
 
@@ -71,6 +71,6 @@ Visual checks: `node scripts/capture-design.mjs after` captures 10 states at 144
 
 ## Boundaries
 
-Phase 01 is not a production-ready release. Email verification/recovery, invitations, infrastructure hardening, hosted PostgreSQL migration, backups, customer data handling, a job queue, real model evaluation and billing need later decisions. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency licenses remain with their respective authors.
+This is not a production-ready release. Email verification/recovery, invitations, hosted infrastructure hardening, backup/restore, customer data handling, monitoring and domain-specific model validation/calibration remain production gates. The local PostgreSQL queue and real model evaluation are implemented. Billing remains disabled. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency/model licenses remain with their respective authors.
 
 **STOP: Phase 02B owner review is required before Phase 03, production deployment or merge.**

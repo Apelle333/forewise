@@ -18,6 +18,14 @@
     "audits": "No known published dependency vulnerabilities; Git-only Timestral not auditable via PyPI advisories"
   },
   "ci": {
-    "status": "pending draft PR workflow run"
+    "status": "success",
+    "run_id": 40141325198,
+    "url": "https://github.com/Apelle333/forewise/actions/runs/40141325198",
+    "tested_source_sha": "469f3d2f9b951255c18f19fddc2a535b639b04ab",
+    "job_id": 121013497076,
+    "node_tests": 18,
+    "python_tests": 36,
+    "browser_tests": 23,
+    "scope": "Linux CPU real model and PostgreSQL; Windows-specific six snapshot/a11y design tests excluded in CI and passed locally"
   }
 }
