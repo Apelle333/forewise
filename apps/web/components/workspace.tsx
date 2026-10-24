@@ -1,15 +1,30 @@
 'use client';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { Brand } from './brand';
 import { useRouter } from 'next/navigation';
 import { Chart } from './chart';
 import type { Point } from '@/lib/csv';
-type Dataset = { id: string; name: string; row_count: number; points: Point[] };
+type Dataset = { id: string; name: string; row_count: number; points: Point[]; frequency?: string };
 type Forecast = {
   id: string;
   dataset_id: string;
   horizon: number;
-  result: { mock: boolean; model: string; points: Point[]; notice: string };
+  result: {
+    mock: boolean;
+    model: string;
+    points: Point[];
+    notice: string;
+    quantiles?: { p10: Point[]; p50: Point[]; p90: Point[] } | null;
+    metrics?: { mae: number; rmse: number; wape?: number | null; coverage_p10_p90?: number } | null;
+    evaluation?: {
+      windows: number;
+      evaluated_points: number;
+      baseline_metrics?: { mae: number; rmse: number } | null;
+      baseline_season_length?: number;
+    };
+    performance?: { device: string; inference_seconds: number };
+    warnings?: string[];
+  };
 };
 type Account = {
   user: { name: string; email: string };
@@ -22,15 +37,16 @@ const sample =
     (_, i) =>
       `2026-09-${String(i + 1).padStart(2, '0')},${Math.round(100 + i * 2 + Math.sin(i) * 12)}`,
   ).join('\n');
-async function api(path: string, body?: unknown) {
+async function api(path: string, body?: unknown, signal?: AbortSignal) {
   const res = await fetch(
     '/api/' + path,
     body === undefined
-      ? {}
+      ? { signal }
       : {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
+          signal,
         },
   );
   const data = await res.json();
@@ -51,6 +67,10 @@ export function Workspace() {
   const [horizon, setHorizon] = useState(14),
     [workspaceName, setWorkspaceName] = useState(''),
     [showCreate, setShowCreate] = useState(false);
+  const [model, setModel] = useState('mock');
+  const [frequency, setFrequency] = useState('daily');
+  const poll = useRef<AbortController | null>(null);
+  useEffect(() => () => poll.current?.abort(), []);
   useEffect(() => {
     let active = true;
     api('session')
@@ -111,14 +131,19 @@ export function Workspace() {
       try {
         await fn();
       } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return;
         setError(e instanceof Error ? e.message : 'Something went wrong.');
         requestAnimationFrame(() => document.getElementById('workspace-feedback')?.focus());
       }
     });
   }
-  function upload(csv: string, name: string) {
+  function upload(csv: string, name: string, inputFrequency = frequency) {
     act(async () => {
-      const data = await api(`workspaces/${wid}/datasets`, { csv, name });
+      const data = await api(`workspaces/${wid}/datasets`, {
+        csv,
+        name,
+        frequency: inputFrequency,
+      });
       await refresh();
       setSelected(data.id);
       setMessage('Dataset uploaded. Ready when you are.');
@@ -126,11 +151,17 @@ export function Workspace() {
   }
   const dataset = datasets.find((d) => d.id === selected),
     forecast = forecasts.find((f) => f.dataset_id === selected);
+  const selectedModel =
+    model === 'mock' && dataset?.frequency && dataset.frequency !== 'daily'
+      ? forecast?.result.model === 'timestral_209m'
+        ? 'timestral_209m'
+        : 'seasonal_naive'
+      : model;
   const sampleButton = (
     <button
       className="button primary"
       disabled={busy || loading || !wid}
-      onClick={() => upload(sample, 'Sample daily demand.csv')}
+      onClick={() => upload(sample, 'Sample daily demand.csv', 'daily')}
     >
       Try sample data <span aria-hidden="true">↗</span>
     </button>
@@ -140,7 +171,7 @@ export function Workspace() {
       <header className="workspace-nav">
         <Brand />
         <span className="preview-label">
-          THE FOREWISE WORKSPACE <span>/</span> PHASE 01
+          THE FOREWISE WORKSPACE <span>/</span> PHASE 02B
         </span>
         <button
           className="text-button"
@@ -230,7 +261,9 @@ export function Workspace() {
               <br />
               NEXT EXPLORED.
             </span>
-            <p>Your data stays in this local preview. Every forecast is labeled mock.</p>
+            <p>
+              Your data stays local. Model identity and forecast limits are shown with every result.
+            </p>
           </div>
           <div className="profile">
             <span className="avatar" aria-hidden="true">
@@ -252,18 +285,19 @@ export function Workspace() {
               <p>
                 {loading
                   ? 'Opening your workspace…'
-                  : `${datasets.length} dataset${datasets.length === 1 ? '' : 's'} · ${forecasts.length} recent mock run${forecasts.length === 1 ? '' : 's'}`}
+                  : `${datasets.length} dataset${datasets.length === 1 ? '' : 's'} · ${forecasts.length} recent forecast run${forecasts.length === 1 ? '' : 's'}`}
               </p>
             </div>
-            <span className="badge">MOCK WORKSPACE</span>
+            <span className="badge">LOCAL FORECASTING</span>
           </section>
           <div className="notice">
             <span className="notice-mark" aria-hidden="true">
               ↗
             </span>
             <p>
-              <strong>A working preview, with honest limits.</strong> Forecasts repeat the last
-              observed week. No validated predictions or confidence intervals.
+              <strong>A working preview, with honest limits.</strong> Choose a statistical baseline
+              or Timestral 209M. Historical evaluation does not guarantee future accuracy. The
+              marketing demo remains synthetic.
             </p>
           </div>
           <div className="workspace-columns">
@@ -274,8 +308,8 @@ export function Workspace() {
                   <h2>{dataset ? dataset.name : 'Your first forecast.'}</h2>
                   <p>
                     {dataset
-                      ? `${dataset.row_count} daily observations${forecast ? ` · ${forecast.horizon}-day mock forecast` : ' · Historical data'}`
-                      : 'Start with our sample, or upload your own daily CSV.'}
+                      ? `${dataset.row_count} ${dataset.frequency || 'daily'} observations${forecast ? ` · ${forecast.horizon}-step ${forecast.result.mock ? 'mock' : 'model'} forecast` : ' · Historical data'}`
+                      : 'Start with our sample, or upload your own CSV.'}
                   </p>
                 </div>
                 {forecast ? (
@@ -288,12 +322,15 @@ export function Workspace() {
                       const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
                       const a = document.createElement('a');
                       a.href = url;
-                      a.download = 'forewise-mock-forecast.csv';
+                      a.download = forecast.result.mock
+                        ? 'forewise-mock-forecast.csv'
+                        : 'forewise-model-forecast.csv';
                       a.click();
                       setTimeout(() => URL.revokeObjectURL(url), 1000);
                     }}
                   >
-                    Export mock CSV <span aria-hidden="true">↓</span>
+                    {forecast.result.mock ? 'Export mock CSV' : 'Export forecast CSV'}{' '}
+                    <span aria-hidden="true">↓</span>
                   </button>
                 ) : null}
               </div>
@@ -309,14 +346,92 @@ export function Workspace() {
                     key={dataset.id}
                     history={dataset.points}
                     future={forecast?.result.points || []}
-                    label="Selected dataset history and mock forecast"
-                    caption="Daily observations"
+                    label={
+                      forecast?.result.mock === false
+                        ? 'Selected dataset history and model forecast'
+                        : 'Selected dataset history and mock forecast'
+                    }
+                    caption={
+                      forecast && !forecast.result.mock
+                        ? forecast.result.model === 'timestral_209m'
+                          ? 'Timestral 209M · median and P10–P90'
+                          : 'SeasonalNaive baseline'
+                        : 'Daily observations'
+                    }
+                    futureKind={forecast?.result.mock === false ? 'forecast' : 'mock'}
+                    quantiles={forecast?.result.quantiles}
                   />
                   {forecast ? (
-                    <p className="result-notice">{forecast.result.notice}</p>
+                    <>
+                      <p className="result-notice">{forecast.result.notice}</p>
+                      {!forecast.result.mock ? (
+                        <div className="forecast-details" data-testid="model-result">
+                          <p>
+                            <strong>
+                              Model:{' '}
+                              {forecast.result.model === 'timestral_209m'
+                                ? 'Timestral 209M'
+                                : 'SeasonalNaive'}
+                            </strong>
+                            {forecast.result.performance
+                              ? ` · ${forecast.result.performance.device.toUpperCase()} · ${forecast.result.performance.inference_seconds.toFixed(3)}s inference`
+                              : ''}
+                          </p>
+                          <p>
+                            Historical backtest: {forecast.result.evaluation?.windows || 0} windows
+                            · {forecast.result.evaluation?.evaluated_points || 0} evaluated points.
+                          </p>
+                          {forecast.result.metrics ? (
+                            <dl className="forecast-metrics">
+                              <div>
+                                <dt>MAE</dt>
+                                <dd>{forecast.result.metrics.mae.toFixed(2)}</dd>
+                              </div>
+                              <div>
+                                <dt>RMSE</dt>
+                                <dd>{forecast.result.metrics.rmse.toFixed(2)}</dd>
+                              </div>
+                              {forecast.result.evaluation?.baseline_metrics ? (
+                                <div>
+                                  <dt>
+                                    Baseline MAE
+                                    {forecast.result.evaluation.baseline_season_length
+                                      ? ` (period ${forecast.result.evaluation.baseline_season_length})`
+                                      : ''}
+                                  </dt>
+                                  <dd>
+                                    {forecast.result.evaluation.baseline_metrics.mae.toFixed(2)}
+                                  </dd>
+                                </div>
+                              ) : null}
+                              {forecast.result.metrics.coverage_p10_p90 !== undefined ? (
+                                <div>
+                                  <dt>Historical interval coverage</dt>
+                                  <dd>
+                                    {(forecast.result.metrics.coverage_p10_p90 * 100).toFixed(1)}%
+                                  </dd>
+                                </div>
+                              ) : null}
+                            </dl>
+                          ) : (
+                            <p>
+                              Not enough history for this backtest horizon. No accuracy metrics are
+                              fabricated.
+                            </p>
+                          )}
+                          {forecast.result.warnings?.length ? (
+                            <ul aria-label="Data and model warnings">
+                              {forecast.result.warnings.map((warning, i) => (
+                                <li key={i}>{warning}</li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </div>
+                      ) : null}
+                    </>
                   ) : (
                     <p className="result-notice">
-                      History is ready. Choose a horizon below to generate a mock forecast.
+                      History is ready. Choose a model and horizon below.
                     </p>
                   )}
                 </>
@@ -367,9 +482,48 @@ export function Workspace() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   act(async () => {
-                    await api(`workspaces/${wid}/forecasts`, { datasetId: selected, horizon });
+                    if (selectedModel === 'mock') {
+                      await api(`workspaces/${wid}/forecasts`, { datasetId: selected, horizon });
+                    } else {
+                      const controller = new AbortController();
+                      poll.current = controller;
+                      const job = await api(
+                        'forecast-jobs',
+                        {
+                          contractVersion: '2',
+                          workspaceId: wid,
+                          datasetId: selected,
+                          horizon,
+                          model: selectedModel,
+                        },
+                        controller.signal,
+                      );
+                      let finished = false;
+                      for (let attempt = 0; attempt < 180; attempt++) {
+                        const status = await api(
+                          `forecast-jobs/${job.jobId}`,
+                          undefined,
+                          controller.signal,
+                        );
+                        if (status.status === 'completed') {
+                          finished = true;
+                          break;
+                        }
+                        if (status.status === 'failed')
+                          throw new Error(status.error || 'Forecast execution failed.');
+                        await new Promise((resolve) => setTimeout(resolve, 1000));
+                      }
+                      if (!finished)
+                        throw new Error(
+                          'Job continues in the background. Refresh later to inspect the result.',
+                        );
+                    }
                     await refresh();
-                    setMessage('Mock forecast ready. Explore it above.');
+                    setMessage(
+                      selectedModel === 'mock'
+                        ? 'Mock forecast ready. Explore it above.'
+                        : 'Model forecast ready. Inspect its values and historical evaluation above.',
+                    );
                     requestAnimationFrame(() =>
                       document.getElementById('forecast-result')?.scrollIntoView({
                         behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -400,7 +554,7 @@ export function Workspace() {
                   </select>
                 </label>
                 <label>
-                  Forecast horizon <span className="muted">(days)</span>
+                  Forecast horizon <span className="muted">(steps)</span>
                   <input
                     type="number"
                     min={1}
@@ -410,12 +564,37 @@ export function Workspace() {
                     required
                   />
                 </label>
+                <label>
+                  Forecasting model
+                  <select
+                    aria-label="Forecasting model"
+                    value={selectedModel}
+                    onChange={(e) => setModel(e.target.value)}
+                    disabled={busy || loading}
+                  >
+                    <option
+                      value="mock"
+                      disabled={dataset?.frequency !== undefined && dataset.frequency !== 'daily'}
+                    >
+                      Weekly-repeat demo (mock)
+                    </option>
+                    <option value="seasonal_naive">SeasonalNaive baseline</option>
+                    <option value="timestral_209m">Timestral 209M · AI quantiles</option>
+                  </select>
+                </label>
                 <button className="button primary" disabled={busy || loading || !selected}>
-                  {busy ? 'Generating mock…' : 'Generate mock forecast ↗'}
+                  {busy
+                    ? 'Forecast running…'
+                    : selectedModel === 'mock'
+                      ? 'Generate mock forecast ↗'
+                      : selectedModel === 'timestral_209m'
+                        ? 'Generate Timestral forecast ↗'
+                        : 'Generate baseline forecast ↗'}
                 </button>
               </form>
               <p className="form-note">
-                Weekly repeat mock / 1–90 days / No model credits or billing.
+                1–90 observation steps · Local inference · No model credits or billing. Daily mock
+                remains available; choose a model for weekly/monthly data.
               </p>
             </section>
             <aside className="panel data-panel" id="datasets" aria-label="Dataset setup">
@@ -423,8 +602,7 @@ export function Workspace() {
                 <p className="overline">02 / THE STARTING POINT</p>
                 <h2>Bring your history.</h2>
                 <p>
-                  A daily date and a value. <br />
-                  That’s enough to begin.
+                  A date and a value. <br /> Choose the observation frequency before uploading.
                 </p>
               </div>
               <div className="upload-zone">
@@ -433,10 +611,23 @@ export function Workspace() {
                 </span>
                 <strong>Upload a CSV</strong>
                 <p>
-                  date,value · 8–5,000 daily rows
+                  date,value · 8–5,000 observations
                   <br />
                   Up to 1 MB · Consecutive dates
                 </p>
+                <label>
+                  CSV frequency
+                  <select
+                    aria-label="CSV frequency"
+                    value={frequency}
+                    onChange={(e) => setFrequency(e.target.value)}
+                    disabled={busy || loading}
+                  >
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </label>
                 <label className="button subtle file-button">
                   Choose a CSV
                   <input
@@ -472,7 +663,10 @@ export function Workspace() {
                 <pre>
                   date,value{'\n'}2026-09-01,104{'\n'}2026-09-02,112{'\n'}…
                 </pre>
-                <p>At least 8 rows. One value per day, with no missing days or duplicates.</p>
+                <p>
+                  At least 8 consecutive periods, no duplicates or gaps. Monthly dates must
+                  consistently be month starts or month ends.
+                </p>
               </details>
               <div className="dataset-list" aria-busy={loading}>
                 <h3>
@@ -491,7 +685,9 @@ export function Workspace() {
                     >
                       <span>
                         <strong>{d.name}</strong>
-                        <small>{d.row_count} daily observations</small>
+                        <small>
+                          {d.row_count} {d.frequency || 'daily'} observations
+                        </small>
                       </span>
                       <span aria-hidden="true">{selected === d.id ? '↗' : '→'}</span>
                     </button>
@@ -503,7 +699,7 @@ export function Workspace() {
             </aside>
           </div>
           <footer className="workspace-footer">
-            <span>Forewise / Phase 01</span>
+            <span>Forewise / Phase 02B · Local inference</span>
             <span>Past observed. Next explored.</span>
           </footer>
         </main>

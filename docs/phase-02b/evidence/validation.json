@@ -1,0 +1,23 @@
+{
+  "base_commit": "79bd403012318414712a1cf681e3d44097eb90c6",
+  "branch": "codex/phase02b-timestral-209m",
+  "local": {
+    "node_tests": 18,
+    "python_tests": 36,
+    "browser_tests": 29,
+    "total_passed": 83,
+    "skipped": 0,
+    "source_gate": "passed; final UI selection fix subsequently linted, built/typechecked and full browser-tested",
+    "browser_duration_seconds": 90,
+    "widths_css_pixels": [
+      1440,
+      768,
+      390
+    ],
+    "genuine_209m_pipeline": "passed, real public AirPassengers CSV through dashboard and PostgreSQL worker to persisted native quantiles",
+    "audits": "No known published dependency vulnerabilities; Git-only Timestral not auditable via PyPI advisories"
+  },
+  "ci": {
+    "status": "pending draft PR workflow run"
+  }
+}

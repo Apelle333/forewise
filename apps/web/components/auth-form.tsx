@@ -72,7 +72,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
           <span className="auth-story-note">
             A private development preview.
             <br />
-            Mock forecasts. No billing enabled.
+            Local models and clearly labeled demos. No billing enabled.
           </span>
         </section>
         <div className="auth-card">
@@ -140,7 +140,7 @@ export function AuthForm({ register = false }: { register?: boolean }) {
         </div>
       </div>
       <footer className="auth-footer">
-        Forewise / Phase 01 <span>Clarity begins with a little history.</span>
+        Forewise / Local preview <span>Clarity begins with a little history.</span>
       </footer>
     </main>
   );

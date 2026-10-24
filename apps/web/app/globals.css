@@ -2234,3 +2234,52 @@ input[type='range']::-moz-range-thumb {
     min-height: 44px;
   }
 }
+
+/* Operational model output; public cinematic demo remains unchanged. */
+.forecast-details {
+  padding: 18px 20px;
+  margin-block: 16px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  font-size: 13px;
+}
+.forecast-details p {
+  margin-block: 8px;
+}
+.forecast-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-block: 16px;
+}
+.forecast-metrics dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+.forecast-metrics dd {
+  margin: 4px 0 0;
+  font-size: 23px;
+  font-variant-numeric: tabular-nums;
+}
+.interval-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-block: 12px;
+}
+.upload-zone > label:not(.file-button) {
+  display: block;
+  text-align: left;
+  margin-block: 12px;
+}
+.forecast-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 600px) {
+  .forecast-form {
+    grid-template-columns: 1fr;
+  }
+  .forecast-details {
+    padding: 14px;
+  }
+}

@@ -9,7 +9,7 @@ import time
 import uuid
 
 import psycopg2
-from evaluation import run_forecast
+from probabilistic import run_forecast
 from psycopg2.extras import Json, RealDictCursor
 
 LEASE_SECONDS = 300

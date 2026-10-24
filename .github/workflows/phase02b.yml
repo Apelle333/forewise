@@ -1,0 +1,61 @@
+name: Phase 02B real CPU forecasting gate
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  local-foundation-and-ai:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: forewise_ci
+          POSTGRES_PASSWORD: local-ci-only
+          POSTGRES_DB: forewise_ci
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U forewise_ci -d forewise_ci"
+          --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgresql://forewise_ci:local-ci-only@127.0.0.1:5432/forewise_ci
+      TEST_DATABASE_URL: postgresql://forewise_ci:local-ci-only@127.0.0.1:5432/forewise_ci
+      FORECAST_SERVICE_TOKEN: local-ci-only-internal-service-token-123456
+      RUN_TIMESTRAL_INTEGRATION: '1'
+      FOREWISE_MODEL_DEVICE: cpu
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.18.0'
+          cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - run: |
+          python -m pip install uv==0.12.2
+          uv venv --seed .venv
+          uv pip install --python .venv/bin/python torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          uv pip install --python .venv/bin/python -r services/forecast/requirements.lock.txt
+          npm ci
+          npx playwright install --with-deps chromium
+      - run: node --import tsx scripts/database.mjs
+      - run: npm run verify
+      - name: Start local application
+        run: |
+          python scripts/dev.py --production > /tmp/forewise-ci.log 2>&1 &
+          for i in $(seq 1 40); do curl -fsS http://127.0.0.1:3000/ >/dev/null && break; sleep 1; done
+          curl -fsS http://127.0.0.1:3000/ >/dev/null
+      - name: Functional/security/real-model browser suite
+        run: npx playwright test --grep-invert 'public design / accessibility / snapshots|workspace design / values / accessibility'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: phase02b-cpu-validation
+          path: |
+            docs/phase-02b/evidence/
+            .data/checks/results.json
+          retention-days: 14

@@ -57,7 +57,22 @@ test('PostgreSQL CSV → durable job → standalone worker → authorized baseli
       });
       expect(upload.status()).toBe(201);
       const datasetId = (await upload.json()).id;
-      const body = { contractVersion: '1', workspaceId: wa, datasetId, horizon: 3 };
+      const body = {
+        contractVersion: frequency === 'weekly' ? '2' : '1',
+        ...(frequency === 'weekly' ? { model: 'seasonal_naive' } : {}),
+        workspaceId: wa,
+        datasetId,
+        horizon: 3,
+      };
+      for (const model of ['unknown', null, ['timestral_209m']]) {
+        expect(
+          (
+            await a.post('/api/forecast-jobs', {
+              data: { ...body, contractVersion: '2', model },
+            })
+          ).status(),
+        ).toBe(400);
+      }
       expect((await b.post('/api/forecast-jobs', { data: body })).status()).toBe(404);
       expect(
         (await b.post('/api/forecast-jobs', { data: { ...body, workspaceId: wb } })).status(),
@@ -97,6 +112,7 @@ test('PostgreSQL CSV → durable job → standalone worker → authorized baseli
       expect(worker.status, worker.stderr).toBe(0);
       const completed = await (await a.get(location)).json();
       expect(completed.status).toBe('completed');
+      expect(completed.contractVersion).toBe(body.contractVersion);
       expect(completed.attempts).toBe(1);
       expect(completed.result_id).toBeTruthy();
       expect(completed.result.model).toBe('seasonal-naive-v1');
