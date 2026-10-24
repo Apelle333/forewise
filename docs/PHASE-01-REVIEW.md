@@ -1,5 +1,7 @@
 # Phase 01 autonomous development review
 
+Current owner gate: final acceptance remains pending after [UX polish](design/polish/REVIEW.md) and [Phase 02A reconciliation](phase-02a/RECONCILIATION.md). Results below describe the earlier Phase 01 source gate, not acceptance of the later asynchronous foundation.
+
 24 October 2026 — current explicit Phase 01 scope only. No inter-chat copying or separate task handoff is required: planning, implementation, diagnostics, review, commits and the pull request are managed in this chat.
 
 ## Milestones and acceptance criteria

@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { asUser } from '@forewise/db';
 import { database } from '@/lib/db';
 import { digest, hashPassword, newSession, sessionCookie, verifyPassword } from '@/lib/auth';
-import { parseDataset, type Point } from '@/lib/csv';
+import { parseDataset, type Point, type Frequency } from '@/lib/csv';
 import { BodyTooLargeError, readLimitedBody } from '@/lib/body';
 
 export const runtime = 'nodejs';
@@ -164,7 +164,7 @@ async function handle(req: NextRequest) {
         const result = await asUser(db, user.id, async (tx) => ({
           datasets: (
             await tx.query(
-              'SELECT id,name,row_count,created_at,points FROM datasets WHERE workspace_id=$1 ORDER BY created_at DESC',
+              'SELECT id,name,row_count,created_at,points,frequency FROM datasets WHERE workspace_id=$1 ORDER BY created_at DESC',
               [wid],
             )
           ).rows,
@@ -181,8 +181,11 @@ async function handle(req: NextRequest) {
         const name = text(body.name, 120);
         if (typeof body.csv !== 'string') fail(400, 'Choose a CSV file.');
         let points: Point[];
+        const frequency = body.frequency ?? 'daily';
+        if (typeof frequency !== 'string' || !['daily', 'weekly', 'monthly'].includes(frequency))
+          fail(400, 'Choose daily, weekly or monthly frequency.');
         try {
-          points = parseDataset(body.csv);
+          points = parseDataset(body.csv, frequency as Frequency);
         } catch (e) {
           fail(400, (e as Error).message);
         }
@@ -195,8 +198,8 @@ async function handle(req: NextRequest) {
           if (count.rows[0].count >= 20)
             fail(400, 'Phase 01 supports up to 20 datasets per workspace.');
           await tx.query(
-            'INSERT INTO datasets(id,workspace_id,name,points,row_count) VALUES($1,$2,$3,$4,$5)',
-            [id, wid, name, JSON.stringify(points), points!.length],
+            'INSERT INTO datasets(id,workspace_id,name,points,row_count,frequency) VALUES($1,$2,$3,$4,$5,$6)',
+            [id, wid, name, JSON.stringify(points), points!.length, frequency],
           );
         });
         return NextResponse.json({ id, name, row_count: points!.length }, { status: 201 });
@@ -216,12 +219,14 @@ async function handle(req: NextRequest) {
           db,
           user.id,
           async (tx) =>
-            await tx.query<{ points: unknown }>(
-              'SELECT points FROM datasets WHERE id=$1 AND workspace_id=$2',
+            await tx.query<{ points: unknown; frequency: string }>(
+              'SELECT points,frequency FROM datasets WHERE id=$1 AND workspace_id=$2',
               [datasetId, wid],
             ),
         );
         if (!datasets.rows[0]) fail(404, 'Dataset not found.');
+        if (datasets.rows[0].frequency !== 'daily')
+          fail(400, 'Use the asynchronous forecast-jobs API for weekly or monthly data.');
         const serviceToken = process.env.FORECAST_SERVICE_TOKEN;
         if (!serviceToken || serviceToken.length < 32)
           fail(503, 'Forecast service is not configured.');

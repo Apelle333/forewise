@@ -11,11 +11,15 @@ export default function Home() {
       <header className="h-nav">
         <Brand />
         <nav aria-label="Main navigation">
-          <a href="#how-it-works">The perspective</a>
-          <a href="#demo">The working demo</a>
-          <Link href="/login">
-            Sign in <span aria-hidden="true">↗</span>
-          </Link>
+          <a href="#how-it-works" className="h-nav-story">
+            How it works
+          </a>
+          <a href="#horizon-lab" className="h-nav-scenarios">
+            Explore scenarios
+          </a>
+          <a href="#demo" className="h-nav-demo">
+            Try demo <span aria-hidden="true">↗</span>
+          </a>
         </nav>
       </header>
       <main id="main">
@@ -32,8 +36,9 @@ export default function Home() {
               <br />a single <em>line.</em>
             </h2>
             <p>
-              A useful forecast starts with perspective.
-              <br />A responsible one keeps its limits in view.
+              From daily observations to planning questions.
+              <br />
+              Explore the idea. Understand its limits.
             </p>
             <HorizonStory />
             <span className="h-story-foot">SCROLL TO UNFOLD THE SCENARIOS ↓</span>
@@ -47,8 +52,8 @@ export default function Home() {
                 has a history.
               </h3>
               <p>
-                Start with daily observations. Look for patterns, interruptions and the context
-                behind the numbers.
+                The intended input is a CSV with one date and one value per day: units sold, revenue
+                or capacity hours. This public demo uses synthetic examples.
               </p>
               <span className="h-chapter-detail">28 observations → a point of departure</span>
             </article>
@@ -60,24 +65,24 @@ export default function Home() {
                 some space.
               </h3>
               <p>
-                Change the horizon and compare constructed scenarios. A wider shape invites
-                questions; it does not establish their likelihood.
+                Compare 7–28 days of constructed scenarios. Ask what a different path could mean for
+                stock, budgets or staffing. The width is adjustable, not a measure of likelihood.
               </p>
               <span className="h-chapter-detail">One history → multiple possible paths</span>
             </article>
             <article>
               <span>03 / UNDERSTAND</span>
               <h3>
-                Keep the wonder.
+                Inspect the values.
                 <br />
-                <em>Read the values.</em>
+                <em>Know the limits.</em>
               </h3>
               <p>
-                Step from the spatial illustration into a precise, accessible chart. Inspect the
-                mock, read its method and decide what still needs evidence.
+                Read exact values in the chart or table. The mock repeats the last observed week; it
+                is not a validated prediction and must not guide business decisions.
               </p>
               <a href="#demo">
-                Go to the working example <span aria-hidden="true">↗</span>
+                Try the interactive demo <span aria-hidden="true">↗</span>
               </a>
             </article>
           </div>
@@ -85,8 +90,11 @@ export default function Home() {
         <section className="h-working" aria-labelledby="working-title">
           <div className="h-working-head">
             <span className="h-small">THE WORKING EXAMPLE / 02</span>
-            <h2 id="working-title">Back on solid ground.</h2>
-            <p>Demand, revenue or capacity. The same transparent mock, down to the last value.</p>
+            <h2 id="working-title">Explore a planning scenario.</h2>
+            <p>
+              Choose demand, revenue or capacity. Adjust the horizon and inspect each synthetic
+              value.
+            </p>
           </div>
           <ForecastDemo />
         </section>
@@ -97,10 +105,10 @@ export default function Home() {
             <br />
             <em>your horizon?</em>
           </h2>
-          <Link href="/register" className="h-action">
-            Explore your workspace <span aria-hidden="true">↗</span>
-          </Link>
-          <p>Phase 01 · Local mock preview · No billing</p>
+          <a href="#demo" className="h-action">
+            Try interactive demo <span aria-hidden="true">↗</span>
+          </a>
+          <p>Phase 01 · Synthetic examples only · No uploads or live forecasting in this preview</p>
         </section>
       </main>
       <footer className="h-footer">

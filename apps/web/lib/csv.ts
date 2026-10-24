@@ -1,6 +1,7 @@
 import { parse } from 'csv-parse/sync';
 export type Point = { date: string; value: number };
-export function parseDataset(csv: string): Point[] {
+export type Frequency = 'daily' | 'weekly' | 'monthly';
+export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point[] {
   if (Buffer.byteLength(csv, 'utf8') > 1_000_000) throw new Error('CSV must be smaller than 1 MB.');
   let records: Record<string, string>[];
   try {
@@ -39,8 +40,23 @@ export function parseDataset(csv: string): Point[] {
     })
     .sort((a, b) => a.date.localeCompare(b.date));
   for (let i = 1; i < points.length; i++) {
-    if (Date.parse(points[i].date) - Date.parse(points[i - 1].date) !== 86_400_000)
-      throw new Error('Use consecutive daily dates with no duplicates or missing days.');
+    const previous = new Date(points[i - 1].date),
+      current = new Date(points[i].date);
+    const gap = current.getTime() - previous.getTime();
+    const month = (d: Date) => d.getUTCFullYear() * 12 + d.getUTCMonth();
+    const monthEnd = (d: Date) =>
+      d.getUTCDate() ===
+      new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+    const valid =
+      frequency === 'monthly'
+        ? month(current) - month(previous) === 1 &&
+          ((previous.getUTCDate() === 1 && current.getUTCDate() === 1) ||
+            (monthEnd(previous) && monthEnd(current)))
+        : gap === 86_400_000 * (frequency === 'weekly' ? 7 : 1);
+    if (!valid)
+      throw new Error(
+        `Use consecutive ${frequency} dates with no duplicates or missing periods. Monthly dates must all be month starts or month ends.`,
+      );
   }
   return points;
 }

@@ -6,10 +6,10 @@ import type { mountHorizon } from './horizon-renderer';
 const concepts = {
   horizon: {
     title: 'A wider view',
-    end: 'of what’s next.',
+    end: 'of your business.',
     kicker: 'FORECAST HORIZON / 001',
     description:
-      'Every history opens a field of possibilities. Follow the signal. Explore the space ahead.',
+      'A forecasting workspace in development for demand, revenue and capacity. Explore how different futures could shape stock, budget and staffing plans.',
   },
   observatory: {
     title: 'Find the signal.',
@@ -42,7 +42,7 @@ function FlatView({ days, spread }: { days: number; spread: number }) {
       {[100, 150, 200].map((v) => (
         <g key={v}>
           <line x1="60" x2="940" y1={y(v)} y2={y(v)} stroke="currentColor" opacity=".15" />
-          <text x="20" y={y(v) + 4} fill="currentColor" fontSize="13">
+          <text x="45" y={y(v) + 4} textAnchor="end" fill="currentColor" fontSize="13">
             {v}
           </text>
         </g>
@@ -67,7 +67,7 @@ function FlatView({ days, spread }: { days: number; spread: number }) {
       />
       <line x1={x(0)} x2={x(0)} y1="35" y2="360" stroke="#f5b577" opacity=".4" />
       <text x="60" y="395" fill="currentColor" fontSize="13">
-        Sep 01 · historical units
+        Sep 01 · history
       </text>
       <text x={x(0) + 8} y="32" fill="#f5b577" fontSize="13">
         Sep 28 · scenarios begin
@@ -158,7 +158,7 @@ export function HorizonExperience({
     >
       <div className="h-intro">
         <div className="h-eyebrow">
-          <span className="h-status-dot" /> BUSINESS FORECASTING, IN A NEW DIMENSION{' '}
+          <span className="h-status-dot" /> BUSINESS FORECASTING / PRODUCT PREVIEW{' '}
           <span className="h-edition">{concept.kicker}</span>
         </div>
         <h1>
@@ -167,10 +167,29 @@ export function HorizonExperience({
           <em>{concept.end}</em>
         </h1>
         <div className="h-intro-bottom">
-          <p>{concept.description}</p>
-          <a href="#horizon-lab" className="h-action">
-            Explore the horizon <span aria-hidden="true">↘</span>
-          </a>
+          <div className="h-value-copy">
+            <p>{concept.description}</p>
+            {!exploration && (
+              <p className="h-input-note">Designed for daily CSV data: date + value.</p>
+            )}
+          </div>
+          <div className="h-intro-actions">
+            <a href={exploration ? '#horizon-lab' : '#demo'} className="h-action">
+              {exploration ? 'Explore scenarios' : 'Try interactive demo'}{' '}
+              <span aria-hidden="true">↘</span>
+            </a>
+            {!exploration && (
+              <a href="#horizon-lab" className="h-text-action">
+                Explore scenarios ↓
+              </a>
+            )}
+          </div>
+          {!exploration && (
+            <p className="h-preview-note">
+              Synthetic examples, not validated predictions. Uploads and live forecasting are
+              unavailable in this preview.
+            </p>
+          )}
         </div>
       </div>
       <div className="h-stage" data-renderer={is3d ? 'webgl' : 'flat'}>
@@ -208,7 +227,15 @@ export function HorizonExperience({
         </div>
         <div className="h-scene-note">
           <span>
-            <i /> Historical <i /> Weekly-repeat mock <i /> Illustrative scenarios
+            <span>
+              <i /> History
+            </span>
+            <span>
+              <i /> Weekly-repeat mock
+            </span>
+            <span>
+              <i /> Scenarios
+            </span>
           </span>
           <button
             onClick={() => {
@@ -227,12 +254,15 @@ export function HorizonExperience({
                   : '3D loading · use 2D'}
           </button>
         </div>
+        <p className="h-depth-note">
+          3D depth separates paths for viewing. It adds no data dimension or probability.
+        </p>
       </div>
       <div id="horizon-lab" className="h-lab">
         <div className="h-lab-heading">
           <span className="h-small">TAKE THE CONTROLS</span>
-          <h2>Open the possibilities.</h2>
-          <p>Move the horizon. Widen the scenario space.</p>
+          <h2>Explore the scenarios.</h2>
+          <p>Adjust time and spread. Read the updated extent below.</p>
         </div>
         <label>
           <span>
