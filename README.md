@@ -30,8 +30,13 @@ CSV contract: UTF-8, exactly `date,value` columns, 8–5,000 consecutive daily o
 
 ## Commands
 
+The complete local source gate is `npm run verify` (requires `uv` for pinned Ruff and pip-audit tools). It stops at the first failed check and writes logs plus exit codes to the ignored `.data/checks/` directory. It does not provision infrastructure, run paid CI, or deploy. Browser checks remain a separate command against a running local preview, so a stale build cannot be mistaken for the just-built version.
+
 ```powershell
 npm run typecheck
+npm run lint
+npm run check:format
+npm run verify
 npm test
 .\.venv\Scripts\python.exe -m pytest services/forecast -q
 npm run build
@@ -56,6 +61,8 @@ Browser tests create synthetic users/data in the local development database. The
 | `docs`                | Architecture, source verification and Phase 01 gate evidence                     |
 
 See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter verification](docs/STARTER.md), and [Phase 01 gate](docs/PHASE-01.md).
+
+The development workflow and review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md). Changes are proposed through a private pull request; merging does not authorize Phase 02 or production deployment.
 
 ## Boundaries
 

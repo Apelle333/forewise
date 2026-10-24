@@ -70,12 +70,6 @@ export function Workspace() {
   useEffect(() => {
     if (!wid) return;
     let active = true;
-    setLoading(true);
-    setDatasets([]);
-    setForecasts([]);
-    setSelected('');
-    setError('');
-    setMessage('');
     api(`workspaces/${wid}`)
       .then((data) => {
         if (active) {
@@ -94,6 +88,16 @@ export function Workspace() {
       active = false;
     };
   }, [wid]);
+  function selectWorkspace(id: string) {
+    if (id === wid) return;
+    setLoading(true);
+    setDatasets([]);
+    setForecasts([]);
+    setSelected('');
+    setError('');
+    setMessage('');
+    setWid(id);
+  }
   async function refresh() {
     const data = await api(`workspaces/${wid}`);
     setDatasets(data.datasets);
@@ -152,7 +156,7 @@ export function Workspace() {
             id="workspace-select"
             value={wid}
             disabled={busy}
-            onChange={(e) => setWid(e.target.value)}
+            onChange={(e) => selectWorkspace(e.target.value)}
           >
             {account?.workspaces.map((w) => (
               <option key={w.id} value={w.id}>
@@ -173,7 +177,7 @@ export function Workspace() {
                   setAccount((prev) =>
                     prev ? { ...prev, workspaces: [...prev.workspaces, w] } : prev,
                   );
-                  setWid(w.id);
+                  selectWorkspace(w.id);
                   setWorkspaceName('');
                   setShowCreate(false);
                 });

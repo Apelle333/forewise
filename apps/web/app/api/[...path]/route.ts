@@ -4,6 +4,7 @@ import { asUser } from '@forewise/db';
 import { database } from '@/lib/db';
 import { digest, hashPassword, newSession, sessionCookie, verifyPassword } from '@/lib/auth';
 import { parseDataset, type Point } from '@/lib/csv';
+import { BodyTooLargeError, readLimitedBody } from '@/lib/body';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,14 +32,11 @@ async function handle(req: NextRequest) {
     const write = req.method === 'POST';
     const appOrigin = new URL(process.env.APP_ORIGIN || 'http://127.0.0.1:3000').origin;
     if (write && req.headers.get('origin') !== appOrigin) fail(403, 'Request origin rejected.');
-    if (write && Number(req.headers.get('content-length') || 0) > 1_100_000)
-      fail(413, 'Request too large.');
     const path = req.nextUrl.pathname.replace(/^\/api\//, '').split('/');
     const db = await database();
     let body: Record<string, unknown> = {};
     if (write) {
-      const raw = await req.text();
-      if (Buffer.byteLength(raw) > 1_100_000) fail(413, 'Request too large.');
+      const raw = await readLimitedBody(req);
       try {
         body = JSON.parse(raw);
       } catch {
@@ -46,7 +44,12 @@ async function handle(req: NextRequest) {
       }
       if (!body || typeof body !== 'object' || Array.isArray(body)) fail(400, 'Invalid request.');
     }
-    if (write && path[0] === 'auth' && ['register', 'login'].includes(path[1])) {
+    if (
+      write &&
+      path.length === 2 &&
+      path[0] === 'auth' &&
+      ['register', 'login'].includes(path[1])
+    ) {
       const email = text(body.email, 254).toLowerCase();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail(400, 'Enter a valid email address.');
       const password = typeof body.password === 'string' ? body.password : '';
@@ -254,6 +257,8 @@ async function handle(req: NextRequest) {
     }
     fail(404, 'Not found.');
   } catch (e) {
+    if (e instanceof BodyTooLargeError)
+      return NextResponse.json({ error: 'Request too large.' }, { status: 413 });
     if (e instanceof HttpError)
       return NextResponse.json({ error: e.message }, { status: e.status });
     console.error('Forewise request failed', e instanceof Error ? e.name : 'UnknownError');

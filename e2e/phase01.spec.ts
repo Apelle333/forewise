@@ -144,6 +144,14 @@ test('API enforces authentication, CSRF, rate limits, tenant isolation, invalid 
     });
     expect(uploaded.status()).toBe(201);
     const did = (await uploaded.json()).id;
+    expect((await a.post('/api/auth/register/extra', { data: {} })).status()).toBe(404);
+    expect(
+      (
+        await a.post(`/api/workspaces/${wa}/datasets`, {
+          data: { name: 'too-large.csv', csv: 'x'.repeat(1_100_001) },
+        })
+      ).status(),
+    ).toBe(413);
     expect(
       (
         await b.post(`/api/workspaces/${wb}/forecasts`, { data: { datasetId: did, horizon: 7 } })

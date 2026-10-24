@@ -24,16 +24,19 @@ Private source repository: https://github.com/Apelle333/forewise
 | Check                                    | Result                                                                        |
 | ---------------------------------------- | ----------------------------------------------------------------------------- |
 | npm run typecheck                        | Passed                                                                        |
-| npm test                                 | 9 passed, including real PostgreSQL cross-tenant read/write/FK denial         |
-| Python pytest                            | 12 passed                                                                     |
+| npm test                                 | 12 passed, including real PostgreSQL isolation and bounded streaming requests |
+| Python pytest                            | 14 passed, including calendar overflow and malformed authorization            |
+| ESLint / Ruff / Prettier                 | Passed                                                                        |
 | npm run build                            | Passed, optimized Next.js build; no deployment                                |
 | Playwright against compiled local server | 3 passed; desktop 1280×720 and mobile 390×844                                 |
 | Unavailable Python HTTP integration      | 503 returned, saved dataset preserved, no failed forecast stored              |
 | Full process restart/recovery            | Session and dataset survive; recovered service returns and stores mock output |
 | npm dependency audit at install          | 0 known vulnerabilities reported                                              |
 | Python dependency consistency            | pip check passed                                                              |
+| Python dependency security audit         | No known vulnerabilities after upgrading Starlette to 1.10.0                  |
+| Reproducible source gate                 | npm run verify; logs and exit codes in ignored .data/checks/                  |
 
-Python tests emit one dependency deprecation warning: Starlette TestClient references `anyio.abc.BlockingPortal`. It does not fail tests; this report does not claim a complete security audit. Browser runner also emits an environment-only NO_COLOR/FORCE_COLOR warning.
+Python tests emit one dependency deprecation warning: Starlette recommends httpx2 for its TestClient. It does not fail tests; this report does not claim a complete security audit. Browser runner also emits an environment-only NO_COLOR/FORCE_COLOR warning. See [the Phase 01 review](PHASE-01-REVIEW.md) for corrected findings and the local verification workflow.
 
 Browser checks cover keyboard skip navigation, mobile overflow, registration, invalid and real file upload, sample upload, mock service integration, export, reload, workspace switching, logout, login, unauthenticated denial, foreign/missing Origin denial, rate limiting, foreign-workspace access, foreign-dataset forecast denial and replay of a revoked session.
 
