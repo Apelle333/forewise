@@ -4,7 +4,7 @@ import { mkdirSync } from 'node:fs';
 const globalDb = globalThis as unknown as { forewiseDb?: ReturnType<typeof createDatabase> };
 export function database() {
   const dbPath = process.env.DATABASE_PATH || path.resolve('.data/forewise');
-  mkdirSync(path.dirname(dbPath), { recursive: true });
-  globalDb.forewiseDb ??= createDatabase(dbPath);
+  if (!process.env.DATABASE_URL) mkdirSync(path.dirname(dbPath), { recursive: true });
+  globalDb.forewiseDb ??= createDatabase(process.env.DATABASE_URL || dbPath);
   return globalDb.forewiseDb;
 }

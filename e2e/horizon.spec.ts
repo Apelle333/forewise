@@ -2,8 +2,8 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import fs from 'node:fs/promises';
 
-const evidence = 'docs/design/horizon';
-for (const width of [1440, 768, 390]) {
+const evidence = 'docs/design/polish/after';
+for (const width of [1440, 768, 390, 1728]) {
   test(`Horizon 3D, controls, accessibility and visual evidence / ${width}`, async ({ page }) => {
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));
@@ -13,6 +13,13 @@ for (const width of [1440, 768, 390]) {
       timeout: 15000,
     });
     await page.evaluate(() => document.fonts.ready);
+    if (width === 1728) {
+      const title = await page.getByRole('heading', { level: 1 }).evaluate((element) => ({
+        height: element.getBoundingClientRect().height,
+        line: Number.parseFloat(getComputedStyle(element).lineHeight),
+      }));
+      expect(title.height).toBeLessThanOrEqual(title.line * 2 + 2);
+    }
     await fs.mkdir(evidence, { recursive: true });
     await page.screenshot({ path: `${evidence}/horizon-${width}.png`, fullPage: true });
     await page.screenshot({ path: `${evidence}/hero-${width}.png` });

@@ -4,7 +4,7 @@ Applies to this repository and all descendant folders. Read this file at the sta
 
 ## Product and authority
 
-- English-first general-purpose B2B forecasting. Current approved scope is **Phase 01: local mock preview**. Do not integrate Timestral or begin Phase 02 without owner approval.
+- English-first general-purpose B2B forecasting. Current approved scope is **Phase 01 polish and Phase 02A local statistical baseline foundation**, authorized in the 24 October 2026 reconciliation request. Phase 02B, Timestral, paid services, production and merges remain outside scope.
 - Work autonomously on reversible in-scope fixes, research, local testing, commits and pull requests. Do not require the owner to relay messages between agents/apps.
 - No public production deployment, paid usage, confidential-data transfer, protected-main merge, destructive operation, business-model change or major infrastructure change without explicit owner authorization. Do not modify unrelated projects.
 - Preserve server authentication, revocable sessions, membership checks, restricted-role transactions and PostgreSQL tenant RLS. Never trade isolation or input validation for a UI shortcut.
@@ -18,6 +18,8 @@ Applies to this repository and all descendant folders. Read this file at the sta
 - Use shared tokens/components. Prefer original CSS/SVG and small client boundaries over new runtime libraries. Check license/security before adding dependencies. Keep all user-facing copy in plain English.
 - Label synthetic examples and mock results clearly. Do not invent accuracy, confidence intervals, validated business outcomes, pricing, demand, clients or testimonials.
 - Spatial scenario art is an explicitly synthetic illustration. A cone is not a probability distribution: disclose the construction, show matching values and never imply calibration, coverage or likelihood without evaluated model evidence.
+- Keep public synthetic demos separate from the Phase 02A statistical baseline. Backtesting is historical evaluation, not business validation; absent evaluation must be null with a warning, never a fabricated zero or calibrated interval.
+- All job API business queries use authenticated `asUser` transactions. Dataset/result references must preserve workspace identity. Workers commit claims before computing, renew bounded leases and fence every completion/failure/heartbeat by job, execution token and live lease. Persist results and job completion atomically; stop after three attempts.
 - Keep WebGL optional and local to public storytelling. Provide server-rendered 2D content, native controls and a table; respect reduced motion, handle unavailable/lost WebGL, dispose GPU resources and stop rendering at rest/offscreen. Do not import the renderer into operational routes.
 - Judge the rendered composition at desktop, tablet and mobile sizes. The first fold must establish a clear visual signature; motion must clarify the transition from history to scenarios. Do not call a build cinematic because a library is installed or a canvas exists.
 - Read numeric data correctly: signed/constant ranges, readable axes, exact values, keyboard/touch inspection and an accessible alternative. Never use visual effects to imply unsupported certainty.

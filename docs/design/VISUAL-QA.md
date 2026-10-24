@@ -1,5 +1,7 @@
 # Visual critique and improvement log
 
+Latest follow-up: [Phase 01 polish passes](polish/REVIEW.md) document the two separately scoped clarity/interaction correction passes and final consolidated verification. The historical redesign observations below remain preserved.
+
 Evidence is generated from the compiled local app in Chromium, with synthetic accounts/data. Every capture set includes the landing, auth, empty/loading, validation, dataset-ready, result and service-error states at 1440/768/390px. Delayed loading and injected 503 screenshots are explicitly named simulations. Browser exceptions, failed requests and document overflow are recorded in each observations.json.
 
 ## Pass 1 — composition and data legibility

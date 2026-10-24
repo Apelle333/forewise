@@ -1,0 +1,20 @@
+name: forewise-phase02a
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: forewise_admin
+      POSTGRES_PASSWORD: ${FOREWISE_DB_PASSWORD:?Set a local database password}
+      POSTGRES_DB: forewise
+    ports:
+      - "127.0.0.1:${FOREWISE_DB_PORT:-55432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U forewise_admin -d forewise"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  pgdata:

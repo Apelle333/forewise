@@ -27,8 +27,9 @@ test('landing is responsive and accessible by keyboard', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );
-  await page.getByRole('link', { name: 'Explore your workspace' }).click();
-  await expect(page).toHaveURL(/register/);
+  await page.locator('.h-nav').getByRole('link', { name: 'Try demo' }).click();
+  await expect(page).toHaveURL(/#demo$/);
+  await expect(page.getByRole('button', { name: 'Demand', exact: true })).toBeVisible();
 });
 
 test('real registration, CSV upload, mock forecast, persistence, workspace switch and sign out', async ({

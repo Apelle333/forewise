@@ -1,7 +1,7 @@
 .horizon-page {
   --h-bg: #080f11;
   --h-text: #e7efeb;
-  --h-dim: #a3b6af;
+  --h-dim: #b6c8c0;
   --h-mint: #a8efcf;
   --h-line: #ffffff25;
   --accent: #a8efcf;
@@ -50,6 +50,13 @@
 .h-footer a:hover {
   color: var(--h-mint);
 }
+.h-nav nav .h-nav-demo {
+  background: var(--h-mint);
+  color: var(--h-bg);
+  padding-inline: 16px;
+  border-radius: 2px;
+  gap: 18px;
+}
 .h-intro {
   padding-top: 47px;
   position: relative;
@@ -95,15 +102,40 @@
   color: var(--h-mint);
 }
 .h-intro-bottom {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px 30px;
   justify-content: space-between;
   align-items: end;
 }
 .h-intro-bottom p {
-  max-width: 355px;
+  max-width: 460px;
   color: var(--h-dim);
   font-size: 14px;
   margin: 0;
+}
+.h-intro-bottom .h-input-note {
+  margin-top: 12px;
+  color: var(--h-text);
+  font-size: 13px;
+}
+.h-intro-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 8px;
+}
+.h-text-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--h-mint);
+  font-size: 14px;
+}
+.h-intro-bottom .h-preview-note {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  max-width: 460px;
 }
 .h-action {
   display: inline-flex;
@@ -167,6 +199,9 @@
   width: 100%;
   max-height: 100%;
 }
+.h-flat svg text {
+  font-size: 16px;
+}
 .h-annotations {
   position: absolute;
   bottom: 95px;
@@ -193,7 +228,7 @@
 }
 .h-scene-note {
   position: absolute;
-  bottom: 10px;
+  bottom: 45px;
   width: min(1328px, calc(100% - 112px));
   left: 50%;
   transform: translateX(-50%);
@@ -206,21 +241,36 @@
 }
 .h-scene-note > span {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 8px 16px;
+}
+.h-scene-note > span > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
 }
 .h-scene-note i {
   width: 13px;
   height: 2px;
   background: #e2f5ef;
 }
-.h-scene-note i:nth-of-type(2) {
+.h-scene-note > span > span:nth-child(2) i {
   background: #f5b577;
-  margin-left: 16px;
 }
-.h-scene-note i:nth-of-type(3) {
+.h-scene-note > span > span:nth-child(3) i {
   background: var(--h-mint);
-  margin-left: 16px;
+}
+.h-depth-note {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1328px, calc(100% - 112px));
+  margin: 0;
+  color: var(--h-dim);
+  font-size: 12px;
 }
 .h-scene-note button {
   background: transparent;
@@ -340,7 +390,7 @@
 }
 .h-story {
   border-top: 1px solid var(--h-line);
-  padding-block: 120px 80px;
+  padding-block: 80px 48px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12%;
@@ -366,8 +416,8 @@
   margin-top: 70px;
 }
 .h-chapters article {
-  min-height: 58vh;
-  padding: 20px 0 80px;
+  min-height: 45vh;
+  padding: 20px 0 48px;
   border-top: 1px solid var(--h-line);
 }
 .h-chapters article > span {
@@ -439,6 +489,32 @@
 .h-working .forecast-demo {
   margin: 0;
 }
+.h-working .chart-key,
+.h-working .numeric-axis,
+.h-working .date-axis,
+.h-working .point-readout > span,
+.h-working .data-disclosure,
+.h-working .demo-disclaimer {
+  color: #50544b;
+  font-size: 12px;
+}
+.h-working .point-readout b,
+.h-working .horizon-annotation {
+  font-size: 11px;
+}
+.h-working .inspect-control,
+.h-working .inspect-control > span {
+  font-size: 12px;
+}
+.h-working .horizon-control input,
+.h-working .inspect-control input {
+  min-height: 44px;
+}
+.h-working .demo-bottom {
+  border-top: 0;
+  border-bottom: 1px solid var(--line);
+  margin-top: 0;
+}
 .h-end {
   padding-block: 115px;
   text-align: center;
@@ -503,6 +579,8 @@
   color: var(--h-mint);
 }
 .h-observatory .h-intro-bottom {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 60px;
   text-align: left;
@@ -531,6 +609,7 @@
   font-size: clamp(58px, 6vw, 86px);
 }
 .h-atlas .h-intro-bottom {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
@@ -578,6 +657,9 @@
   .h-scene-note {
     width: calc(100% - 64px);
   }
+  .h-depth-note {
+    width: calc(100% - 64px);
+  }
   .h-lab {
     grid-template-columns: 1fr 1fr;
     gap: 26px;
@@ -620,7 +702,8 @@
   .h-nav {
     min-height: 80px;
   }
-  .h-nav nav a:not(:last-child) {
+  .h-nav nav .h-nav-story,
+  .h-nav nav .h-nav-scenarios {
     display: none;
   }
   .h-nav .brand {
@@ -643,18 +726,23 @@
   .h-intro-bottom,
   .h-observatory .h-intro-bottom,
   .h-atlas .h-intro-bottom {
+    display: flex;
     flex-direction: column;
     align-items: start;
     gap: 24px;
   }
   .h-intro-bottom p {
     max-width: 320px;
-    font-size: 13px;
+    font-size: 14px;
   }
   .h-stage {
-    min-height: 340px;
-    height: 95vw;
+    min-height: 300px;
+    height: 300px;
     margin-top: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background-color: var(--h-bg);
   }
   .h-stage-top {
     font-size: 9px;
@@ -665,11 +753,11 @@
   .h-annotations {
     left: 5%;
     right: 5%;
-    bottom: 95px;
-    font-size: 9px;
+    bottom: 135px;
+    font-size: 11px;
   }
   .h-annotations b {
-    font-size: 10px;
+    font-size: 11px;
   }
   .h-annotations .h-present {
     display: none;
@@ -679,32 +767,51 @@
     flex-direction: column;
     align-items: start;
     gap: 9px;
-    bottom: 8px;
+    bottom: 60px;
   }
   .h-scene-note > span {
-    font-size: 9px;
-    gap: 5px;
-  }
-  .h-scene-note i:nth-of-type(2),
-  .h-scene-note i:nth-of-type(3) {
-    margin-left: 6px;
+    font-size: 12px;
+    gap: 6px 12px;
   }
   .h-scene-note button {
-    min-height: 38px;
-    font-size: 11px;
+    min-height: 44px;
+    font-size: 12px;
     padding: 7px 10px;
   }
+  .h-depth-note {
+    width: calc(100% - 40px);
+    font-size: 12px;
+    bottom: 8px;
+  }
+  .h-canvas {
+    bottom: 100px;
+  }
   .h-flat {
-    padding-bottom: 90px;
+    padding-bottom: 130px;
+  }
+  .h-flat svg text {
+    font-size: 32px;
   }
   .h-lab {
     display: flex;
     flex-direction: column;
-    gap: 26px;
-    padding-block: 30px;
+    gap: 14px;
+    padding-block: 20px;
+    scroll-margin-top: 310px;
   }
   .h-lab label {
     width: 100%;
+    font-size: 13px;
+    scroll-margin-block: 310px 24px;
+  }
+  .h-lab input[type='range'] {
+    margin-block: 4px 0;
+  }
+  .h-lab-heading h2 {
+    margin-top: 6px;
+  }
+  .h-lab-heading p {
+    margin-top: 6px;
   }
   .h-readout {
     align-self: start;
@@ -715,7 +822,7 @@
   }
   .h-story-sticky {
     position: static;
-    margin-bottom: 60px;
+    margin-bottom: 24px;
   }
   .h-story-sticky h2 {
     font-size: 48px;
@@ -725,7 +832,7 @@
   }
   .h-chapters article {
     min-height: auto;
-    padding-block: 30px 60px;
+    padding-block: 24px 28px;
   }
   .h-chapters h3 {
     font-size: 40px;
@@ -738,6 +845,32 @@
   }
   .h-working-head h2 {
     margin-block: 20px;
+  }
+  .h-working .demo-bottom {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-block: 12px;
+  }
+  .h-working .demo-bottom > div {
+    display: none;
+  }
+  .h-working .chart-caption {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .h-working .point-readout {
+    min-width: 0;
+    text-align: left;
+  }
+  .h-working .chart-key {
+    gap: 8px 12px;
+  }
+  .h-working .horizon-annotation {
+    transform: translateX(-50%);
+  }
+  .h-working .inspect-control > span {
+    display: block;
+    margin-top: 4px;
   }
   .h-end {
     padding-block: 80px;
@@ -784,15 +917,16 @@
     pointer-events: none;
   }
   .h-experience:not(.h-exploration) .h-intro h1 {
-    max-width: 690px;
+    max-width: 760px;
     position: relative;
     z-index: 2;
   }
   .h-experience:not(.h-exploration) .h-intro-bottom {
+    display: flex;
     flex-direction: column;
     align-items: start;
-    gap: 26px;
-    width: 330px;
+    gap: 14px;
+    width: 360px;
   }
   .h-experience:not(.h-exploration) .h-intro-bottom a {
     pointer-events: auto;
@@ -827,12 +961,11 @@
   }
   .h-experience:not(.h-exploration) .h-scene-note {
     width: calc(100% - 80px);
-    font-size: 10px;
-    bottom: 14px;
+    font-size: 12px;
+    bottom: 45px;
   }
-  .h-experience:not(.h-exploration) .h-scene-note i:nth-of-type(2),
-  .h-experience:not(.h-exploration) .h-scene-note i:nth-of-type(3) {
-    margin-left: 6px;
+  .h-experience:not(.h-exploration) .h-depth-note {
+    width: calc(100% - 80px);
   }
 }
 .h-narrative {

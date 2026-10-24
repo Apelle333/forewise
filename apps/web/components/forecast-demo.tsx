@@ -37,19 +37,13 @@ export function ForecastDemo() {
         </div>
         <span className="demo-badge">Synthetic data / {examples[metric].unit}</span>
       </div>
-      <Chart
-        history={history}
-        future={future}
-        label={`Sample ${metric.toLowerCase()} · ${examples[metric].unit}`}
-        unit={examples[metric].unit}
-      />
       <div className="demo-bottom">
         <div>
           <span className="overline">MOVE THE HORIZON</span>
           <p>
-            The past is observed.
+            Compare the next 7–28 days.
             <br />
-            The next chapter is yours to explore.
+            Synthetic examples. Exact values.
           </p>
         </div>
         <label className="horizon-control">
@@ -74,6 +68,12 @@ export function ForecastDemo() {
           </span>
         </label>
       </div>
+      <Chart
+        history={history}
+        future={future}
+        label={`Sample ${metric.toLowerCase()} · ${examples[metric].unit}`}
+        unit={examples[metric].unit}
+      />
       <p className="demo-disclaimer">
         This interactive example repeats the last observed week. It is a mock forecast, with no
         validated accuracy or confidence interval.
