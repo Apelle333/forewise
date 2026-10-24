@@ -1,0 +1,28 @@
+{
+  "name": "forewise",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "python scripts/dev.py",
+    "dev:web": "npm run dev -w @forewise/web",
+    "preview": "python scripts/dev.py --production",
+    "build": "npm run build -w @forewise/web",
+    "typecheck": "npm run typecheck -w @forewise/web",
+    "test": "tsx --test packages/db/src/*.test.ts apps/web/tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "start": "npm run start -w @forewise/web"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "prettier": "^3.6.2",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22.13"
+  }
+}
