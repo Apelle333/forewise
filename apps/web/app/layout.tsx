@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import '@fontsource-variable/dm-sans';
-import '@fontsource-variable/manrope';
 import './globals.css';
 export const metadata: Metadata = {
   title: 'Forewise — See what comes next.',

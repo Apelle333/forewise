@@ -1,0 +1,280 @@
+{
+  "stage": "after",
+  "measurements": [
+    {
+      "name": "landing",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "landing",
+      "width": 768,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "landing",
+      "width": 390,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "login",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "login",
+      "width": 768,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "login",
+      "width": 390,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.003962622371720678,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202377
+    },
+    {
+      "name": "login-error",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.008329019052010994,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202720
+    },
+    {
+      "name": "login-error",
+      "width": 768,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.008329019052010994,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202720
+    },
+    {
+      "name": "login-error",
+      "width": 390,
+      "overflow": false,
+      "lcp": 204,
+      "cls": 0.008329019052010994,
+      "navigationMs": 195.80000001192093,
+      "resourceBytes": 202720
+    },
+    {
+      "name": "register",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 6231
+    },
+    {
+      "name": "register",
+      "width": 768,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 6231
+    },
+    {
+      "name": "register",
+      "width": 390,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 6231
+    },
+    {
+      "name": "workspace-empty",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 25816
+    },
+    {
+      "name": "workspace-empty",
+      "width": 768,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 25816
+    },
+    {
+      "name": "workspace-empty",
+      "width": 390,
+      "overflow": false,
+      "lcp": 44,
+      "cls": 0,
+      "navigationMs": 28.099999994039536,
+      "resourceBytes": 25816
+    },
+    {
+      "name": "workspace-loading-simulated",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 202314
+    },
+    {
+      "name": "workspace-loading-simulated",
+      "width": 768,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 202314
+    },
+    {
+      "name": "workspace-loading-simulated",
+      "width": 390,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 202314
+    },
+    {
+      "name": "upload-error",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 203516
+    },
+    {
+      "name": "upload-error",
+      "width": 768,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 203516
+    },
+    {
+      "name": "upload-error",
+      "width": 390,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 203516
+    },
+    {
+      "name": "dataset-ready",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 205333
+    },
+    {
+      "name": "dataset-ready",
+      "width": 768,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 205333
+    },
+    {
+      "name": "dataset-ready",
+      "width": 390,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 205333
+    },
+    {
+      "name": "workspace-result",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 208643
+    },
+    {
+      "name": "workspace-result",
+      "width": 768,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 208643
+    },
+    {
+      "name": "workspace-result",
+      "width": 390,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 208643
+    },
+    {
+      "name": "service-error-simulated",
+      "width": 1440,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 209025
+    },
+    {
+      "name": "service-error-simulated",
+      "width": 768,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 209025
+    },
+    {
+      "name": "service-error-simulated",
+      "width": 390,
+      "overflow": false,
+      "lcp": 100,
+      "cls": 0.0009668957353128817,
+      "navigationMs": 98.5,
+      "resourceBytes": 209025
+    }
+  ],
+  "problems": [],
+  "simulated": [
+    "service-error-simulated uses Playwright HTTP 503 response injection",
+    "workspace-loading-simulated delays session HTTP response"
+  ]
+}

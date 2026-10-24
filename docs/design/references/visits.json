@@ -1,0 +1,52 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "linear",
+      "url": "https://linear.app/",
+      "finalUrl": "https://linear.app/",
+      "status": 200,
+      "title": "Linear – The system for product development"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "stripe",
+      "url": "https://stripe.com/",
+      "finalUrl": "https://stripe.com/it",
+      "status": 200,
+      "title": "Stripe | L'infrastruttura finanziaria per aumentare i tuoi ricavi"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "ramp",
+      "url": "https://ramp.com/",
+      "finalUrl": "https://ramp.com/",
+      "status": 200,
+      "title": "Spend Management, Corporate Cards & Accounts Payable Solutions | Ramp"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "vercel",
+      "url": "https://vercel.com/",
+      "finalUrl": "https://vercel.com/",
+      "status": 200,
+      "title": "Agentic Infrastructure - Vercel"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "gallery",
+      "url": "https://recent.design/",
+      "finalUrl": "https://recent.design/",
+      "status": 200,
+      "title": "Recent — Design Inspiration"
+    }
+  }
+]

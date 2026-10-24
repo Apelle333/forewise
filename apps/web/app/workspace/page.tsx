@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { database } from '@/lib/db';
 import { digest, sessionCookie } from '@/lib/auth';
 import { Workspace } from '@/components/workspace';
+export const metadata = { title: 'Your workspace — Forewise' };
 export const dynamic = 'force-dynamic';
 export default async function WorkspacePage() {
   const token = (await cookies()).get(sessionCookie)?.value;

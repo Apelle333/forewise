@@ -1,168 +1,176 @@
 import Link from 'next/link';
-import { Chart } from '@/components/chart';
-const history = [48, 55, 51, 64, 61, 58, 70, 67, 75, 68, 82, 79, 88, 81, 95, 91, 99, 94].map(
-  (value, i) => ({ date: `2026-10-${String(i + 1).padStart(2, '0')}`, value }),
-);
-const future = [103, 98, 110, 106, 116, 111, 121].map((value, i) => ({
-  date: `2026-10-${i + 19}`,
-  value,
-}));
+import { Brand } from '@/components/brand';
+import { ForecastDemo } from '@/components/forecast-demo';
 export default function Home() {
   return (
     <>
       <header className="nav shell">
-        <Link className="brand" href="/">
-          <span className="brand-icon">f</span>forewise<span className="brand-dot">.</span>
-        </Link>
+        <Brand />
         <nav aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="#possibilities">Use cases</a>
-          <Link className="nav-signin" href="/login">
-            Sign in ↗
+          <a href="#how-it-works">The process</a>
+          <a href="#possibilities">The possibilities</a>
+          <Link href="/login" className="nav-signin">
+            Sign in <span aria-hidden="true">↗</span>
           </Link>
         </nav>
       </header>
       <main id="main">
         <section className="hero shell">
-          <div className="eyebrow">
-            <span className="live-dot" /> A clearer view of what comes next
+          <div className="hero-folio">
+            <span className="overline">BUSINESS FORECASTING, IN PERSPECTIVE</span>
+            <span className="edition">FIELD NOTES / 001</span>
           </div>
-          <h1>
-            Less guesswork.
-            <br />
-            More <span className="serif">foresight.</span>
-          </h1>
-          <p className="hero-description">
-            Turn your business data into a clearer next move.
-            <br className="desktop-break" /> Explore demand, revenue, and operations in one calm
-            workspace.
-          </p>
-          <div className="hero-actions">
-            <Link className="button primary" href="/register">
-              Explore your workspace <span>↗</span>
-            </Link>
-            <a className="text-link" href="#how-it-works">
-              See how it works <span>↓</span>
-            </a>
+          <div className="hero-lead">
+            <h1>
+              Yesterday is data.
+              <br />
+              <span className="serif">Tomorrow is a decision.</span>
+            </h1>
+            <div className="hero-aside">
+              <p>
+                A clearer way to explore what comes next. Bring your daily business data. See the
+                history, set a horizon, and explore a forecast.
+              </p>
+              <Link className="button primary" href="/register">
+                Explore your workspace <span aria-hidden="true">↗</span>
+              </Link>
+              <span className="micro">Phase 01 preview · Mock forecasts · No billing</span>
+            </div>
           </div>
-          <p className="micro">Private development preview · No credit card · Mock forecasts</p>
-          <div className="product-preview">
-            <div className="preview-sidebar">
-              <span className="mini-logo">f.</span>
-              <span className="sidebar-active">◫ Overview</span>
-              <span>▤ Datasets</span>
-              <span>↗ Forecasts</span>
-              <span className="sidebar-bottom">◉ Sample workspace</span>
-            </div>
-            <div className="preview-content">
-              <div className="preview-top">
-                <span>
-                  Workspace <span className="muted">/ Overview</span>
-                </span>
-                <span className="small-badge">ILLUSTRATIVE DATA</span>
-              </div>
-              <div className="preview-heading">
-                <div>
-                  <p className="overline">A LITTLE CLARITY GOES A LONG WAY</p>
-                  <h2>Your next chapter, in view.</h2>
-                </div>
-                <span className="avatar">FW</span>
-              </div>
-              <div className="preview-metrics">
-                <div>
-                  <span>Metric</span>
-                  <strong>Daily demand</strong>
-                  <small>One series. A clearer perspective.</small>
-                </div>
-                <div>
-                  <span>Forecast horizon</span>
-                  <strong>
-                    7 days <span className="green">↗</span>
-                  </strong>
-                  <small>Look a little further ahead</small>
-                </div>
-                <div>
-                  <span>Model status</span>
-                  <strong>Demo preview</strong>
-                  <small>No accuracy claims. No surprises.</small>
-                </div>
-              </div>
-              <div className="chart-heading">
-                <strong>See the direction. Explore the possibilities.</strong>
-                <span>
-                  <i /> Historical <i className="lime" /> Illustrative forecast
-                </span>
-              </div>
-              <Chart history={history} future={future} />
-            </div>
+          <ForecastDemo />
+          <div className="hero-caption">
+            <span>01 / A WORKING EXAMPLE, NOT A PROMISE</span>
+            <span>Adjust the horizon. Inspect a day. See the idea in motion.</span>
           </div>
         </section>
         <section className="possibilities shell" id="possibilities">
-          <p className="overline">ONE WORKSPACE. MANY WHAT-IFS.</p>
-          <div className="usecases">
-            <span>Revenue & sales</span>
-            <span>Demand & inventory</span>
-            <span>Operations & capacity</span>
+          <div className="section-label">
+            <span>02 / THE POSSIBILITIES</span>
+            <span>ONE SERIES. YOUR BUSINESS QUESTION.</span>
           </div>
-          <p className="muted">Start with a daily time series. The business question is yours.</p>
-        </section>
-        <section className="steps shell" id="how-it-works">
-          <div className="section-title">
-            <p className="overline">FROM SPREADSHEET TO PERSPECTIVE</p>
+          <div className="possibilities-heading">
             <h2>
-              Complex data.
+              Different questions.
               <br />
-              <span className="serif">Simple next steps.</span>
+              <span className="serif">A shared starting point.</span>
             </h2>
-            <p>You bring the question. Forewise gives it a place to start.</p>
+            <p>
+              Demand, revenue or capacity: start with a daily date and a value. Keep the context
+              yours.
+            </p>
           </div>
-          <div className="step-grid">
+          <div className="usecase-rows">
             {[
               [
                 '01',
-                'Bring your data',
-                'Upload a simple CSV with dates and values. Check the format before you go further.',
+                'What might demand look like?',
+                'Daily orders, bookings or product demand.',
+                'Demand',
               ],
               [
                 '02',
-                'Set your horizon',
-                'Choose how far ahead to explore, from one day to ninety. Keep every run in your workspace.',
+                'What could revenue do next?',
+                'A daily record of sales or recurring activity.',
+                'Revenue',
               ],
               [
                 '03',
-                'See what comes next',
-                'Compare your history with a clearly marked mock forecast. Real model evaluation comes next.',
+                'Where might capacity be needed?',
+                'Daily volumes, workloads or service hours.',
+                'Operations',
               ],
-            ].map(([n, title, body]) => (
+            ].map(([n, title, body, tag]) => (
               <article key={n}>
-                <span className="step-number">
-                  {n} <span>↗</span>
-                </span>
+                <span className="row-number">{n}</span>
                 <h3>{title}</h3>
                 <p>{body}</p>
+                <span className="usecase-tag">
+                  {tag} <span aria-hidden="true">↗</span>
+                </span>
               </article>
             ))}
           </div>
         </section>
-        <section className="closing shell">
-          <span className="eyebrow">MAKE ROOM FOR A CLEARER TOMORROW</span>
+        <section className="process shell" id="how-it-works">
+          <div className="section-label">
+            <span>03 / FROM DATA TO A VIEW AHEAD</span>
+            <span>NOTHING EXTRA TO LEARN</span>
+          </div>
+          <div className="process-layout">
+            <div>
+              <h2>
+                A small beginning.
+                <br />
+                <span className="serif">A useful perspective.</span>
+              </h2>
+              <p>
+                Try a synthetic dataset first. Then bring a CSV when you’re ready to test your own
+                workflow.
+              </p>
+              <Link href="/register" className="text-link">
+                Start with sample data <span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+            <ol className="process-list">
+              <li>
+                <span>01</span>
+                <div>
+                  <h3>Bring a little history.</h3>
+                  <p>Two columns: date and value. We check the format before you go further.</p>
+                </div>
+              </li>
+              <li>
+                <span>02</span>
+                <div>
+                  <h3>Give tomorrow a horizon.</h3>
+                  <p>Choose 1–90 days ahead. Generate a clearly labeled weekly-repeat mock.</p>
+                </div>
+              </li>
+              <li>
+                <span>03</span>
+                <div>
+                  <h3>Read the result. Keep the context.</h3>
+                  <p>Inspect every value, compare it with history, and export the mock result.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+        <section className="truth-section shell">
+          <span className="overline">A NOTE ON CERTAINTY</span>
           <h2>
-            Your data has a story.
+            Clarity begins
             <br />
-            <span className="serif">See the next page.</span>
+            with <span className="serif">honesty.</span>
+          </h2>
+          <div>
+            <p>
+              This preview proves the workflow. Its forecasts repeat the last observed week; they
+              aren’t validated predictions.
+            </p>
+            <p>
+              No invented accuracy. No pretend confidence bands. Real model evaluation comes after
+              this phase.
+            </p>
+          </div>
+        </section>
+        <section className="closing shell">
+          <span className="overline">YOUR NEXT MOVE STARTS WITH A LITTLE HISTORY</span>
+          <h2>
+            Let’s see
+            <br />
+            <span className="serif">what comes next.</span>
           </h2>
           <Link className="button primary" href="/register">
-            Get started with Forewise ↗
+            Create your workspace <span aria-hidden="true">↗</span>
           </Link>
-          <p className="micro">Phase 01 preview. No billing enabled.</p>
+          <p className="micro">Private development preview. No credit card or billing enabled.</p>
         </section>
       </main>
       <footer className="footer shell">
-        <Link className="brand" href="/">
-          forewise.
-        </Link>
-        <span>A little less uncertainty.</span>
-        <span>© {new Date().getFullYear()} Forewise · Development preview</span>
+        <Brand />
+        <span>Past observed. Next explored.</span>
+        <span>© {new Date().getFullYear()} Forewise / Phase 01</span>
       </footer>
     </>
   );

@@ -1,0 +1,33 @@
+# Forewise working agreement
+
+Applies to this repository and all descendant folders. Read this file at the start of future coding sessions; preserve the generated Next.js instructions in `apps/web/AGENTS.md`.
+
+## Product and authority
+
+- English-first general-purpose B2B forecasting. Current approved scope is **Phase 01: local mock preview**. Do not integrate Timestral or begin Phase 02 without owner approval.
+- Work autonomously on reversible in-scope fixes, research, local testing, commits and pull requests. Do not require the owner to relay messages between agents/apps.
+- No public production deployment, paid usage, confidential-data transfer, protected-main merge, destructive operation, business-model change or major infrastructure change without explicit owner authorization. Do not modify unrelated projects.
+- Preserve server authentication, revocable sessions, membership checks, restricted-role transactions and PostgreSQL tenant RLS. Never trade isolation or input validation for a UI shortcut.
+- Keep credentials, session state, datasets and local logs out of Git. Never send customer data to external design/generation services.
+
+## Creative and engineering standard
+
+- Before significant UI changes, inspect the live rendered app and research relevant primary examples. Document sources, what applies and what must not be copied.
+- Think as creative director, product designer, frontend engineer, architect and independent QA. Challenge the composition, reading order, value proposition, data semantics and interaction clarity separately.
+- Do not accept generic template-quality UI, unrelated component effects, fake social proof or decorative data. Use the selected Fieldnotes system in `docs/design/ART-DIRECTION.md` unless a new direction is researched and justified.
+- Use shared tokens/components. Prefer original CSS/SVG and small client boundaries over new runtime libraries. Check license/security before adding dependencies. Keep all user-facing copy in plain English.
+- Label synthetic examples and mock results clearly. Do not invent accuracy, confidence intervals, validated business outcomes, pricing, demand, clients or testimonials.
+- Read numeric data correctly: signed/constant ranges, readable axes, exact values, keyboard/touch inspection and an accessible alternative. Never use visual effects to imply unsupported certainty.
+
+## Required quality loop
+
+- After significant frontend changes: build, open a real browser, capture 1440/768/390px screens, critique, improve and retest. Never claim visual verification from source code alone.
+- For substantial redesigns, complete at least three explicit observation/change/retest passes when browser access works. Document the weakest elements and actual corrections in `docs/design/VISUAL-QA.md`.
+- Check empty/loading/success/validation/error states; keyboard focus; reduced motion; accessibility; responsive overflow; console/network errors; and measured performance. Distinguish simulated faults and local measurements from field evidence.
+- Run `npm run verify`, then start the newly built local preview and run Playwright functional/visual tests. Keep screenshot baselines deterministic and inspect them before approving updates. A passing test is not proof of excellent design or complete security.
+- Fix demonstrable problems autonomously within scope. Document unresolved issues truthfully. Do not claim external/blocked browser pages were inspected.
+- Update design decisions, progress and limitations; commit to an appropriate development branch and prepare/update the PR. Stop at the Phase 01 owner-review gate, without automatic merge.
+
+## Scope and reading discipline
+
+Inspect only task-relevant files. No unrelated scans or architectural rewrites. Audit/test tools may inspect this repository's relevant source and dependencies. Intermediate logs/private state belong in ignored `.data/`; user-facing design evidence belongs in `docs/design/`.

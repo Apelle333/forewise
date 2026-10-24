@@ -64,6 +64,10 @@ See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter 
 
 The development workflow and review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md). Changes are proposed through a private pull request; merging does not authorize Phase 02 or production deployment.
 
+The Fieldnotes redesign, primary references, three art directions, before/after captures and three visual critique passes are indexed in [the design review](docs/design/README.md). Project-wide creative/QA expectations persist in [AGENTS.md](AGENTS.md).
+
+Visual checks: `node scripts/capture-design.mjs after` captures 10 states at 1440/768/390px. `node scripts/audit-accessibility.mjs after` captures public-page axe findings. `npm run test:e2e` includes functional, WCAG, keyboard/reduced-motion, signed-chart and six screenshot regression checks. Baselines in `e2e/design.spec.ts-snapshots/` are for Chromium on Windows; update them only after inspecting intentional visual changes. The application must be running from the just-built code.
+
 ## Boundaries
 
 Phase 01 is not a production-ready release. Email verification/recovery, invitations, infrastructure hardening, hosted PostgreSQL migration, backups, customer data handling, a job queue, real model evaluation and billing need later decisions. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency licenses remain with their respective authors.
