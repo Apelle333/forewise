@@ -14,9 +14,12 @@ Applies to this repository and all descendant folders. Read this file at the sta
 
 - Before significant UI changes, inspect the live rendered app and research relevant primary examples. Document sources, what applies and what must not be copied.
 - Think as creative director, product designer, frontend engineer, architect and independent QA. Challenge the composition, reading order, value proposition, data semantics and interaction clarity separately.
-- Do not accept generic template-quality UI, unrelated component effects, fake social proof or decorative data. Use the selected Fieldnotes system in `docs/design/ART-DIRECTION.md` unless a new direction is researched and justified.
+- Do not accept generic template-quality UI, unrelated component effects, fake social proof or decorative data. The selected public direction is Forecast Horizon (`docs/design/horizon/REVIEW.md`); preserve Fieldnotes for operational screens. Public visual exploration must compare three distinct working compositions, not palette swaps.
 - Use shared tokens/components. Prefer original CSS/SVG and small client boundaries over new runtime libraries. Check license/security before adding dependencies. Keep all user-facing copy in plain English.
 - Label synthetic examples and mock results clearly. Do not invent accuracy, confidence intervals, validated business outcomes, pricing, demand, clients or testimonials.
+- Spatial scenario art is an explicitly synthetic illustration. A cone is not a probability distribution: disclose the construction, show matching values and never imply calibration, coverage or likelihood without evaluated model evidence.
+- Keep WebGL optional and local to public storytelling. Provide server-rendered 2D content, native controls and a table; respect reduced motion, handle unavailable/lost WebGL, dispose GPU resources and stop rendering at rest/offscreen. Do not import the renderer into operational routes.
+- Judge the rendered composition at desktop, tablet and mobile sizes. The first fold must establish a clear visual signature; motion must clarify the transition from history to scenarios. Do not call a build cinematic because a library is installed or a canvas exists.
 - Read numeric data correctly: signed/constant ranges, readable axes, exact values, keyboard/touch inspection and an accessible alternative. Never use visual effects to imply unsupported certainty.
 
 ## Required quality loop

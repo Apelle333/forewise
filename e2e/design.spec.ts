@@ -4,6 +4,8 @@ import fs from 'node:fs/promises';
 
 for (const width of [1440, 768, 390]) {
   test(`public design / accessibility / snapshots at ${width}`, async ({ page }) => {
+    // Deterministic native 2D fallback baseline; 3D has separate rendered evidence.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width, height: 960 });
     const errors: string[] = [];
     page.on('pageerror', (e) => errors.push(e.message));

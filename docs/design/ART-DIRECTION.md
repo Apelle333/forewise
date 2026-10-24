@@ -1,5 +1,7 @@
 # Three directions and selection
 
+Historical Fieldnotes decision, retained for the operational UI. The current public direction is [Forecast Horizon](horizon/REVIEW.md), with three working spatial studies and current validation in `horizon/`.
+
 Original rendered sketches: [concept board](concepts.html), with screenshots in `concepts/`. These are exploratory compositions, not forecasts or production screenshots.
 
 |               | A — Fieldnotes                                                                         | B — Signal room                                                       | C — Horizon atlas                                                                           |

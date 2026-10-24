@@ -10,7 +10,7 @@ const unique = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 test('landing is responsive and accessible by keyboard', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Yesterday is data.');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A wider view');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Tab');

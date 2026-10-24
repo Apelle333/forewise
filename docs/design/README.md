@@ -1,5 +1,7 @@
 # Forewise — Fieldnotes design review
 
+**Current public redesign:** [Forecast Horizon review](horizon/REVIEW.md) · [Current validation](horizon/VALIDATION.md). This page retains the earlier Fieldnotes review and product-screen evidence.
+
 24 October 2026. Phase 01 / private local mock preview. Original identity, no purchased assets or new runtime visual framework.
 
 ## Deliverables
