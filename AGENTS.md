@@ -4,7 +4,7 @@ Applies to this repository and all descendant folders. Read this file at the sta
 
 ## Product and authority
 
-- English-first general-purpose B2B forecasting. Current approved scope is **Phase 01 polish and Phase 02A local statistical baseline foundation**, authorized in the 24 October 2026 reconciliation request. Phase 02B, Timestral, paid services, production and merges remain outside scope.
+- English-first general-purpose B2B forecasting. Current approved scope includes **Phase 02B with genuine Timestral-209M**, authorized on 25 October 2026. Preserve Phase 02A security and Phase 01 identity. Phase 03, paid infrastructure, production deployment and merges remain outside scope.
 - Work autonomously on reversible in-scope fixes, research, local testing, commits and pull requests. Do not require the owner to relay messages between agents/apps.
 - No public production deployment, paid usage, confidential-data transfer, protected-main merge, destructive operation, business-model change or major infrastructure change without explicit owner authorization. Do not modify unrelated projects.
 - Preserve server authentication, revocable sessions, membership checks, restricted-role transactions and PostgreSQL tenant RLS. Never trade isolation or input validation for a UI shortcut.
@@ -31,7 +31,7 @@ Applies to this repository and all descendant folders. Read this file at the sta
 - Check empty/loading/success/validation/error states; keyboard focus; reduced motion; accessibility; responsive overflow; console/network errors; and measured performance. Distinguish simulated faults and local measurements from field evidence.
 - Run `npm run verify`, then start the newly built local preview and run Playwright functional/visual tests. Keep screenshot baselines deterministic and inspect them before approving updates. A passing test is not proof of excellent design or complete security.
 - Fix demonstrable problems autonomously within scope. Document unresolved issues truthfully. Do not claim external/blocked browser pages were inspected.
-- Update design decisions, progress and limitations; commit to an appropriate development branch and prepare/update the PR. Stop at the Phase 01 owner-review gate, without automatic merge.
+- Update design decisions, progress and limitations; commit to an appropriate development branch and prepare/update the PR. Stop at the current Phase 02B owner-review gate, without automatic merge or Phase 03 work.
 
 ## Scope and reading discipline
 

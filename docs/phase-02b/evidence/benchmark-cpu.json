@@ -1,0 +1,651 @@
+{
+  "model": "mistralai/Timestral-209M",
+  "revision": "9874d252ab0aae16f7f7c999f98f98d6ad7d8365",
+  "code_revision": "a534bdbd244d64f3d9d743f46c7bf6fc330ed4ff",
+  "device": "cpu",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "elapsed_seconds": 13.190565100012464,
+  "cases": [
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 0,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": false,
+      "load_seconds": 1.7150804999982938,
+      "inference_seconds": 0.12781049999466632,
+      "total_seconds": 1.8428909999929601,
+      "peak_rss_bytes_sampled": 2335625216,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 4.730274699992151,
+      "forecasts_per_minute": 469.4449986699361,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 7.299997378140688e-06,
+      "inference_seconds": 0.12882030000037048,
+      "total_seconds": 0.12882759999774862,
+      "peak_rss_bytes_sampled": 1543540736,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.12974280001071747,
+      "forecasts_per_minute": 465.76510068543115,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 2,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 7.199996616691351e-06,
+      "inference_seconds": 0.1441577000077814,
+      "total_seconds": 0.14416490000439808,
+      "peak_rss_bytes_sampled": 1543561216,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.14504229999147356,
+      "forecasts_per_minute": 416.2108579476594,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 3,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.900001269765198e-06,
+      "inference_seconds": 0.1255481999978656,
+      "total_seconds": 0.12555409999913536,
+      "peak_rss_bytes_sampled": 1543573504,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.12647290001041256,
+      "forecasts_per_minute": 477.9041037706637,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 0,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.2000028770416975e-06,
+      "inference_seconds": 0.1322920999955386,
+      "total_seconds": 0.13229629999841563,
+      "peak_rss_bytes_sampled": 1544175616,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.13311939999402966,
+      "forecasts_per_minute": 453.5418214846044,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.97882080078125,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.399997462518513e-06,
+      "inference_seconds": 0.14094910000858363,
+      "total_seconds": 0.14095450000604615,
+      "peak_rss_bytes_sampled": 1544462336,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.14179770000919234,
+      "forecasts_per_minute": 425.68558434460437,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.97882080078125,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 2,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.200003554113209e-06,
+      "inference_seconds": 0.1528322000085609,
+      "total_seconds": 0.15283840001211502,
+      "peak_rss_bytes_sampled": 1544466432,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.15370849998726044,
+      "forecasts_per_minute": 392.587425926206,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.97882080078125,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 3,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.89999433234334e-06,
+      "inference_seconds": 0.15291540000180248,
+      "total_seconds": 0.15292229999613483,
+      "peak_rss_bytes_sampled": 1544478720,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.15386769999167882,
+      "forecasts_per_minute": 392.3738223834405,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.97882080078125,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 0,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.800000508315861e-06,
+      "inference_seconds": 0.19327760000305716,
+      "total_seconds": 0.19328340000356548,
+      "peak_rss_bytes_sampled": 1546211328,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.19402949999494012,
+      "forecasts_per_minute": 310.43431830202235,
+      "first_p10_p50_p90": [
+        156.59498596191406,
+        156.86537170410156,
+        157.17483520507812
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.999995093792677e-06,
+      "inference_seconds": 0.1590266999992309,
+      "total_seconds": 0.1590336999943247,
+      "peak_rss_bytes_sampled": 1546375168,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.16003210000053514,
+      "forecasts_per_minute": 377.29513346054574,
+      "first_p10_p50_p90": [
+        156.59498596191406,
+        156.86537170410156,
+        157.17483520507812
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 2,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.7000066842883825e-06,
+      "inference_seconds": 0.183080599992536,
+      "total_seconds": 0.1830852999992203,
+      "peak_rss_bytes_sampled": 1546440704,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.18404380000720266,
+      "forecasts_per_minute": 327.7245104202528,
+      "first_p10_p50_p90": [
+        156.59498596191406,
+        156.86537170410156,
+        157.17483520507812
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 3,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.89999433234334e-06,
+      "inference_seconds": 0.164517800003523,
+      "total_seconds": 0.16452469999785535,
+      "peak_rss_bytes_sampled": 1546510336,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.1656691999960458,
+      "forecasts_per_minute": 364.70217811516534,
+      "first_p10_p50_p90": [
+        156.59498596191406,
+        156.86537170410156,
+        157.17483520507812
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 0,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.800000508315861e-06,
+      "inference_seconds": 0.29400470000109635,
+      "total_seconds": 0.29401050000160467,
+      "peak_rss_bytes_sampled": 1553149952,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.2947284999972908,
+      "forecasts_per_minute": 204.07837017495387,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.19932556152344,
+        255.6657257080078
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.100002792663872e-06,
+      "inference_seconds": 0.31663279999338556,
+      "total_seconds": 0.3166388999961782,
+      "peak_rss_bytes_sampled": 1553719296,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.31750460001057945,
+      "forecasts_per_minute": 189.49395009377864,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.19932556152344,
+        255.6657257080078
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 2,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.199995939619839e-06,
+      "inference_seconds": 0.34329400000569876,
+      "total_seconds": 0.3432992000016384,
+      "peak_rss_bytes_sampled": 1553989632,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.3443131999956677,
+      "forecasts_per_minute": 174.77730458150737,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.19932556152344,
+        255.6657257080078
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 3,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.0000089686363935e-06,
+      "inference_seconds": 0.3586497999931453,
+      "total_seconds": 0.3586548000021139,
+      "peak_rss_bytes_sampled": 1554784256,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.35956170001009014,
+      "forecasts_per_minute": 167.29411253302456,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.19932556152344,
+        255.6657257080078
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 0,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.400005077011883e-06,
+      "inference_seconds": 0.5610695999930613,
+      "total_seconds": 0.5610759999981383,
+      "peak_rss_bytes_sampled": 1565028352,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.5619070999964606,
+      "forecasts_per_minute": 106.93860440975953,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 1,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.8000074457377195e-06,
+      "inference_seconds": 0.6933184999943478,
+      "total_seconds": 0.6933233000017935,
+      "peak_rss_bytes_sampled": 1564880896,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.6943366000050446,
+      "forecasts_per_minute": 86.54031300259425,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 2,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 7.000009645707905e-06,
+      "inference_seconds": 0.752257499989355,
+      "total_seconds": 0.7522644999990007,
+      "peak_rss_bytes_sampled": 1564618752,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.7534758000110742,
+      "forecasts_per_minute": 79.75992263400371,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 3,
+      "device": "cpu",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.999994416721165e-06,
+      "inference_seconds": 0.7349149000074249,
+      "total_seconds": 0.7349199000018416,
+      "peak_rss_bytes_sampled": 1564618752,
+      "peak_vram_allocated_bytes": 0,
+      "peak_vram_reserved_bytes": 0,
+      "call_wall_seconds_including_torch_import": 0.7357940999936545,
+      "forecasts_per_minute": 81.64210577223814,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    }
+  ],
+  "evaluation": [
+    {
+      "name": "daily_demand",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 180,
+      "horizon": 14,
+      "metrics": {
+        "mae": 6.694592866867886,
+        "rmse": 8.239226497707275,
+        "wape": 0.05366046762522393,
+        "pinball": {
+          "p10": 1.2905754478953373,
+          "p50": 3.347296433433943,
+          "p90": 1.6369174607111152
+        },
+        "coverage_p10_p90": 0.7857142857142857
+      },
+      "baseline_metrics": {
+        "mae": 9.051730706546456,
+        "rmse": 11.030719828504203,
+        "wape": 0.0725540913674903
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 42,
+      "cutoffs": [
+        "2020-05-17",
+        "2020-05-31",
+        "2020-06-14"
+      ],
+      "seconds": 0.4994412999949418,
+      "warnings": []
+    },
+    {
+      "name": "weekly_sales",
+      "frequency": "weekly",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 104,
+      "horizon": 8,
+      "metrics": {
+        "mae": 5.681474887092281,
+        "rmse": 7.669884784061419,
+        "wape": 0.05065171640543978,
+        "pinball": {
+          "p10": 1.5512707039057239,
+          "p50": 2.8407374435461406,
+          "p90": 1.5154542748347695
+        },
+        "coverage_p10_p90": 0.7916666666666666
+      },
+      "baseline_metrics": {
+        "mae": 23.96601077431693,
+        "rmse": 28.669379109573786,
+        "wape": 0.2136627557517352
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 24,
+      "cutoffs": [
+        "2021-07-07",
+        "2021-09-01",
+        "2021-10-27"
+      ],
+      "seconds": 0.5589764000033028,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 52,
+        "mae": 30.61785293457822,
+        "rmse": 33.8941435148909
+      }
+    },
+    {
+      "name": "monthly_revenue",
+      "frequency": "monthly",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 72,
+      "horizon": 6,
+      "metrics": {
+        "mae": 6.575608424549324,
+        "rmse": 7.551135013522141,
+        "wape": 0.06439206389748439,
+        "pinball": {
+          "p10": 1.0758565732820429,
+          "p50": 3.287804212274662,
+          "p90": 1.4653685785691788
+        },
+        "coverage_p10_p90": 0.8333333333333334
+      },
+      "baseline_metrics": {
+        "mae": 33.77277247188377,
+        "rmse": 34.77332691247129,
+        "wape": 0.33072202336223966
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 18,
+      "cutoffs": [
+        "2024-06-01",
+        "2024-12-01",
+        "2025-06-01"
+      ],
+      "seconds": 0.38313909999851603,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 12,
+        "mae": 9.257865850592191,
+        "rmse": 10.79811618063482
+      }
+    },
+    {
+      "name": "seasonal",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 365,
+      "horizon": 28,
+      "metrics": {
+        "mae": 7.16263944029054,
+        "rmse": 8.606544028351873,
+        "wape": 0.04826465910599195,
+        "pinball": {
+          "p10": 1.4174165111221215,
+          "p50": 3.58131972014527,
+          "p90": 1.5477940838533382
+        },
+        "coverage_p10_p90": 0.8571428571428571
+      },
+      "baseline_metrics": {
+        "mae": 10.333797325914853,
+        "rmse": 12.674236350033784,
+        "wape": 0.06963315819028026
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 84,
+      "cutoffs": [
+        "2020-10-07",
+        "2020-11-04",
+        "2020-12-02"
+      ],
+      "seconds": 0.3989635000034468,
+      "warnings": []
+    },
+    {
+      "name": "intermittent",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 180,
+      "horizon": 14,
+      "metrics": {
+        "mae": 2.019670563542136,
+        "rmse": 5.651054227676275,
+        "wape": 0.08557615790227546,
+        "pinball": {
+          "p10": 0.4959711104274797,
+          "p50": 1.009835281771068,
+          "p90": 0.769347263956686
+        },
+        "coverage_p10_p90": 0.9523809523809523
+      },
+      "baseline_metrics": {
+        "mae": 52.20792372627672,
+        "rmse": 80.34464315861938,
+        "wape": 2.2121199393599023
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 42,
+      "cutoffs": [
+        "2020-05-17",
+        "2020-05-31",
+        "2020-06-14"
+      ],
+      "seconds": 0.42376779999176506,
+      "warnings": []
+    },
+    {
+      "name": "AirPassengers",
+      "frequency": "monthly",
+      "fixture": "Real public R datasets / Box & Jenkins monthly airline passengers, 1949\u20131960; thousands.",
+      "context": 144,
+      "horizon": 12,
+      "metrics": {
+        "mae": 18.729834662543404,
+        "rmse": 21.98041494865125,
+        "wape": 0.04371023258469872,
+        "pinball": {
+          "p10": 4.367093997531466,
+          "p50": 9.364917331271702,
+          "p90": 3.1846643235948346
+        },
+        "coverage_p10_p90": 0.5833333333333334
+      },
+      "baseline_metrics": {
+        "mae": 73.22222222222223,
+        "rmse": 98.7555905590497,
+        "wape": 0.17088033190716972
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 36,
+      "cutoffs": [
+        "1957-12-01",
+        "1958-12-01",
+        "1959-12-01"
+      ],
+      "seconds": 0.38543390000995714,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 12,
+        "mae": 35.916666666666664,
+        "rmse": 41.97916149710473
+      }
+    }
+  ],
+  "notes": [
+    "Float32 official default symmetric averaging and nonnegative clipping. No custom normalization.",
+    "RSS sampled every 20ms; GPU allocator peak is process allocation, not total system VRAM.",
+    "Local unthrottled measurements may include concurrent user applications. Cold model load excludes library import; cold first call downloads weights only if uncached.",
+    "No global superiority claim; compare individual MAE and RMSE rows."
+  ]
+}

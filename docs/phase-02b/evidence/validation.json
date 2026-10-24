@@ -1,0 +1,31 @@
+{
+  "base_commit": "79bd403012318414712a1cf681e3d44097eb90c6",
+  "branch": "codex/phase02b-timestral-209m",
+  "local": {
+    "node_tests": 18,
+    "python_tests": 36,
+    "browser_tests": 29,
+    "total_passed": 83,
+    "skipped": 0,
+    "source_gate": "passed; final UI selection fix subsequently linted, built/typechecked and full browser-tested",
+    "browser_duration_seconds": 90,
+    "widths_css_pixels": [
+      1440,
+      768,
+      390
+    ],
+    "genuine_209m_pipeline": "passed, real public AirPassengers CSV through dashboard and PostgreSQL worker to persisted native quantiles",
+    "audits": "No known published dependency vulnerabilities; Git-only Timestral not auditable via PyPI advisories"
+  },
+  "ci": {
+    "status": "success",
+    "run_id": 40141325198,
+    "url": "https://github.com/Apelle333/forewise/actions/runs/40141325198",
+    "tested_source_sha": "469f3d2f9b951255c18f19fddc2a535b639b04ab",
+    "job_id": 121013497076,
+    "node_tests": 18,
+    "python_tests": 36,
+    "browser_tests": 23,
+    "scope": "Linux CPU real model and PostgreSQL; Windows-specific six snapshot/a11y design tests excluded in CI and passed locally"
+  }
+}

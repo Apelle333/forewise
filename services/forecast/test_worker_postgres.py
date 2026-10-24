@@ -77,6 +77,29 @@ def test_two_connections_cannot_claim_the_same_job(seeded):
     assert next(job for job in jobs if job)["attempts"] == 1
 
 
+def test_failed_ai_inference_uses_the_existing_fenced_retry_path(seeded, monkeypatch):
+    from worker import process_job
+
+    owner, wid, jid, payload = seeded
+
+    def simulated_failure(payload):
+        raise RuntimeError("Deliberately injected inference failure; not a forecast output")
+
+    monkeypatch.setattr("worker.run_forecast", simulated_failure)
+    conn = get_connection()
+    try:
+        job = claim_job(conn, "failed-inference")
+        assert not process_job(conn, job)
+        with owner, owner.cursor() as cur:
+            cur.execute("SELECT status,attempts,result_id FROM forecast_jobs WHERE id=%s", (jid,))
+            row = cur.fetchone()
+            assert row["status"] == "pending" and row["attempts"] == 1 and row["result_id"] is None
+            cur.execute("SELECT count(*) AS n FROM forecasts WHERE workspace_id=%s", (wid,))
+            assert cur.fetchone()["n"] == 0
+    finally:
+        conn.close()
+
+
 def test_completion_waiting_for_a_lock_rechecks_expiry_after_acquisition(seeded):
     owner, wid, jid, payload = seeded
     conn = get_connection()

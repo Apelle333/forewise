@@ -1,10 +1,10 @@
 # Forewise
 
-An English, general-purpose B2B forecasting workspace. **Phase 01: local development preview, awaiting owner review.** No deployment, payments, external model calls, or paid infrastructure is configured.
+An English, general-purpose B2B forecasting workspace. **Phase 02B: genuine local Timestral 209M and SeasonalNaive through the secure asynchronous PostgreSQL queue.** Public cinematic demos remain synthetic. No production deployment, payments or paid infrastructure is configured. See [Phase 02B setup, contracts, license and limitations](docs/phase-02b/README.md) and [measured CPU/GPU benchmarks](docs/phase-02b/BENCHMARKS.md).
 
 ## Run locally
 
-Requires Node.js 22.13+ (validated on 24.18), Python 3.12+, npm, and approximately 1 GB free space for dependencies. Docker is not required.
+Requires Node.js 22.13+ (validated on 24.18), Python 3.11+, npm, and several GB free disk for dependencies and the 837 MB model weights. Docker is optional; local PostgreSQL is required for asynchronous models. Follow the Phase 02B setup to select an official CPU/CUDA PyTorch wheel.
 
 ```powershell
 npm ci
@@ -22,11 +22,12 @@ One local Next.js process may open the persistent database at a time. Data is st
 - Responsive landing, sign-up/sign-in, logout and protected workspace.
 - Real salted password hashing and server-side sessions; session cookies are HttpOnly and SameSite=Lax, Secure when served over HTTPS.
 - Create/switch workspaces; membership checks and real PostgreSQL row-level security protect tenant data.
-- Upload and validate daily `date,value` CSV files, or load synthetic sample data.
-- Persist datasets and mock forecast runs; visualize history/output and export a mock CSV.
-- A separate internal FastAPI process returns explicitly labelled weekly-repeat mock outputs. **No trained forecasting model is integrated in Phase 01.**
+- Upload and validate daily/weekly/monthly `date,value` CSV files, or load synthetic sample data.
+- Persist model results, inspect genuine P10/P50/P90, historical evaluation and data tables; export median forecast CSV.
+- A standalone persistent worker runs Timestral 209M or SeasonalNaive through tenant-scoped, fenced jobs. Start it separately from the web preview.
+- A separate internal FastAPI process preserves explicitly labelled weekly-repeat mock outputs for daily data.
 
-CSV contract: UTF-8, exactly `date,value` columns, 8–5,000 consecutive daily observations, unique valid `YYYY-MM-DD` dates, finite numerical values within ±1e12, file below 1 MB. Rows are sorted by date. Forecast horizon: 1–90 days. Monthly/irregular/multivariate data is not supported in Phase 01.
+CSV contract: UTF-8, exactly `date,value` columns, 8–5,000 consecutive daily/weekly/monthly observations, unique valid `YYYY-MM-DD` dates, finite numerical values within ±1e12, file below 1 MB. Monthly dates consistently use month starts or ends. Rows are sorted by date. Forecast horizon: 1–90 observation steps. Irregular/multivariate inputs remain unsupported.
 
 ## Commands
 
@@ -55,14 +56,14 @@ Browser tests create synthetic users/data in the local development database. The
 | `apps/web/components` | Landing/auth/workspace presentation                                              |
 | `apps/web/lib`        | Password/session helpers, CSV validation, local database singleton               |
 | `packages/db`         | PostgreSQL schema, restricted role, RLS transaction boundary and isolation tests |
-| `services/forecast`   | Separate Python mock forecasting API and contract tests                          |
+| `services/forecast`   | Persistent model worker, official Timestral inference, evaluation and mock API   |
 | `e2e`                 | Playwright browser and API integration tests                                     |
 | `scripts/dev.py`      | Local process orchestration and generated internal service token                 |
 | `docs`                | Architecture, source verification and Phase 01 gate evidence                     |
 
 See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter verification](docs/STARTER.md), and [Phase 01 gate](docs/PHASE-01.md).
 
-The development workflow and review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md). Changes are proposed through a private pull request; merging does not authorize Phase 02 or production deployment.
+Earlier visual review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md); current model evidence is in [Phase 02B review](docs/phase-02b/REVIEW.md). Changes are proposed through draft pull requests. Production deployment and advancing beyond Phase 02B remain owner-controlled.
 
 The Fieldnotes redesign, primary references, three art directions, before/after captures and three visual critique passes are indexed in [the design review](docs/design/README.md). Project-wide creative/QA expectations persist in [AGENTS.md](AGENTS.md).
 
@@ -70,6 +71,6 @@ Visual checks: `node scripts/capture-design.mjs after` captures 10 states at 144
 
 ## Boundaries
 
-Phase 01 is not a production-ready release. Email verification/recovery, invitations, infrastructure hardening, hosted PostgreSQL migration, backups, customer data handling, a job queue, real model evaluation and billing need later decisions. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency licenses remain with their respective authors.
+This is not a production-ready release. Email verification/recovery, invitations, hosted infrastructure hardening, backup/restore, customer data handling, monitoring and domain-specific model validation/calibration remain production gates. The local PostgreSQL queue and real model evaluation are implemented. Billing remains disabled. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency/model licenses remain with their respective authors.
 
-**STOP: owner review of Phase 01 is required before starting Phase 02 or deployment.**
+**STOP: Phase 02B owner review is required before Phase 03, production deployment or merge.**

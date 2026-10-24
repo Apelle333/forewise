@@ -9,18 +9,25 @@ export function Chart({
   label = 'Daily series and mock forecast',
   caption,
   unit = 'value',
+  futureKind = 'mock',
+  quantiles,
 }: {
   history: Point[];
   future?: Point[];
   label?: string;
   caption?: string;
   unit?: string;
+  futureKind?: 'mock' | 'forecast';
+  quantiles?: { p10: Point[]; p50: Point[]; p90: Point[] } | null;
 }) {
   const id = useId().replaceAll(':', '');
   const [index, setIndex] = useState<number | null>(null),
     [table, setTable] = useState(false);
   const all = useMemo(() => [...history, ...future], [history, future]);
-  const [min, max] = useMemo(() => chartDomain(all), [all]);
+  const [min, max] = useMemo(
+    () => chartDomain([...all, ...(quantiles?.p10 || []), ...(quantiles?.p90 || [])]),
+    [all, quantiles],
+  );
   const total = all.length,
     active = Math.min(index ?? history.length - 1, total - 1),
     point = all[active];
@@ -41,6 +48,18 @@ export function Chart({
     .join(' ');
   const split = x(history.length - 1);
   const mock = active >= history.length;
+  const futureLabel =
+    futureKind === 'mock' ? 'Mock forecast' : quantiles ? 'Median forecast' : 'Baseline forecast';
+  const sourceLabel = mock ? (futureKind === 'mock' ? 'MOCK' : 'FORECAST') : 'OBSERVED';
+  const inspectLabel = futureKind === 'mock' ? 'Inspect a day' : 'Inspect an observation';
+  const dateLabel = (value: string) =>
+    futureKind === 'mock'
+      ? formatDate(value)
+      : new Date(`${value}T00:00:00Z`).toLocaleDateString('en-US', {
+          month: 'short',
+          year: 'numeric',
+          timeZone: 'UTC',
+        });
   if (!point) return <p className="empty">Upload a dataset to see your history.</p>;
   function inspect(e: React.PointerEvent<HTMLDivElement>) {
     const bounds = e.currentTarget.getBoundingClientRect();
@@ -65,13 +84,13 @@ export function Chart({
             </span>
             <span>
               <i className="mock-key" />
-              Mock forecast
+              {futureLabel}
             </span>
           </div>
         </div>
         <div className="point-readout" data-testid="point-readout">
           <span>
-            {formatDate(point.date)} <b>{mock ? 'MOCK' : 'OBSERVED'}</b>
+            {futureKind === 'mock' ? formatDate(point.date) : point.date} <b>{sourceLabel}</b>
           </span>
           <strong>
             {formatValue(point.value)}
@@ -93,7 +112,7 @@ export function Chart({
             viewBox="0 0 900 260"
             preserveAspectRatio="none"
             role="img"
-            aria-label={`${label}. ${history.length} historical points${future.length ? ` and ${future.length} mock points` : ''}. Use the Inspect a day control or data table for values.`}
+            aria-label={`${label}. ${history.length} historical points${future.length ? ` and ${future.length} ${futureKind === 'mock' ? 'mock' : 'forecast'} points` : ''}. ${quantiles ? 'P10–P90 prediction interval, not a confidence interval. ' : ''}Use the ${inspectLabel} control or data table for values.`}
           >
             <defs>
               <pattern
@@ -106,7 +125,20 @@ export function Chart({
                 <line x1="0" y1="0" x2="0" y2="9" stroke="currentColor" strokeWidth="1" />
               </pattern>
             </defs>
-            {future.length > 0 ? (
+            {quantiles && future.length > 0 ? (
+              <polygon
+                data-testid="prediction-band"
+                points={[
+                  ...quantiles.p90.map((p, i) => `${x(history.length + i)},${y(p.value)}`),
+                  ...quantiles.p10
+                    .map((p, i) => `${x(history.length + i)},${y(p.value)}`)
+                    .reverse(),
+                ].join(' ')}
+                fill="var(--accent)"
+                opacity="0.16"
+              />
+            ) : null}
+            {future.length > 0 && !quantiles ? (
               <rect
                 x={split}
                 y="0"
@@ -147,21 +179,27 @@ export function Chart({
         </div>
       </div>
       <div className="date-axis" aria-hidden="true">
-        <span>{formatDate(all[0].date)}</span>
-        <span>{formatDate(all[Math.floor((total - 1) / 2)].date)}</span>
-        <span>{formatDate(all.at(-1)!.date)}</span>
+        <span>{dateLabel(all[0].date)}</span>
+        <span>{dateLabel(all[Math.floor((total - 1) / 2)].date)}</span>
+        <span>{dateLabel(all.at(-1)!.date)}</span>
       </div>
       <label className="inspect-control">
-        Inspect a day <span>Drag, tap or use arrow keys</span>
+        {inspectLabel} <span>Drag, tap or use arrow keys</span>
         <input
           type="range"
           min={0}
           max={total - 1}
           value={active}
           onChange={(e) => setIndex(Number(e.target.value))}
-          aria-valuetext={`${formatDate(point.date)}, ${mock ? 'mock forecast' : 'historical'}, ${formatValue(point.value)}`}
+          aria-valuetext={`${point.date}, ${mock ? futureLabel.toLowerCase() : 'historical'}, ${formatValue(point.value)}`}
         />
       </label>
+      {quantiles ? (
+        <p className="interval-note">
+          Shaded: P10–P90 nominal 80% prediction interval. Coverage is not guaranteed; inspect
+          historical coverage below.
+        </p>
+      ) : null}
       <details className="data-disclosure" onToggle={(e) => setTable(e.currentTarget.open)}>
         <summary>
           View data table <span>{total} observations</span>
@@ -180,6 +218,12 @@ export function Chart({
                   <th scope="col">Date</th>
                   <th scope="col">Value</th>
                   <th scope="col">Source</th>
+                  {quantiles ? (
+                    <>
+                      <th scope="col">P10</th>
+                      <th scope="col">P90</th>
+                    </>
+                  ) : null}
                 </tr>
               </thead>
               <tbody>
@@ -187,7 +231,17 @@ export function Chart({
                   <tr key={p.date}>
                     <td>{p.date}</td>
                     <td>{p.value}</td>
-                    <td>{i < history.length ? 'Historical' : 'Mock forecast'}</td>
+                    <td>{i < history.length ? 'Historical' : futureLabel}</td>
+                    {quantiles ? (
+                      <>
+                        <td>
+                          {i < history.length ? '—' : quantiles.p10[i - history.length]?.value}
+                        </td>
+                        <td>
+                          {i < history.length ? '—' : quantiles.p90[i - history.length]?.value}
+                        </td>
+                      </>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>

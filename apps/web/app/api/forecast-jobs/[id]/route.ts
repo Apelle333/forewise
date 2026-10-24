@@ -15,7 +15,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       async (tx) =>
         (
           await tx.query(
-            `SELECT j.id,j.status,j.result_id,j.attempts,j.error,j.created_at,j.updated_at,f.result
+            `SELECT j.id,j.status,j.result_id,j.attempts,j.error,j.created_at,j.updated_at,f.result,
+       COALESCE(j.payload->>'contract_version','1') AS "contractVersion"
        FROM forecast_jobs j LEFT JOIN forecasts f ON f.id=j.result_id AND f.workspace_id=j.workspace_id
        WHERE j.id=$1`,
             [id],

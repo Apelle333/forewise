@@ -1,0 +1,651 @@
+{
+  "model": "mistralai/Timestral-209M",
+  "revision": "9874d252ab0aae16f7f7c999f98f98d6ad7d8365",
+  "code_revision": "a534bdbd244d64f3d9d743f46c7bf6fc330ed4ff",
+  "device": "cuda",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "elapsed_seconds": 8.735046699992381,
+  "cases": [
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 0,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": false,
+      "load_seconds": 2.1362885999988066,
+      "inference_seconds": 0.4556165999965742,
+      "total_seconds": 2.591905199995381,
+      "peak_rss_bytes_sampled": 2355974144,
+      "peak_vram_allocated_bytes": 851672576,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 5.273626900001545,
+      "forecasts_per_minute": 131.68967065829284,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 1,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.980000085197389e-05,
+      "inference_seconds": 0.08084360000793822,
+      "total_seconds": 0.0808934000087902,
+      "peak_rss_bytes_sampled": 1658150912,
+      "peak_vram_allocated_bytes": 851672576,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.08207499999844003,
+      "forecasts_per_minute": 742.173777443217,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 2,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 8.100000559352338e-05,
+      "inference_seconds": 0.08289330000116024,
+      "total_seconds": 0.08297430000675377,
+      "peak_rss_bytes_sampled": 1658171392,
+      "peak_vram_allocated_bytes": 851672576,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.08467250000103377,
+      "forecasts_per_minute": 723.822070048607,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 28,
+      "horizon": 7,
+      "repeat": 3,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.769999941345304e-05,
+      "inference_seconds": 0.07209530001273379,
+      "total_seconds": 0.07214300001214724,
+      "peak_rss_bytes_sampled": 1658200064,
+      "peak_vram_allocated_bytes": 851672576,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.07328569999663159,
+      "forecasts_per_minute": 832.2317819525342,
+      "first_p10_p50_p90": [
+        101.37584686279297,
+        102.25022888183594,
+        103.15876770019531
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 0,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.250001024454832e-05,
+      "inference_seconds": 0.09853550000116229,
+      "total_seconds": 0.09859800001140684,
+      "peak_rss_bytes_sampled": 1688735744,
+      "peak_vram_allocated_bytes": 851820544,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.0998305000102846,
+      "forecasts_per_minute": 608.9175982188375,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.9788360595703,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 1,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.119999696034938e-05,
+      "inference_seconds": 0.07490639999741688,
+      "total_seconds": 0.07495759999437723,
+      "peak_rss_bytes_sampled": 1689001984,
+      "peak_vram_allocated_bytes": 851820544,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.07619509998767171,
+      "forecasts_per_minute": 800.9996475877772,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.9788360595703,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 2,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 7.759999425616115e-05,
+      "inference_seconds": 0.0899379000038607,
+      "total_seconds": 0.09001549999811687,
+      "peak_rss_bytes_sampled": 1689006080,
+      "peak_vram_allocated_bytes": 851820544,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.09158229999593459,
+      "forecasts_per_minute": 667.1269842571866,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.9788360595703,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 128,
+      "horizon": 28,
+      "repeat": 3,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.250001024454832e-05,
+      "inference_seconds": 0.0777784999954747,
+      "total_seconds": 0.07784100000571925,
+      "peak_rss_bytes_sampled": 1689018368,
+      "peak_vram_allocated_bytes": 851820544,
+      "peak_vram_reserved_bytes": 891289600,
+      "call_wall_seconds_including_torch_import": 0.07912569999461994,
+      "forecasts_per_minute": 771.4214082746635,
+      "first_p10_p50_p90": [
+        129.59555053710938,
+        129.9788360595703,
+        130.3690185546875
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 0,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 3.710000601131469e-05,
+      "inference_seconds": 0.07915069999580737,
+      "total_seconds": 0.07918780000181869,
+      "peak_rss_bytes_sampled": 1689100288,
+      "peak_vram_allocated_bytes": 852413440,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.08018819999415427,
+      "forecasts_per_minute": 758.0476231186611,
+      "first_p10_p50_p90": [
+        156.594970703125,
+        156.8653564453125,
+        157.17481994628906
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 1,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.810000245925039e-05,
+      "inference_seconds": 0.08188410000002477,
+      "total_seconds": 0.08193220000248402,
+      "peak_rss_bytes_sampled": 1689124864,
+      "peak_vram_allocated_bytes": 852413440,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.08320970000931993,
+      "forecasts_per_minute": 732.7429867334665,
+      "first_p10_p50_p90": [
+        156.594970703125,
+        156.8653564453125,
+        157.17481994628906
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 2,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 3.710000601131469e-05,
+      "inference_seconds": 0.07252430000517052,
+      "total_seconds": 0.07256140001118183,
+      "peak_rss_bytes_sampled": 1689124864,
+      "peak_vram_allocated_bytes": 852413440,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.07370959999389015,
+      "forecasts_per_minute": 827.3089157113186,
+      "first_p10_p50_p90": [
+        156.594970703125,
+        156.8653564453125,
+        157.17481994628906
+      ]
+    },
+    {
+      "context": 512,
+      "horizon": 28,
+      "repeat": 3,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.180001269560307e-05,
+      "inference_seconds": 0.07123069999215659,
+      "total_seconds": 0.07127250000485219,
+      "peak_rss_bytes_sampled": 1689124864,
+      "peak_vram_allocated_bytes": 852413440,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.07246679998934269,
+      "forecasts_per_minute": 842.3334321662818,
+      "first_p10_p50_p90": [
+        156.594970703125,
+        156.8653564453125,
+        157.17481994628906
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 0,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.3100011427886784e-05,
+      "inference_seconds": 0.11480389999633189,
+      "total_seconds": 0.11485700000775978,
+      "peak_rss_bytes_sampled": 1714106368,
+      "peak_vram_allocated_bytes": 855101952,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.11594200000399724,
+      "forecasts_per_minute": 522.6303287773069,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.1993408203125,
+        255.66574096679688
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 1,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.880001117475331e-05,
+      "inference_seconds": 0.10771579999709502,
+      "total_seconds": 0.10777460000826977,
+      "peak_rss_bytes_sampled": 1714499584,
+      "peak_vram_allocated_bytes": 855101952,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.1091650999878766,
+      "forecasts_per_minute": 557.0213469297739,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.1993408203125,
+        255.66574096679688
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 2,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.849999433849007e-05,
+      "inference_seconds": 0.10785470000701025,
+      "total_seconds": 0.10791320000134874,
+      "peak_rss_bytes_sampled": 1714503680,
+      "peak_vram_allocated_bytes": 855101952,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.10917560000962112,
+      "forecasts_per_minute": 556.3039904250827,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.1993408203125,
+        255.66574096679688
+      ]
+    },
+    {
+      "context": 2048,
+      "horizon": 90,
+      "repeat": 3,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 4.879999323748052e-05,
+      "inference_seconds": 0.09509210000396706,
+      "total_seconds": 0.09514089999720454,
+      "peak_rss_bytes_sampled": 1714515968,
+      "peak_vram_allocated_bytes": 855101952,
+      "peak_vram_reserved_bytes": 893386752,
+      "call_wall_seconds_including_torch_import": 0.09642229999008123,
+      "forecasts_per_minute": 630.9672412061245,
+      "first_p10_p50_p90": [
+        254.7455596923828,
+        255.1993408203125,
+        255.66574096679688
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 0,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.9300000430084765e-05,
+      "inference_seconds": 0.10079510000650771,
+      "total_seconds": 0.1008544000069378,
+      "peak_rss_bytes_sampled": 1714655232,
+      "peak_vram_allocated_bytes": 860561920,
+      "peak_vram_reserved_bytes": 897581056,
+      "call_wall_seconds_including_torch_import": 0.1020528000080958,
+      "forecasts_per_minute": 595.2670317914876,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 1,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 5.200000305194408e-05,
+      "inference_seconds": 0.09781789999397006,
+      "total_seconds": 0.097869899997022,
+      "peak_rss_bytes_sampled": 1714720768,
+      "peak_vram_allocated_bytes": 860561920,
+      "peak_vram_reserved_bytes": 897581056,
+      "call_wall_seconds_including_torch_import": 0.09917299999506213,
+      "forecasts_per_minute": 613.3846668523723,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 2,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.120000034570694e-05,
+      "inference_seconds": 0.09713840000040364,
+      "total_seconds": 0.09719960000074934,
+      "peak_rss_bytes_sampled": 1714720768,
+      "peak_vram_allocated_bytes": 860561920,
+      "peak_vram_reserved_bytes": 897581056,
+      "call_wall_seconds_including_torch_import": 0.09847630000149366,
+      "forecasts_per_minute": 617.6753992216331,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    },
+    {
+      "context": 5000,
+      "horizon": 90,
+      "repeat": 3,
+      "device": "cuda",
+      "dtype": "float32",
+      "cache_hit": true,
+      "load_seconds": 6.520000169984996e-05,
+      "inference_seconds": 0.1200782999949297,
+      "total_seconds": 0.12014349999662954,
+      "peak_rss_bytes_sampled": 1714724864,
+      "peak_vram_allocated_bytes": 860561920,
+      "peak_vram_reserved_bytes": 897581056,
+      "call_wall_seconds_including_torch_import": 0.12157990000559948,
+      "forecasts_per_minute": 499.6739627604113,
+      "first_p10_p50_p90": [
+        517.7659912109375,
+        518.8743896484375,
+        520.129638671875
+      ]
+    }
+  ],
+  "evaluation": [
+    {
+      "name": "daily_demand",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 180,
+      "horizon": 14,
+      "metrics": {
+        "mae": 6.694593593476888,
+        "rmse": 8.239228351402522,
+        "wape": 0.053660473449353895,
+        "pinball": {
+          "p10": 1.2905755023910128,
+          "p50": 3.347296796738444,
+          "p90": 1.6369179330069665
+        },
+        "coverage_p10_p90": 0.7857142857142857
+      },
+      "baseline_metrics": {
+        "mae": 9.051730706546456,
+        "rmse": 11.030719828504203,
+        "wape": 0.0725540913674903
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 42,
+      "cutoffs": [
+        "2020-05-17",
+        "2020-05-31",
+        "2020-06-14"
+      ],
+      "seconds": 0.2584489000000758,
+      "warnings": []
+    },
+    {
+      "name": "weekly_sales",
+      "frequency": "weekly",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 104,
+      "horizon": 8,
+      "metrics": {
+        "mae": 5.68147520498372,
+        "rmse": 7.669884500394074,
+        "wape": 0.050651719239518486,
+        "pinball": {
+          "p10": 1.5512707674840123,
+          "p50": 2.84073760249186,
+          "p90": 1.5154544019913452
+        },
+        "coverage_p10_p90": 0.7916666666666666
+      },
+      "baseline_metrics": {
+        "mae": 23.96601077431693,
+        "rmse": 28.669379109573786,
+        "wape": 0.2136627557517352
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 24,
+      "cutoffs": [
+        "2021-07-07",
+        "2021-09-01",
+        "2021-10-27"
+      ],
+      "seconds": 0.2757782999979099,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 52,
+        "mae": 30.61785293457822,
+        "rmse": 33.8941435148909
+      }
+    },
+    {
+      "name": "monthly_revenue",
+      "frequency": "monthly",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 72,
+      "horizon": 6,
+      "metrics": {
+        "mae": 6.57560757683882,
+        "rmse": 7.551134714301905,
+        "wape": 0.06439205559622534,
+        "pinball": {
+          "p10": 1.0758568275951939,
+          "p50": 3.28780378841941,
+          "p90": 1.4653681123284021
+        },
+        "coverage_p10_p90": 0.8333333333333334
+      },
+      "baseline_metrics": {
+        "mae": 33.77277247188377,
+        "rmse": 34.77332691247129,
+        "wape": 0.33072202336223966
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 18,
+      "cutoffs": [
+        "2024-06-01",
+        "2024-12-01",
+        "2025-06-01"
+      ],
+      "seconds": 0.2877793999941787,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 12,
+        "mae": 9.257865850592191,
+        "rmse": 10.79811618063482
+      }
+    },
+    {
+      "name": "seasonal",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 365,
+      "horizon": 28,
+      "metrics": {
+        "mae": 7.162638895333787,
+        "rmse": 8.606543841018173,
+        "wape": 0.048264655433860736,
+        "pinball": {
+          "p10": 1.4174163385524832,
+          "p50": 3.5813194476668935,
+          "p90": 1.5477940111924386
+        },
+        "coverage_p10_p90": 0.8571428571428571
+      },
+      "baseline_metrics": {
+        "mae": 10.333797325914853,
+        "rmse": 12.674236350033784,
+        "wape": 0.06963315819028026
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 84,
+      "cutoffs": [
+        "2020-10-07",
+        "2020-11-04",
+        "2020-12-02"
+      ],
+      "seconds": 0.2977861999970628,
+      "warnings": []
+    },
+    {
+      "name": "intermittent",
+      "frequency": "daily",
+      "fixture": "Deterministic synthetic fixture, seed 20261025; no business validation",
+      "context": 180,
+      "horizon": 14,
+      "metrics": {
+        "mae": 2.0196689286718796,
+        "rmse": 5.651047188610968,
+        "wape": 0.08557608863062406,
+        "pinball": {
+          "p10": 0.4959705654707275,
+          "p50": 1.0098344643359398,
+          "p90": 0.7693467008347087
+        },
+        "coverage_p10_p90": 0.9523809523809523
+      },
+      "baseline_metrics": {
+        "mae": 52.20792372627672,
+        "rmse": 80.34464315861938,
+        "wape": 2.2121199393599023
+      },
+      "baseline_season_length": 7,
+      "windows": 3,
+      "evaluated_points": 42,
+      "cutoffs": [
+        "2020-05-17",
+        "2020-05-31",
+        "2020-06-14"
+      ],
+      "seconds": 0.2806057999987388,
+      "warnings": []
+    },
+    {
+      "name": "AirPassengers",
+      "frequency": "monthly",
+      "fixture": "Real public R datasets / Box & Jenkins monthly airline passengers, 1949\u20131960; thousands.",
+      "context": 144,
+      "horizon": 12,
+      "metrics": {
+        "mae": 18.729839748806423,
+        "rmse": 21.980423840834927,
+        "wape": 0.04371024445462409,
+        "pinball": {
+          "p10": 4.367096625434026,
+          "p50": 9.364919874403212,
+          "p90": 3.1846627129448772
+        },
+        "coverage_p10_p90": 0.5833333333333334
+      },
+      "baseline_metrics": {
+        "mae": 73.22222222222223,
+        "rmse": 98.7555905590497,
+        "wape": 0.17088033190716972
+      },
+      "baseline_season_length": 1,
+      "windows": 3,
+      "evaluated_points": 36,
+      "cutoffs": [
+        "1957-12-01",
+        "1958-12-01",
+        "1959-12-01"
+      ],
+      "seconds": 0.24746400000003632,
+      "warnings": [],
+      "annual_seasonal_naive": {
+        "season_length": 12,
+        "mae": 35.916666666666664,
+        "rmse": 41.97916149710473
+      }
+    }
+  ],
+  "notes": [
+    "Float32 official default symmetric averaging and nonnegative clipping. No custom normalization.",
+    "RSS sampled every 20ms; GPU allocator peak is process allocation, not total system VRAM.",
+    "Local unthrottled measurements may include concurrent user applications. Cold model load excludes library import; cold first call downloads weights only if uncached.",
+    "No global superiority claim; compare individual MAE and RMSE rows."
+  ]
+}

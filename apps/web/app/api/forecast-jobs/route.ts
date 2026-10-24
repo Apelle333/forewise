@@ -21,12 +21,15 @@ export async function POST(req: NextRequest) {
     }
     if (!body || typeof body !== 'object' || Array.isArray(body))
       throw new JobError(400, 'Invalid request.');
-    const { workspaceId, datasetId, horizon, contractVersion } = body;
+    const { workspaceId, datasetId, horizon, contractVersion, model } = body;
     const uuid = (value: unknown): value is string =>
       typeof value === 'string' &&
       /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
     if (
-      contractVersion !== '1' ||
+      !['1', '2'].includes(String(contractVersion)) ||
+      typeof contractVersion !== 'string' ||
+      (contractVersion === '2' &&
+        (typeof model !== 'string' || !['seasonal_naive', 'timestral_209m'].includes(model))) ||
       !uuid(workspaceId) ||
       !uuid(datasetId) ||
       typeof horizon !== 'number' ||
@@ -36,11 +39,18 @@ export async function POST(req: NextRequest) {
     )
       throw new JobError(
         400,
-        'Use contractVersion 1, valid workspace/dataset IDs and a horizon of 1–90 steps.',
+        'Use a supported contract/model, valid workspace/dataset IDs and a horizon of 1–90 steps.',
       );
     if (
       Object.keys(body).some(
-        (key) => !['contractVersion', 'workspaceId', 'datasetId', 'horizon'].includes(key),
+        (key) =>
+          ![
+            'contractVersion',
+            'workspaceId',
+            'datasetId',
+            'horizon',
+            ...(contractVersion === '2' ? ['model'] : []),
+          ].includes(key),
       )
     )
       throw new JobError(
@@ -61,7 +71,8 @@ export async function POST(req: NextRequest) {
       if (count.rows[0].count >= 20)
         throw new JobError(429, 'Too many active jobs in this workspace.');
       const payload = {
-        contract_version: '1',
+        contract_version: contractVersion,
+        ...(contractVersion === '2' ? { model } : {}),
         datasetId,
         horizon,
         points: found.rows[0].points,
@@ -73,7 +84,7 @@ export async function POST(req: NextRequest) {
       );
     });
     return NextResponse.json(
-      { contractVersion: '1', status: 'accepted', jobId },
+      { contractVersion, status: 'accepted', jobId },
       { status: 202, headers: { Location: `/api/forecast-jobs/${jobId}` } },
     );
   } catch (error) {
