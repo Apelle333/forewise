@@ -11,18 +11,18 @@ test('valid CSV parses, sorts, and supports quoted values', () => {
   assert.equal(parseDataset(csv.replace(',1\n', ',"1"\n'))[0].value, 1);
 });
 test('invalid and duplicate headers are rejected', () => {
-  assert.throws(() => parseDataset(csv.replace('date,value', 'day,total')), /date,value/);
-  assert.throws(() => parseDataset(csv.replace('date,value', 'date,value,value')), /date,value/);
+  assert.throws(() => parseDataset(csv.replace('date,value', 'day,total')), /Invalid CSV format|Missing date or value/);
+  assert.throws(() => parseDataset(csv.replace('date,value', 'date,value,value')), /Invalid CSV format|Missing date or value/);
 });
 test('duplicate and missing dates rejected', () => {
-  assert.throws(() => parseDataset(csv.replace('2026-10-02', '2026-10-01')), /consecutive/);
-  assert.throws(() => parseDataset(csv.replace('2026-10-08', '2026-10-09')), /consecutive/);
+  assert.throws(() => parseDataset(csv.replace('2026-10-02', '2026-10-01')), /Duplicate timestamp/);
+  assert.throws(() => parseDataset(csv.replace('2026-10-08', '2026-10-09')), /Gap or inconsistency/);
 });
 test('invalid calendar date rejected', () =>
-  assert.throws(() => parseDataset(csv.replace('2026-10-01', '2026-02-30')), /valid YYYY/));
+  assert.throws(() => parseDataset(csv.replace('2026-10-01', '2026-02-30')), /Invalid date format/));
 test('invalid, blank and infinite values rejected', () => {
   for (const bad of ['NaN', '', 'Infinity', '1e99'])
-    assert.throws(() => parseDataset(csv.replace(',1\n', `,${bad}\n`)), /finite/);
+    assert.throws(() => parseDataset(csv.replace(',1\n', `,${bad}\n`)), /Invalid numeric value/);
 });
 test('too few rows and oversized CSV rejected', () => {
   assert.throws(() => parseDataset('date,value\n2026-10-01,1'), /between/);

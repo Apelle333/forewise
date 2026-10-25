@@ -5,6 +5,43 @@ import { jobSession, jobError, JobError } from '@/lib/forecast-jobs';
 import { readLimitedBody } from '@/lib/body';
 
 export const runtime = 'nodejs';
+
+export async function GET(req: NextRequest) {
+  try {
+    const { db, userId } = await jobSession(req);
+    const { searchParams } = req.nextUrl;
+    const workspaceId = searchParams.get('workspaceId');
+
+    if (!workspaceId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(workspaceId)) {
+      throw new JobError(400, 'A valid workspaceId is required.');
+    }
+
+    const jobs = await asUser(
+      db,
+      userId,
+      async (tx) =>
+        (
+          await tx.query(
+            `SELECT
+              j.id, j.status, j.attempts, j.error, j.created_at, j.updated_at,
+              COALESCE(j.payload->>'contract_version', '1') AS "contractVersion"
+             FROM forecast_jobs j
+             WHERE j.workspace_id=$1
+             ORDER BY j.created_at DESC`,
+            [workspaceId],
+          )
+        ).rows,
+    );
+
+    return NextResponse.json(
+      jobs,
+      { headers: { 'Cache-Control': 'no-store' } },
+    );
+  } catch (error) {
+    return jobError(error);
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const origin = new URL(process.env.APP_ORIGIN || 'http://127.0.0.1:3000').origin;

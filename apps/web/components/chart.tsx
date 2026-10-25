@@ -46,6 +46,11 @@ export function Chart({
   const next = [...(history.length ? [history.at(-1)!] : []), ...future]
     .map((p, i) => `${x(history.length - 1 + i)},${y(p.value)}`)
     .join(' ');
+  const nextMedian = quantiles && quantiles.p50
+    ? [...(history.length ? [history.at(-1)!] : []), ...quantiles.p50]
+        .map((p, i) => `${x(history.length - 1 + i)},${y(p.value)}`)
+        .join(' ')
+    : null;
   const split = x(history.length - 1);
   const mock = active >= history.length;
   const futureLabel =
@@ -158,7 +163,13 @@ export function Chart({
               <line x1={split} x2={split} y1="0" y2="260" className="chart-boundary" />
             ) : null}
             <polyline points={past} className="history-line" />
-            {future.length > 0 ? <polyline points={next} className="future-line" /> : null}
+            {future.length > 0 ? (
+              <polyline
+                points={nextMedian || next}
+                className="future-line"
+                style={quantiles ? { strokeWidth: 2 } : {}}
+              />
+            ) : null}
             <line x1={x(active)} x2={x(active)} y1="0" y2="260" className="chart-inspector" />
           </svg>
           <span
