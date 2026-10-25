@@ -64,9 +64,10 @@ for (const direction of ['horizon', 'observatory', 'atlas']) {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Find the signal.');
     await expect(page.locator('.h-canvas canvas')).toHaveCount(1);
     await page.setViewportSize({ width: 390, height: 844 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    // The renderer resizes in a ResizeObserver callback after the viewport event.
+    await expect
+      .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
+      .toBe(true);
   });
 }
 

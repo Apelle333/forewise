@@ -1,0 +1,28 @@
+{
+  "devices_observed": [
+    "cuda"
+  ],
+  "dtype": "float32",
+  "runtime": {
+    "torch": "2.14.1+cu130",
+    "timestral": "1.0.0",
+    "numpy": "2.4.6",
+    "statsforecast": "2.1.1"
+  },
+  "benchmark_sha256": "4aa6f372c6dbaca094a83b96d12735d41a988084f56896ea29e91fb091bdad3c",
+  "raw_folds_sha256": "d4732fcbf5b987dfe12bb3e3ca94fd9b7f6573d6c6883c5cdeff1d7a0f3de666",
+  "benchmark_execution_source_sha256": {
+    "services/forecast/calibration.py": "2f10e44fb71ca11feb531c1dcd2d5bc024019dd7a53ebad9150c9115c79cc8db",
+    "scripts/benchmark-quality.py": "d4d0d0b4d08cb971dceb75cc6bcef0c57a88cac48f77b403403d2c6333f4954d",
+    "scripts/prepare-quality-fixtures.py": "1fe8ef0a897e7b2dfdc8561b89f5b264dfc1508450df46045a2be83deecc4bad"
+  },
+  "review_source_sha256": {
+    "services/forecast/calibration.py": "76ccac4a43ed9c253acd48a1d3bc08717b93f67405e9becc41d1a53b60dbf52a",
+    "scripts/benchmark-quality.py": "e7f6e5b35658153604fb9a49ee19d5a8e6036e21270a4c04446480fd09f2dcf9",
+    "scripts/prepare-quality-fixtures.py": "ba620597fddc8e6354445940d7c47a718b5d984faf599a2179a311dbdfe73590"
+  },
+  "post_benchmark_change": "Constructor rejects mutable factor lists; output serialization standardized to UTF-8/LF across Windows/Linux. Manifest fingerprint canonicalized. JSON case data and raw forecast folds unchanged; equality verified. Final-source analytic and real-model CPU smoke tests validate changes.",
+  "pre_normalization_benchmark_sha256": "a3aef6b72321d11e2486bad5c4bdea1a61893186e51a1c725fe701875bc04d85",
+  "pre_normalization_fixture_manifest_sha256": "6a67f8cbea1a1a347610445a50d01e43d252747524dcbdfab91b8f8a6b9c9b3f",
+  "fixture_manifest_sha256": "3efddea77af2fabccfc390a6e492c1edce4e9f7a8197805d5fa63c2e18fbb1fd"
+}

@@ -44,6 +44,8 @@ jobs:
           npx playwright install --with-deps chromium
       - run: node --import tsx scripts/database.mjs
       - run: npm run verify
+      - name: Phase 03A real-model CPU quality smoke test
+        run: .venv/bin/python scripts/benchmark-quality.py --device cpu --only bike_daily --horizons 1 --output .data/phase03a-ci-smoke.json
       - name: Start local application
         run: |
           python scripts/dev.py --production > /tmp/forewise-ci.log 2>&1 &
@@ -58,4 +60,5 @@ jobs:
           path: |
             docs/phase-02b/evidence/
             .data/checks/results.json
+            .data/phase03a-ci-smoke.json
           retention-days: 14
