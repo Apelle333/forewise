@@ -1,16 +1,35 @@
-.horizon-page {
+/* Hallmark · checked: 2026-10-25 · genre: atmospheric · built: the project · redesign: polish · theme: locked Forecast Horizon · v2.0.0 */
+/* Critique: keep cinematic storytelling and native controls; make data headings readable and retain the approved palette. */
+:root {
   --h-bg: #080f11;
   --h-text: #e7efeb;
   --h-dim: #b6c8c0;
   --h-mint: #a8efcf;
   --h-line: #ffffff25;
-  --accent: #a8efcf;
+  --h-button-ink: #10211b;
+  --h-button-hover: #d3ffe9;
+  --h-glow: #25483c28;
+  --h-history: #e2f5ef;
+  --h-repeat: #f5b577;
+  --h-mint-muted: #a8efcf80;
+  --h-label-muted: #78968a;
+  --h-study-ink: #50544b;
+  --h-observatory-glow: #34336a25;
+  --h-atlas-glow: #78472a30;
+  --h-font-display: Georgia, serif;
+  --h-observatory-bg: #0d101c;
+  --h-observatory-accent: #c7c5ff;
+  --h-atlas-bg: #1b1514;
+  --h-atlas-accent: #e9ba91;
+}
+.horizon-page {
+  --accent: var(--h-mint);
   background: var(--h-bg);
   color: var(--h-text);
 }
 .horizon-page ::selection {
-  background: #a8efcf;
-  color: #080f11;
+  background: var(--h-mint);
+  color: var(--h-bg);
 }
 .h-nav,
 .h-intro,
@@ -96,7 +115,7 @@
   letter-spacing: -0.065em;
 }
 .horizon-page em {
-  font-family: Georgia, serif;
+  font-family: var(--h-font-display);
   font-weight: 400;
   letter-spacing: -0.065em;
   color: var(--h-mint);
@@ -144,7 +163,7 @@
   gap: 65px;
   padding: 17px 23px;
   background: var(--h-mint);
-  color: #10211b;
+  color: var(--h-button-ink);
   font-size: 13px;
   font-weight: 600;
   border-radius: 2px;
@@ -153,7 +172,7 @@
     transform 0.2s;
 }
 .h-action:hover {
-  background: #d3ffe9;
+  background: var(--h-button-hover);
   transform: translateY(-2px);
 }
 .h-action span {
@@ -166,7 +185,7 @@
   position: relative;
   margin-top: 28px;
   isolation: isolate;
-  background: radial-gradient(ellipse at 64% 50%, #25483c28, transparent 60%);
+  background: radial-gradient(ellipse at 64% 50%, var(--h-glow), transparent 60%);
 }
 .h-stage-top {
   display: flex;
@@ -254,10 +273,10 @@
 .h-scene-note i {
   width: 13px;
   height: 2px;
-  background: #e2f5ef;
+  background: var(--h-history);
 }
 .h-scene-note > span > span:nth-child(2) i {
-  background: #f5b577;
+  background: var(--h-repeat);
 }
 .h-scene-note > span > span:nth-child(3) i {
   background: var(--h-mint);
@@ -322,17 +341,17 @@
 .h-lab small {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--h-dim);
 }
 .h-readout {
   grid-column: 1;
-  border-left: 1px solid #a8efcf80;
+  border-left: 1px solid var(--h-mint-muted);
   padding-left: 16px;
 }
 .h-readout > span {
   color: var(--h-dim);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.1em;
 }
 .h-readout strong {
@@ -343,7 +362,7 @@
   margin: 5px 0;
 }
 .h-readout i {
-  color: #78968a;
+  color: var(--h-label-muted);
   font-style: normal;
 }
 .h-disclosure {
@@ -371,6 +390,7 @@
   padding-top: 15px;
 }
 .h-table-scroll {
+  max-height: 22rem;
   overflow: auto;
 }
 .h-data table {
@@ -409,7 +429,7 @@
   color: var(--h-dim);
 }
 .h-story-foot {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.1em;
   color: var(--h-dim);
   display: block;
@@ -436,7 +456,7 @@
   display: block;
   color: var(--h-dim);
   margin-top: 32px;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0;
 }
 .h-chapters a {
@@ -461,9 +481,9 @@
   }
 }
 .h-working {
-  background: #f3f0e8;
-  color: #282a25;
-  --accent: #ad4228;
+  background: var(--paper);
+  color: var(--ink);
+  --accent: var(--accent-warm);
   padding: 80px max(28px, calc((100% - 1200px) / 2)) 90px;
 }
 .h-working-head {
@@ -473,7 +493,7 @@
   margin-bottom: 40px;
 }
 .h-working .h-small {
-  color: #66695f;
+  color: var(--muted);
   grid-column: 1 / -1;
 }
 .h-working-head h2 {
@@ -481,7 +501,7 @@
 }
 .h-working-head p {
   max-width: 400px;
-  color: #66695f;
+  color: var(--muted);
   font-size: 14px;
   margin: 0;
   align-self: end;
@@ -495,12 +515,12 @@
 .h-working .point-readout > span,
 .h-working .data-disclosure,
 .h-working .demo-disclaimer {
-  color: #50544b;
+  color: var(--h-study-ink);
   font-size: 12px;
 }
 .h-working .point-readout b,
 .h-working .horizon-annotation {
-  font-size: 11px;
+  font-size: 12px;
 }
 .h-working .inspect-control,
 .h-working .inspect-control > span {
@@ -560,9 +580,9 @@
   color: var(--h-dim);
 }
 .study-observatory {
-  --h-bg: #0d101c;
-  --h-mint: #c7c5ff;
-  --accent: #c7c5ff;
+  --h-bg: var(--h-observatory-bg);
+  --h-mint: var(--h-observatory-accent);
+  --accent: var(--h-mint);
 }
 .h-observatory .h-intro {
   text-align: center;
@@ -587,15 +607,15 @@
 }
 .h-observatory .h-stage {
   height: 650px;
-  background: radial-gradient(ellipse at center, #34336a25, transparent 60%);
+  background: radial-gradient(ellipse at center, var(--h-observatory-glow), transparent 60%);
 }
 .h-observatory .h-annotations {
   display: none;
 }
 .study-atlas {
-  --h-bg: #1b1514;
-  --h-mint: #e9ba91;
-  --accent: #e9ba91;
+  --h-bg: var(--h-atlas-bg);
+  --h-mint: var(--h-atlas-accent);
+  --accent: var(--h-mint);
 }
 .h-atlas .h-intro {
   display: grid;
@@ -616,7 +636,7 @@
   gap: 25px;
 }
 .h-atlas .h-stage {
-  background: radial-gradient(ellipse at center, #78472a30, transparent 65%);
+  background: radial-gradient(ellipse at center, var(--h-atlas-glow), transparent 65%);
 }
 @media (min-width: 1600px) {
   .h-stage {
@@ -713,7 +733,7 @@
     padding-top: 34px;
   }
   .h-eyebrow {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 0.08em;
   }
   .h-intro h1,
@@ -745,7 +765,7 @@
     background-color: var(--h-bg);
   }
   .h-stage-top {
-    font-size: 9px;
+    font-size: 12px;
   }
   .h-stage-top span:last-child {
     display: none;
@@ -754,10 +774,10 @@
     left: 5%;
     right: 5%;
     bottom: 135px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .h-annotations b {
-    font-size: 11px;
+    font-size: 12px;
   }
   .h-annotations .h-present {
     display: none;
@@ -884,7 +904,7 @@
   }
   .h-study-nav {
     gap: 8px 22px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .h-observatory .h-stage {
     height: 420px;
@@ -910,6 +930,7 @@
 @media (min-width: 1100px) {
   .h-experience:not(.h-exploration) {
     position: relative;
+    --h-scene-inset: calc(max(56px, (100% - 1328px) / 2) + 384px);
   }
   .h-experience:not(.h-exploration) .h-intro {
     min-height: 760px;
@@ -934,8 +955,9 @@
   .h-experience:not(.h-exploration) .h-stage {
     position: absolute;
     top: 185px;
-    left: 24%;
-    width: 76%;
+    /* Reserve the 360px introduction plus room for the axis labels and gutter. */
+    left: var(--h-scene-inset);
+    width: calc(100% - var(--h-scene-inset));
     height: 570px;
     min-height: 0;
     margin-top: 0;
@@ -943,7 +965,7 @@
   .h-experience:not(.h-exploration) .h-stage-top {
     top: 40px;
     width: calc(100% - 80px);
-    font-size: 9px;
+    font-size: 12px;
     border: 0;
     text-align: right;
     justify-content: end;
@@ -983,13 +1005,13 @@
     display: block;
   }
   .h-narrative > span {
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.1em;
     color: var(--h-mint);
   }
   .h-narrative small {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--h-dim);
     margin-top: 8px;
   }
@@ -1010,4 +1032,10 @@
   .h-experience:not(.h-exploration) .h-intro-bottom p {
     pointer-events: auto;
   }
+}
+
+/* Match the table header to its actual dark surface, including opened disclosures. */
+.h-data th {
+  background: var(--h-bg);
+  color: var(--h-text);
 }

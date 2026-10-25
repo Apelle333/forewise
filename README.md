@@ -65,11 +65,13 @@ Browser tests create synthetic users/data in the local development database. The
 
 See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter verification](docs/STARTER.md), and [Phase 01 gate](docs/PHASE-01.md).
 
-Earlier visual review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md); current model evidence is in [Phase 02B review](docs/phase-02b/REVIEW.md). Changes are proposed through draft pull requests. Production deployment and advancing beyond Phase 02B remain owner-controlled.
+Earlier visual review findings are recorded in [Phase 01 review](docs/PHASE-01-REVIEW.md); current model evidence is in [Phase 02B review](docs/phase-02b/REVIEW.md). Changes are proposed through draft pull requests. Production deployment, commercial release and merges remain owner-controlled.
 
 The Fieldnotes redesign, primary references, three art directions, before/after captures and three visual critique passes are indexed in [the design review](docs/design/README.md). Project-wide creative/QA expectations persist in [AGENTS.md](AGENTS.md).
 
 Visual checks: `node scripts/capture-design.mjs after` captures 10 states at 1440/768/390px. `node scripts/audit-accessibility.mjs after` captures public-page axe findings. `npm run test:e2e` includes functional, WCAG, keyboard/reduced-motion, signed-chart and six screenshot regression checks. Baselines in `e2e/design.spec.ts-snapshots/` are for Chromium on Windows; update them only after inspecting intentional visual changes. The application must be running from the just-built code.
+
+Hallmark is installed locally at a pinned revision, without global hooks or paid services. Run `npm run design:setup`, `npm run design:audit`, `npm run design:check`, and, against the local preview, `npm run design:render`. The [design integration review](docs/design/hallmark/REVIEW.md) distinguishes raw findings from reviewed conflicts with the [locked design system](design.md). A baseline pass is not a raw Hallmark clean pass or an independent Claude milestone review.
 
 ## Boundaries
 

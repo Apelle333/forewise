@@ -17,7 +17,11 @@
     "start": "npm run start -w @forewise/web",
     "lint": "eslint apps/web packages/db e2e scripts/*.mjs playwright.config.ts eslint.config.mjs --max-warnings=0",
     "check:format": "prettier --check apps/web/app apps/web/components apps/web/lib apps/web/tests packages/db/src e2e scripts/*.mjs *.mjs *.json playwright.config.ts",
-    "verify": "python scripts/verify.py"
+    "verify": "python scripts/verify.py",
+    "design:setup": "python scripts/install-hallmark.py",
+    "design:audit": "npm run design:setup && node scripts/hallmark-audit.mjs",
+    "design:render": "npm run design:setup && node scripts/hallmark-audit.mjs --render",
+    "design:check": "npm run design:setup && node scripts/hallmark-audit.mjs --check"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
@@ -27,6 +31,7 @@
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "prettier": "^3.6.2",
+    "puppeteer-core": "25.16.0",
     "tsx": "4.22.4",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.72.0"

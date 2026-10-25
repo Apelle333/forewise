@@ -36,3 +36,7 @@ Applies to this repository and all descendant folders. Read this file at the sta
 ## Scope and reading discipline
 
 Inspect only task-relevant files. No unrelated scans or architectural rewrites. Audit/test tools may inspect this repository's relevant source and dependencies. Intermediate logs/private state belong in ignored `.data/`; user-facing design evidence belongs in `docs/design/`.
+
+## Hallmark integration
+
+The owner explicitly requested Hallmark. Use the pinned project adapter in `.agents/skills/hallmark/SKILL.md` (Claude adapter: `.claude/skills/hallmark/SKILL.md`) and preserve root `design.md`. `npm run design:check` blocks new static findings against a reasoned baseline; it does not certify raw Hallmark compliance. `npm run design:render` checks actual public/auth routes. Use authenticated Playwright tests for workspace rendering. Never replace the independent Claude milestone gate with a Hallmark/Codex design review.
