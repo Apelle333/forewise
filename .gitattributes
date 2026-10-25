@@ -1,0 +1,6 @@
+# Keep byte-pinned research fixtures/manifests reproducible on Windows and Linux.
+docs/phase-03a/** text eol=lf
+scripts/benchmark-quality.py text eol=lf
+scripts/prepare-quality-fixtures.py text eol=lf
+services/forecast/calibration.py text eol=lf
+services/forecast/test_calibration.py text eol=lf
