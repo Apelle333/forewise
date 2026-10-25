@@ -65,6 +65,8 @@ print("PASS: tracked-file credential guard", flush=True)
 
 run("lint", [npm, "run", "lint"])
 run("format", [npm, "run", "check:format"])
+run("hallmark-baseline", [npm, "run", "design:check"])
+run("hallmark-positive-negative-tests", [npm, "run", "test:design"])
 run("python-lint", [uv, "tool", "run", "ruff==0.17.2", "check", "services/forecast", "scripts"])
 run(
     "python-format",

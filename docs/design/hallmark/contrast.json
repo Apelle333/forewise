@@ -1,0 +1,19 @@
+{
+  "input": {
+    "before": 2.71,
+    "after": 3.568,
+    "computed": {
+      "border": "rgb(133, 136, 120)",
+      "background": "rgb(255, 253, 248)"
+    }
+  },
+  "tableHeader": {
+    "before": 1.54,
+    "after": 16.512,
+    "computed": {
+      "color": "rgb(231, 239, 235)",
+      "background": "rgb(8, 15, 17)"
+    }
+  },
+  "method": "WCAG relative luminance; before values from original Hallmark rendered report; after from actual computed styles."
+}
