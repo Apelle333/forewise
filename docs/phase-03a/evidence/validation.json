@@ -12,7 +12,8 @@
     "benchmark_cases": 25,
     "evaluated_cases": 21,
     "explicitly_insufficient_cases": 4,
-    "real_inference_calls": 1260
+    "real_inference_calls": 1260,
+    "targeted_resize_repetitions_passed": 15
   },
   "production_api_worker_ui_changed": false,
   "claude_review": {
@@ -23,6 +24,16 @@
     "pass_claimed": false
   },
   "ci": {
-    "status": "pending"
+    "initial_implementation_run": {
+      "id": 40169900232,
+      "status": "success"
+    },
+    "subsequent_run": {
+      "id": 40170026020,
+      "status": "failure",
+      "failed_check": "Observatory immediate post-resize overflow assertion"
+    },
+    "fix": "Await same overflow invariant through asynchronous ResizeObserver layout; no application changes. Fifteen targeted repeat executions passed.",
+    "final_run_status": "pending"
   }
 }

@@ -12,6 +12,7 @@ Inspect these exact files and the scoped diff:
 - `docs/phase-03a/fixtures/manifest.json`
 - `docs/phase-03a/evidence/benchmark.json`, `provenance.json`, and validation evidence when available
 - `.github/workflows/phase02b.yml`, `AGENTS.md`, `README.md`
+- `e2e/horizon.spec.ts`: same overflow invariant, now awaited after asynchronous canvas resize; no renderer/CSS changes.
 
 The raw public-fixture calibration/test forecasts and targets are in the milestone handoff archive, with a SHA-256 matching `evidence/provenance.json`. They are genuine Timestral results. Test spies/analytic arrays are labelled as unit fixtures and are not benchmark predictions.
 
