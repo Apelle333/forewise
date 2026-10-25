@@ -122,6 +122,58 @@ async function alteredWorkbook(edit: (zip: JSZip) => Promise<void>) {
   await edit(zip);
   return zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
 }
+
+async function workbookDateSerials(start: number, date1904 = false) {
+  const zip = await JSZip.loadAsync(
+    await workbookBytes((w) => {
+      w.properties.date1904 = date1904;
+    }),
+  );
+  let xml = await zip.file('xl/worksheets/sheet1.xml')!.async('string');
+  for (let i = 0; i < 8; i++)
+    xml = xml.replace(
+      new RegExp(`(<c r="A${i + 2}"[^>]*><v>)[^<]+(</v>)`),
+      (_, before: string, after: string) => `${before}${start + i}${after}`,
+    );
+  zip.file('xl/worksheets/sheet1.xml', xml);
+  return zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+}
+
+test('early 1900-system date serials cannot silently shift imported dates', async () => {
+  for (const serial of [1, 59, 60])
+    await assert.rejects(
+      readImport(await workbookDateSerials(serial), 'historic.xlsx'),
+      /Excel dates before 1900-03-01/,
+    );
+  const table = await readImport(await workbookDateSerials(61), 'dates.xlsx');
+  assert.equal(mappedDataset(table, { dateCol: 0, valueCol: 1 }, 'daily')[0].date, '1900-03-01');
+});
+
+test('1904-system date serial zero remains a valid date', async () => {
+  const table = await readImport(await workbookDateSerials(0, true), 'dates.xlsx');
+  assert.equal(mappedDataset(table, { dateCol: 0, valueCol: 1 }, 'daily')[0].date, '1904-01-01');
+});
+
+test('ExcelJS worksheet and metadata aliases cannot bypass ZIP preflight', async () => {
+  for (const name of [
+    'xl/worksheets/sheet2.xml.bin',
+    'prefix/xl/worksheets/sheet2.xml',
+    'xl/worksheets/_rels/sheet2.xml.rels.bin',
+    'xl/worksheets/_rels/sheet2.xmlXrels',
+    'prefix/xl/theme/theme2.xml',
+    'xl/drawings/drawing2.xml.bin',
+    'prefix/xl/comments2.xml',
+    'xl/tables/table2.xml.bin',
+    'xl/drawings/_rels/drawing2.xml.rels.bin',
+    'xl/drawings/vmlDrawing2.vml.bin',
+  ]) {
+    const bytes = await alteredWorkbook(async (zip) => {
+      zip.file(name, await zip.file('xl/worksheets/sheet1.xml')!.async('string'));
+    });
+    await assert.rejects(readImport(bytes, 'alias.xlsx'), /Unsupported XLSX part filename/, name);
+  }
+});
+
 test('named-range and sheet-id amplification are rejected before ExcelJS loads', async () => {
   for (const [change, expected] of [
     [

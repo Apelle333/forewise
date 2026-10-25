@@ -1,5 +1,7 @@
 # Phase 03B verification and reviewer handoff
 
+This is the frozen 25 October verification record. The subsequent 26 October corrections and current review status are documented in [FOLLOW-UP-REVIEW.md](FOLLOW-UP-REVIEW.md); the evidence files and counts below remain attached to their original tested commit.
+
 Tested application commit: **`074a305605f1e25e07cb1996dba0518a282cec90`**, branch `phase-03b-premium-experience`. Claude's untouched starting work is preserved in `51cd03e`. Evidence is from the compiled local application on 25 October 2026. Later evidence-only commits do not change the tested application.
 
 ## Executed checks

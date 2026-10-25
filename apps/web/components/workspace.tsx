@@ -60,8 +60,15 @@ export function Workspace() {
   const [workspaceName, setWorkspaceName] = useState('');
 
   const poll = useRef<AbortController | null>(null);
+  const resultLoad = useRef<AbortController | null>(null);
   const activeWorkspace = useRef(wid);
-  useEffect(() => () => poll.current?.abort(), []);
+  useEffect(
+    () => () => {
+      poll.current?.abort();
+      resultLoad.current?.abort();
+    },
+    [],
+  );
 
   useEffect(() => {
     let active = true;
@@ -116,6 +123,7 @@ export function Workspace() {
   function selectWorkspace(id: string) {
     if (id === wid) return;
     poll.current?.abort();
+    resultLoad.current?.abort();
     activeWorkspace.current = id;
     setResultId('');
     setActiveTab('datasets');
@@ -129,9 +137,14 @@ export function Workspace() {
     setWid(id);
   }
 
-  async function refresh() {
-    const data = await api(`workspaces/${wid}`);
-    if (activeWorkspace.current === wid) {
+  function selectTab(tab: 'datasets' | 'jobs' | 'results') {
+    resultLoad.current?.abort();
+    setActiveTab(tab);
+  }
+
+  async function refresh(signal?: AbortSignal) {
+    const data = await api(`workspaces/${wid}`, undefined, signal);
+    if (!signal?.aborted && activeWorkspace.current === wid) {
       setDatasets(data.datasets);
       setForecasts(data.forecasts);
     }
@@ -311,19 +324,19 @@ export function Workspace() {
           <nav className="workspace-anchor-nav" aria-label="Workspace sections">
             <button
               className={`text-button ${activeTab === 'datasets' ? 'selected' : ''}`}
-              onClick={() => setActiveTab('datasets')}
+              onClick={() => selectTab('datasets')}
             >
               <span>01</span> Datasets <b>{datasets.length}</b>
             </button>
             <button
               className={`text-button ${activeTab === 'jobs' ? 'selected' : ''}`}
-              onClick={() => setActiveTab('jobs')}
+              onClick={() => selectTab('jobs')}
             >
               <span>02</span> Jobs
             </button>
             <button
               className={`text-button ${activeTab === 'results' ? 'selected' : ''} ${!dataset ? 'disabled' : ''}`}
-              onClick={() => setActiveTab('results')}
+              onClick={() => selectTab('results')}
               disabled={!dataset}
             >
               <span>03</span> Results <b>{forecasts.length}</b>
@@ -407,35 +420,44 @@ export function Workspace() {
                 key={wid}
                 wid={wid}
                 onViewResult={async (datasetId, forecastId, jobId) => {
-                  const data = await refresh();
-                  const job = await api(`forecast-jobs/${jobId}`);
-                  if (
-                    job.status !== 'completed' ||
-                    job.result_id !== forecastId ||
-                    job.dataset_id !== datasetId
-                  )
-                    throw new Error('This job has no completed result.');
-                  const saved: Forecast = {
-                    id: job.result_id,
-                    dataset_id: job.dataset_id,
-                    horizon: job.horizon,
-                    created_at: job.forecastCreatedAt,
-                    result: job.result,
-                  };
-                  setForecasts([
-                    saved,
-                    ...data.forecasts.filter((f: Forecast) => f.id !== saved.id),
-                  ]);
-                  setSelected(datasetId);
-                  setResultId(forecastId);
-                  setActiveTab('results');
-                  setModel(
-                    saved.result.mock
-                      ? 'mock'
-                      : saved.result.model === 'timestral_209m'
-                        ? 'timestral_209m'
-                        : 'seasonal_naive',
-                  );
+                  resultLoad.current?.abort();
+                  const controller = new AbortController();
+                  resultLoad.current = controller;
+                  try {
+                    const data = await refresh(controller.signal);
+                    const job = await api(`forecast-jobs/${jobId}`, undefined, controller.signal);
+                    if (controller.signal.aborted || activeWorkspace.current !== wid) return;
+                    if (
+                      job.status !== 'completed' ||
+                      job.result_id !== forecastId ||
+                      job.dataset_id !== datasetId
+                    )
+                      throw new Error('This job has no completed result.');
+                    const saved: Forecast = {
+                      id: job.result_id,
+                      dataset_id: job.dataset_id,
+                      horizon: job.horizon,
+                      created_at: job.forecastCreatedAt,
+                      result: job.result,
+                    };
+                    setForecasts([
+                      saved,
+                      ...data.forecasts.filter((f: Forecast) => f.id !== saved.id),
+                    ]);
+                    setSelected(datasetId);
+                    setResultId(forecastId);
+                    setActiveTab('results');
+                    setModel(
+                      saved.result.mock
+                        ? 'mock'
+                        : saved.result.model === 'timestral_209m'
+                          ? 'timestral_209m'
+                          : 'seasonal_naive',
+                    );
+                  } catch (e) {
+                    if (controller.signal.aborted) return;
+                    throw e;
+                  }
                 }}
                 busy={busy}
               />

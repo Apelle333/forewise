@@ -16,7 +16,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ wid
       throw new JobError(403, 'Request origin rejected.');
     const { db, userId } = await jobSession(req),
       { wid } = await params;
-    if (!/^[0-9a-f-]{36}$/i.test(wid)) throw new JobError(404, 'Workspace not found.');
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(wid))
+      throw new JobError(404, 'Workspace not found.');
     await asUser(db, userId, async (tx) => {
       if (!(await tx.query('SELECT id FROM workspaces WHERE id=$1', [wid])).rows.length)
         throw new JobError(404, 'Workspace not found.');

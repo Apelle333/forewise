@@ -1,0 +1,21 @@
+# Phase 03B follow-up review — 26 October 2026
+
+Continued from clean, pushed `0b57255`. Three targeted subagents reviewed security/parser behavior, workspace UX and verification provenance. Their reviews supplement development QA; none is independent Claude approval.
+
+## Confirmed defects and corrections
+
+| Finding                                                                                    | Correction                                                                                                                                                    | Direct evidence                                                                               |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| P2: a delayed View result could replace state after switching workspace                    | Abort the previous result request on a newer selection, workspace/tab change or unmount; bound refresh/state application to the same live request/workspace   | New browser regression fails against the prior compiled build, passes after correction        |
+| P2: import mappings/frequency stayed editable while their captured values were being saved | Disable all three preview selects during submission; restore editing after failure                                                                            | Slow-response negative browser test fails before, passes after; failure keeps the dialog open |
+| P2: Excel's early 1900 epoch dates were shifted by the library                             | Reject date cells before 1900-03-01 for the 1900 epoch; allow explicit ISO text and preserve the 1904 epoch                                                   | Real workbook tests reject serials 1/59/60, accept serial 61 and 1904 serial 0                |
+| P2: noncanonical ZIP part names could bypass preflight while ExcelJS still parsed them     | Reject worksheet/theme/drawing/comment/table/relationship aliases recognized by ExcelJS's unanchored dispatch                                                 | Ten malicious filename aliases are rejected by production parser tests                        |
+| P2: CI could upload fresh files beside a frozen Windows evidence manifest                  | Write browser output to one shared invocation-specific ignored directory; generate current revision/platform/result/hash manifest on both success and failure | Reporter/helper unit cases verify path boundaries, failure output, retry outcomes and hashes  |
+| P3: export logout test only repeated anonymous access                                      | Replay the captured pre-logout session cookie after revocation                                                                                                | Authenticated export test now checks the revoked token directly                               |
+| P3: malformed 36-character workspace IDs could reach PostgreSQL                            | Validate the exact UUID shape before tenant lookup                                                                                                            | API regression expects 404 for the malformed shape                                            |
+
+The artifact reporter records `working_tree_dirty_at_start` as well as Git revision, so uncommitted runs are not presented as exact-commit proof. Frozen historical evidence under `docs/phase-03b/evidence` is preserved. New output is archived from `.data/phase03b-e2e/<runID>/`; an interrupted run cannot retain a success manifest.
+
+Targeted validation before the final gate: 45 Node/PostgreSQL tests and seven Phase 03B browser tests pass with no skips; the static Hallmark baseline has zero new findings. Initial failure logs, corrected-run logs and manifests remain in ignored local evidence and the delivery archive. Final source/browser/render and remote CI results are recorded after execution below.
+
+No forecasting algorithms, model weights, RLS policies, worker fencing or premium design were replaced. No Phase 04, merge, deployment or paid activation is authorized.

@@ -8,6 +8,7 @@ export function DatasetPreview({
   onMappingChange,
   frequency,
   onFrequencyChange,
+  disabled,
 }: {
   headers: string[];
   data: string[][];
@@ -15,6 +16,7 @@ export function DatasetPreview({
   onMappingChange: (m: ColumnMapping) => void;
   frequency: Frequency;
   onFrequencyChange: (f: Frequency) => void;
+  disabled: boolean;
 }) {
   return (
     <div className="onboarding-preview">
@@ -23,6 +25,7 @@ export function DatasetPreview({
           Date column
           <select
             value={mapping.dateCol}
+            disabled={disabled}
             onChange={(e) => onMappingChange({ ...mapping, dateCol: Number(e.target.value) })}
           >
             {headers.map((h, i) => (
@@ -36,6 +39,7 @@ export function DatasetPreview({
           Value column
           <select
             value={mapping.valueCol}
+            disabled={disabled}
             onChange={(e) => onMappingChange({ ...mapping, valueCol: Number(e.target.value) })}
           >
             {headers.map((h, i) => (
@@ -49,6 +53,7 @@ export function DatasetPreview({
           Observation frequency
           <select
             value={frequency}
+            disabled={disabled}
             onChange={(e) => onFrequencyChange(e.target.value as Frequency)}
           >
             <option value="daily">Daily</option>

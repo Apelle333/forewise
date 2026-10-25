@@ -136,6 +136,7 @@ export function DataOnboarding({
               <DatasetPreview
                 headers={preview.headers}
                 data={preview.rows}
+                disabled={busy}
                 mapping={mapping}
                 onMappingChange={(next) => {
                   setMapping(next);

@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
 import ExcelJS from 'exceljs';
+import { phase03bEvidencePath } from './evidence';
 
 test('real public CSV through dashboard, pinned 209M worker, native quantiles and authorized persisted retrieval', async ({
   page,
@@ -143,10 +144,9 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
     await expect(page.getByTestId('point-readout')).toContainText('P10');
     await expect(page.getByTestId('point-readout')).toContainText('P50');
     await expect(page.getByTestId('point-readout')).toContainText('P90');
-    await fs.mkdir('docs/phase-03b/evidence', { recursive: true });
-    await fs.writeFile('docs/phase-03b/evidence/native-air-passengers.xlsx', await xlsx.body());
+    await fs.writeFile(phase03bEvidencePath('native-air-passengers.xlsx'), await xlsx.body());
     await fs.writeFile(
-      'docs/phase-03b/evidence/native-air-passengers.json',
+      phase03bEvidencePath('native-air-passengers.json'),
       JSON.stringify(result, null, 2),
     );
     for (const width of [1440, 768, 390]) {
@@ -159,7 +159,7 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
         .analyze();
       expect(audit.violations).toEqual([]);
       await page.screenshot({
-        path: `docs/phase-03b/evidence/results-${width}.png`,
+        path: phase03bEvidencePath(`results-${width}.png`),
         fullPage: true,
       });
     }
@@ -179,25 +179,24 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
     expect((await other.get(`/api/forecast-jobs/${jobId}`)).status()).toBe(404);
     expect((await other.get(`/api/workspaces/${session.workspaces[0].id}`)).status()).toBe(404);
     await other.dispose();
-    await fs.mkdir('docs/phase-02b/evidence', { recursive: true });
     await fs.writeFile(
-      'docs/phase-02b/evidence/real-air-passengers-result.json',
+      phase03bEvidencePath('real-air-passengers-result.json'),
       JSON.stringify(result, null, 2),
     );
     await page
       .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: 'docs/phase-02b/evidence/result-desktop.png' });
+      .screenshot({ path: phase03bEvidencePath('result-desktop.png') });
     await page.setViewportSize({ width: 768, height: 1024 });
     await page
       .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: 'docs/phase-02b/evidence/result-tablet.png' });
+      .screenshot({ path: phase03bEvidencePath('result-tablet.png') });
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
     await page
       .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: 'docs/phase-02b/evidence/result-mobile.png' });
+      .screenshot({ path: phase03bEvidencePath('result-mobile.png') });
     await page.reload();
     await page.getByRole('button', { name: /03 Results/ }).click();
     await page.getByLabel('Saved forecast').selectOption(run.id);

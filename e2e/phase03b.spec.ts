@@ -2,6 +2,7 @@ import { test, expect, type APIRequestContext } from '@playwright/test';
 import { Pool } from 'pg';
 import fs from 'node:fs/promises';
 import AxeBuilder from '@axe-core/playwright';
+import { phase03bEvidencePath } from './evidence';
 const origin = 'http://127.0.0.1:3000';
 const csv =
   'units,observed,notes\n' +
@@ -63,6 +64,14 @@ test('authorized import and export enforce tenant boundaries and server validati
     const wa = await register(a, 'import-a'),
       wb = await register(b, 'import-b'),
       url = `/api/workspaces/${wa}/datasets/import`;
+    expect(
+      (
+        await a.post(
+          '/api/workspaces/' + '-'.repeat(36) + '/datasets/import',
+          upload('mapped.csv', Buffer.from(csv)),
+        )
+      ).status(),
+    ).toBe(404);
     expect((await b.post(url, upload('mapped.csv', Buffer.from(csv)))).status()).toBe(404);
     expect(
       (
@@ -112,7 +121,14 @@ test('authorized import and export enforce tenant boundaries and server validati
     const anonymous = await playwright.request.newContext({ baseURL: origin });
     expect((await anonymous.get(download)).status()).toBe(401);
     await anonymous.dispose();
+    const capturedSession = await a.storageState();
     await a.post('/api/auth/logout', { data: {} });
+    const revoked = await playwright.request.newContext({
+      baseURL: origin,
+      storageState: capturedSession,
+    });
+    expect((await revoked.get(download)).status()).toBe(401);
+    await revoked.dispose();
     expect((await a.get(download)).status()).toBe(401);
   } finally {
     await a.dispose();
@@ -254,7 +270,7 @@ test('onboarding remains keyboard usable, keeps failed imports open and fits mob
       ).violations,
     ).toEqual([]);
     await page.screenshot({
-      path: `docs/phase-03b/evidence/onboarding-${width}.png`,
+      path: phase03bEvidencePath(`onboarding-${width}.png`),
       fullPage: true,
     });
   }
@@ -354,5 +370,131 @@ test('Jobs opens the exact authorized result even outside the latest twenty fore
   } finally {
     if (job) await db.query('DELETE FROM forecast_jobs WHERE id=$1', [job]);
     await db.end();
+  }
+});
+
+test('delayed result cannot replace the newly selected workspace', async ({ page }) => {
+  test.skip(!process.env.TEST_DATABASE_URL, 'Requires real PostgreSQL');
+  const db = new Pool({ connectionString: process.env.TEST_DATABASE_URL });
+  let job = '';
+  let release = () => {};
+  try {
+    const signup = await page.request.post('/api/auth/register', {
+      headers: { Origin: origin },
+      data: {
+        name: 'Workspace race QA',
+        workspace: 'Original race workspace',
+        email: `race-${Date.now()}@example.test`,
+        password: 'Local-test-passphrase-only',
+      },
+    });
+    expect(signup.status()).toBe(200);
+    const wid = (await (await page.request.get('/api/session')).json()).workspaces[0].id;
+    const imported = await page.request.post(`/api/workspaces/${wid}/datasets/import`, {
+      headers: { Origin: origin },
+      ...upload('Original history.csv', Buffer.from(csv), 'import'),
+    });
+    expect(imported.status()).toBe(201);
+    const did = (await imported.json()).id;
+    const generated = await page.request.post(`/api/workspaces/${wid}/forecasts`, {
+      headers: { Origin: origin },
+      data: { datasetId: did, horizon: 3 },
+    });
+    expect(generated.status()).toBe(201);
+    const fid = (await generated.json()).id;
+    const seeded = await db.query(
+      `INSERT INTO forecast_jobs(id,workspace_id,dataset_id,status,payload,result_id,attempts) VALUES(gen_random_uuid(),$1,$2,'completed',$3,$4,1) RETURNING id`,
+      [wid, did, JSON.stringify({ model: 'seasonal_naive', horizon: 3 }), fid],
+    );
+    job = seeded.rows[0].id;
+    const created = await page.request.post('/api/workspaces', {
+      headers: { Origin: origin },
+      data: { name: 'New race workspace' },
+    });
+    expect(created.status()).toBe(201);
+    const other = (await created.json()).id;
+    const payload = await (await page.request.get(`/api/forecast-jobs/${job}`)).json();
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let seenResolve = () => {};
+    const seen = new Promise<void>((resolve) => {
+      seenResolve = resolve;
+    });
+    let doneResolve = () => {};
+    const done = new Promise<void>((resolve) => {
+      doneResolve = resolve;
+    });
+    await page.route(`**/api/forecast-jobs/${job}`, async (route) => {
+      seenResolve();
+      await gate;
+      try {
+        await route.fulfill({ json: payload });
+      } finally {
+        doneResolve();
+      }
+    });
+    await page.goto('/workspace');
+    await page.getByLabel('Workspace', { exact: true }).selectOption(wid);
+    await page.getByRole('button', { name: /02 Jobs/ }).click();
+    await page.getByRole('button', { name: 'View result', exact: true }).click();
+    await seen;
+    await page.getByLabel('Workspace', { exact: true }).selectOption(other);
+    await expect(page.getByRole('button', { name: 'Import data', exact: true })).toBeEnabled();
+    release();
+    await done;
+    await expect(page.getByLabel('Workspace', { exact: true })).toHaveValue(other);
+    await expect(page.getByRole('button', { name: 'Import data', exact: true })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Forecast result', exact: true })).toHaveCount(0);
+  } finally {
+    release();
+    if (job) await db.query('DELETE FROM forecast_jobs WHERE id=$1', [job]);
+    await db.end();
+  }
+});
+
+test('import settings freeze during a slow submission and unlock on failure', async ({ page }) => {
+  const signup = await page.request.post('/api/auth/register', {
+    headers: { Origin: origin },
+    data: {
+      name: 'Import state QA',
+      workspace: 'Import state fixture',
+      email: `freeze-${Date.now()}@example.test`,
+      password: 'Local-test-passphrase-only',
+    },
+  });
+  expect(signup.status()).toBe(200);
+  await page.goto('/workspace');
+  await page.getByRole('button', { name: 'Import data', exact: true }).click();
+  await page
+    .getByLabel('Choose a CSV or XLSX')
+    .setInputFiles({ name: 'Freeze columns.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
+  await expect(page.getByRole('table')).toBeVisible();
+  let release = () => {};
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  let seenResolve = () => {};
+  const seen = new Promise<void>((resolve) => {
+    seenResolve = resolve;
+  });
+  await page.route('**/datasets/import', async (route) => {
+    seenResolve();
+    await gate;
+    await route.fulfill({ status: 400, json: { error: 'Simulated import validation failure' } });
+  });
+  try {
+    await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
+    await seen;
+    for (const name of ['Date column', 'Value column', 'Observation frequency'])
+      await expect(page.getByLabel(name)).toBeDisabled();
+    release();
+    await expect(page.getByRole('dialog').getByRole('alert')).toContainText(
+      'Simulated import validation failure',
+    );
+    for (const name of ['Date column', 'Value column', 'Observation frequency'])
+      await expect(page.getByLabel(name)).toBeEnabled();
+  } finally {
+    release();
   }
 });

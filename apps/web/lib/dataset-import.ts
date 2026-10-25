@@ -10,6 +10,17 @@ export class ImportError extends Error {}
 const invalid = (message: string): never => {
   throw new ImportError(message);
 };
+// Match ExcelJS's part dispatch, then require its complete canonical ZIP path.
+const parsedPartPaths = [
+  /xl\/worksheets\/sheet\d+\.xml/,
+  /xl\/worksheets\/_rels\/sheet\d+\.xml.rels/,
+  /xl\/theme\/[a-zA-Z0-9]+\.xml/,
+  /xl\/drawings\/[a-zA-Z0-9]+\.xml/,
+  /xl\/comments\d+\.xml/,
+  /xl\/tables\/table\d+\.xml/,
+  /xl\/drawings\/_rels\/[a-zA-Z0-9]+\.xml\.rels/,
+  /xl\/drawings\/vmlDrawing\d+\.vml/,
+];
 
 /** Bound actual expansion before ExcelJS/JSZip allocates worksheet objects. */
 export function inspectWorkbookZip(bytes: Buffer) {
@@ -84,6 +95,11 @@ export function inspectWorkbookZip(bytes: Buffer) {
       names.has(name)
     )
       invalid('Unsafe XLSX entry name.');
+    for (const pattern of parsedPartPaths) {
+      const part = pattern.exec(name)?.[0];
+      if (part && (part !== name || (name.includes('/_rels/') && !name.endsWith('.xml.rels'))))
+        invalid('Unsupported XLSX part filename.');
+    }
     names.add(name);
     checkExtra(pos + 46 + n, extra);
     if (/vbaProject|embeddings\/|externalLinks\//i.test(name))
@@ -216,6 +232,8 @@ export async function readImport(bytes: Buffer, filename: string): Promise<Impor
       for (let c = 1; c <= sheet.columnCount; c++) {
         const value = sheet.getCell(r, c).value;
         if (value instanceof Date) {
+          if (!workbook.properties.date1904 && value.getTime() < Date.UTC(1900, 2, 1))
+            invalid('Excel dates before 1900-03-01 are not supported. Use YYYY-MM-DD text.');
           if (
             !Number.isFinite(value.getTime()) ||
             value.toISOString().slice(11) !== '00:00:00.000Z'
