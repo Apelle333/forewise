@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import os from 'node:os';
+import { requireLinuxSandbox } from './hallmark-browser.mjs';
 import {
   CRITICAL_GATES,
   parseReport,
@@ -19,6 +20,27 @@ const report = () => ({
 });
 const shots = () =>
   SHOTS.map((s) => ({ ...s, height: s.height ?? 2000, sha256: 'verified-test-fixture' }));
+
+test('actual Chrome Linux status format requires every active sandbox field', () => {
+  // Observed in CI 40216112211; the obsolete "Namespace sandbox Yes" label is absent.
+  const status =
+    'Sandbox Status\nLayer 1 Sandbox\tNamespace\nPID namespaces\tYes\nNetwork namespaces\tYes\nSeccomp-BPF sandbox\tYes\n\nYou are adequately sandboxed.';
+  assert.equal(requireLinuxSandbox(status)['Layer 1 Sandbox'], 'Namespace');
+  for (const name of [
+    'Layer 1 Sandbox',
+    'PID namespaces',
+    'Network namespaces',
+    'Seccomp-BPF sandbox',
+  ]) {
+    assert.throws(() =>
+      requireLinuxSandbox(status.replace(new RegExp(`${name}\\t[^\\n]+`), `${name}\tNo`)),
+    );
+    assert.throws(() => requireLinuxSandbox(status.replace(new RegExp(`${name}\\t[^\\n]+`), '')));
+  }
+  assert.throws(() => requireLinuxSandbox('You are adequately sandboxed.'));
+  assert.throws(() => requireLinuxSandbox(status.replace('You are adequately sandboxed.', '')));
+  assert.throws(() => requireLinuxSandbox(status + '\nPID namespaces\tYes'));
+});
 test('complete successful render and exact target coverage pass', () => {
   validateRenderedTarget(parseReport(JSON.stringify(report()), 0), shots());
   requireTargetCoverage(
