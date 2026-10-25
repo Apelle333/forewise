@@ -6,30 +6,10 @@ import { DataOnboarding } from './onboarding/DataOnboarding';
 import { DatasetsView } from './workspace/DatasetsView';
 import { JobsView } from './workspace/JobsView';
 import { ResultsView } from './workspace/ResultsView';
-import type { Point } from '@/lib/csv';
 
-export type Dataset = { id: string; name: string; row_count: number; points: Point[]; frequency?: string };
-export type Forecast = {
-  id: string;
-  dataset_id: string;
-  horizon: number;
-  result: {
-    mock: boolean;
-    model: string;
-    points: Point[];
-    notice: string;
-    quantiles?: { p10: Point[]; p50: Point[]; p90: Point[] } | null;
-    metrics?: { mae: number; rmse: number; wape?: number | null; coverage_p10_p90?: number } | null;
-    evaluation?: {
-      windows: number;
-      evaluated_points: number;
-      baseline_metrics?: { mae: number; rmse: number } | null;
-      baseline_season_length?: number;
-    };
-    performance?: { device: string; inference_seconds: number };
-    warnings?: string[];
-  };
-};
+import type { Dataset, Forecast } from '@/lib/forecast-result';
+export type { Dataset, Forecast } from '@/lib/forecast-result';
+import { ForecastControls } from './workspace/ForecastControls';
 type Account = {
   user: { name: string; email: string };
   workspaces: { id: string; name: string }[];
@@ -67,6 +47,9 @@ export function Workspace() {
   const [datasets, setDatasets] = useState<Dataset[]>([]),
     [forecasts, setForecasts] = useState<Forecast[]>([]),
     [selected, setSelected] = useState('');
+  const [resultId, setResultId] = useState(''),
+    [horizon, setHorizon] = useState(14),
+    [model, setModel] = useState('mock');
   const [error, setError] = useState(''),
     [message, setMessage] = useState(''),
     [busy, startTransition] = useTransition(),
@@ -77,6 +60,7 @@ export function Workspace() {
   const [workspaceName, setWorkspaceName] = useState('');
 
   const poll = useRef<AbortController | null>(null);
+  const activeWorkspace = useRef(wid);
   useEffect(() => () => poll.current?.abort(), []);
 
   useEffect(() => {
@@ -98,6 +82,7 @@ export function Workspace() {
 
   useEffect(() => {
     if (!wid) return;
+    activeWorkspace.current = wid;
     let active = true;
     api(`workspaces/${wid}`)
       .then((data) => {
@@ -105,6 +90,16 @@ export function Workspace() {
           setDatasets(data.datasets);
           setForecasts(data.forecasts);
           setSelected(data.datasets[0]?.id || '');
+          const latest = data.forecasts.find(
+            (f: Forecast) => f.dataset_id === data.datasets[0]?.id,
+          );
+          setModel(
+            !latest || latest.result.mock
+              ? 'mock'
+              : latest?.result.model === 'timestral_209m'
+                ? 'timestral_209m'
+                : 'seasonal_naive',
+          );
         }
       })
       .catch((e) => {
@@ -120,6 +115,11 @@ export function Workspace() {
 
   function selectWorkspace(id: string) {
     if (id === wid) return;
+    poll.current?.abort();
+    activeWorkspace.current = id;
+    setResultId('');
+    setActiveTab('datasets');
+    setShowOnboarding(false);
     setLoading(true);
     setDatasets([]);
     setForecasts([]);
@@ -131,8 +131,10 @@ export function Workspace() {
 
   async function refresh() {
     const data = await api(`workspaces/${wid}`);
-    setDatasets(data.datasets);
-    setForecasts(data.forecasts);
+    if (activeWorkspace.current === wid) {
+      setDatasets(data.datasets);
+      setForecasts(data.forecasts);
+    }
     return data;
   }
 
@@ -160,18 +162,80 @@ export function Workspace() {
       await refresh();
       setSelected(data.id);
       setMessage('Dataset uploaded. Ready when you are.');
+      setResultId('');
+      setActiveTab('results');
     });
   }
 
   const dataset = datasets.find((d) => d.id === selected);
-  const forecast = forecasts.find((f) => f.dataset_id === selected);
+  const forecast =
+    forecasts.find((f) => f.id === resultId && f.dataset_id === selected) ||
+    forecasts.find((f) => f.dataset_id === selected);
+  const selectedModel =
+    dataset?.frequency !== 'daily' && dataset?.frequency && model === 'mock'
+      ? 'seasonal_naive'
+      : model;
+  function generate() {
+    if (!dataset) return;
+    act(async () => {
+      const controller = new AbortController();
+      poll.current?.abort();
+      poll.current = controller;
+      if (selectedModel === 'mock') {
+        const run = await api(
+          `workspaces/${wid}/forecasts`,
+          { datasetId: selected, horizon },
+          controller.signal,
+        );
+        await refresh();
+        setResultId(run.id);
+        setMessage('Mock forecast ready. Illustrative only.');
+      } else {
+        const accepted = await api(
+          'forecast-jobs',
+          {
+            contractVersion: '2',
+            workspaceId: wid,
+            datasetId: selected,
+            horizon,
+            model: selectedModel,
+          },
+          controller.signal,
+        );
+        setMessage('Job saved. You can monitor it in Jobs; computation continues if you leave.');
+        for (let i = 0; i < 180; i++) {
+          await new Promise<void>((resolve, reject) => {
+            const stop = () => {
+              clearTimeout(timer);
+              reject(new DOMException('Aborted', 'AbortError'));
+            };
+            const timer = setTimeout(() => {
+              controller.signal.removeEventListener('abort', stop);
+              resolve();
+            }, 1000);
+            controller.signal.addEventListener('abort', stop, { once: true });
+          });
+          const job = await api(`forecast-jobs/${accepted.jobId}`, undefined, controller.signal);
+          if (job.status === 'failed')
+            throw new Error(job.error || 'Forecast failed. Check Jobs for details.');
+          if (job.status === 'completed') {
+            await refresh();
+            setResultId(job.result_id);
+            setMessage('Model forecast ready. Review its historical evaluation and limitations.');
+            return;
+          }
+        }
+        setMessage('Still computing. Follow this saved run in Jobs.');
+      }
+    });
+  }
 
   return (
     <div className="workspace-page">
       <header className="workspace-nav">
         <Brand />
         <span className="preview-label">
-          THE FOREWISE WORKSPACE <span>/</span> PHASE 02B
+          THE FOREWISE WORKSPACE <span>/</span> PHASE 03B
         </span>
         <button
           className="text-button"
@@ -197,7 +261,7 @@ export function Workspace() {
             <select
               id="workspace-select"
               value={wid}
-              disabled={busy}
+              disabled={busy || loading}
               onChange={(e) => selectWorkspace(e.target.value)}
             >
               {account?.workspaces.map((w) => (
@@ -312,49 +376,126 @@ export function Workspace() {
             </p>
           </div>
 
+          {error || message ? (
+            <p
+              id="workspace-feedback"
+              tabIndex={-1}
+              className={error ? 'error' : 'success'}
+              role={error ? 'alert' : 'status'}
+            >
+              {error || message}
+            </p>
+          ) : null}
           <div className="workspace-content">
-            {activeTab === 'datasets' && (
+            {activeTab === 'datasets' ? (
               <DatasetsView
                 datasets={datasets}
                 selected={selected}
-                setSelected={setSelected}
-                onUpload={upload}
-                showOnboarding={showOnboarding}
-                setShowOnboarding={setShowOnboarding}
+                onSelect={(id) => {
+                  setSelected(id);
+                  setResultId('');
+                  setActiveTab('results');
+                }}
+                onImport={() => setShowOnboarding(true)}
+                onSample={() => upload(sample, 'Synthetic daily sample', 'daily')}
                 loading={loading}
                 busy={busy}
               />
-            )}
-            {activeTab === 'jobs' && (
+            ) : null}
+            {activeTab === 'jobs' ? (
               <JobsView
+                key={wid}
                 wid={wid}
-                onViewResult={(id) => {
-                  setSelected(id);
+                onViewResult={async (datasetId, forecastId, jobId) => {
+                  const data = await refresh();
+                  const job = await api(`forecast-jobs/${jobId}`);
+                  if (
+                    job.status !== 'completed' ||
+                    job.result_id !== forecastId ||
+                    job.dataset_id !== datasetId
+                  )
+                    throw new Error('This job has no completed result.');
+                  const saved: Forecast = {
+                    id: job.result_id,
+                    dataset_id: job.dataset_id,
+                    horizon: job.horizon,
+                    created_at: job.forecastCreatedAt,
+                    result: job.result,
+                  };
+                  setForecasts([
+                    saved,
+                    ...data.forecasts.filter((f: Forecast) => f.id !== saved.id),
+                  ]);
+                  setSelected(datasetId);
+                  setResultId(forecastId);
                   setActiveTab('results');
+                  setModel(
+                    saved.result.mock
+                      ? 'mock'
+                      : saved.result.model === 'timestral_209m'
+                        ? 'timestral_209m'
+                        : 'seasonal_naive',
+                  );
                 }}
                 busy={busy}
               />
-            )}
-            {activeTab === 'results' && (
-              <ResultsView
-                dataset={dataset}
-                forecast={forecast}
-                loading={loading}
-              />
-            )}
+            ) : null}
+            {activeTab === 'results' ? (
+              <>
+                <ForecastControls
+                  datasets={datasets}
+                  selected={selected}
+                  onSelect={(id) => {
+                    setSelected(id);
+                    setResultId('');
+                  }}
+                  horizon={horizon}
+                  onHorizon={setHorizon}
+                  model={selectedModel}
+                  onModel={setModel}
+                  busy={busy}
+                  loading={loading}
+                  onGenerate={generate}
+                />
+                <ResultsView
+                  key={`${selected}-${forecast?.id || 'history'}`}
+                  wid={wid}
+                  dataset={dataset}
+                  forecast={forecast}
+                  forecasts={forecasts}
+                  onResult={(id) => {
+                    setResultId(id);
+                    const run = forecasts.find((f) => f.id === id);
+                    if (run)
+                      setModel(
+                        run.result.mock
+                          ? 'mock'
+                          : run.result.model === 'timestral_209m'
+                            ? 'timestral_209m'
+                            : 'seasonal_naive',
+                      );
+                  }}
+                  loading={loading}
+                />
+              </>
+            ) : null}
           </div>
 
           <footer className="workspace-footer">
-            <span>Forewise / Phase 02B · Local inference</span>
+            <span>Forewise / Phase 03B · Local inference</span>
             <span>Past observed. Next explored.</span>
           </footer>
         </main>
       </div>
       {showOnboarding && (
         <DataOnboarding
-          onSuccess={(data) => {
-            upload(data.csv, data.name, data.frequency);
-            setShowOnboarding(false);
+          wid={wid}
+          onSuccess={async (id) => {
+            await refresh();
+            setSelected(id);
+            setResultId('');
+            setActiveTab('results');
+            setMessage('Dataset saved. Choose a model and horizon.');
           }}
           onCancel={() => setShowOnboarding(false)}
         />

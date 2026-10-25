@@ -2313,3 +2313,202 @@ button:active:not(:disabled),
 .h-button:active {
   transform: translateY(1px);
 }
+
+/* Phase 03B follows the existing Fieldnotes tokens and operational hierarchy. */
+.workspace-content {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.workspace-content .panel {
+  min-width: 0;
+}
+.workspace-anchor-nav .text-button {
+  width: 100%;
+  text-align: left;
+}
+.workspace-anchor-nav .selected {
+  color: var(--accent);
+}
+.forecast-controls form,
+.preview-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+.forecast-controls label,
+.preview-controls label,
+.saved-run,
+.import-file-label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+}
+.forecast-controls form > .button {
+  justify-self: start;
+}
+.forecast-controls > .muted {
+  margin-top: 16px;
+}
+.upload-zone .text-button {
+  display: block;
+  margin: 16px auto 0;
+}
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.saved-run {
+  max-width: 100%;
+  margin-block: 16px;
+}
+.comparison-control {
+  margin-block: 16px;
+}
+.comparison-control label {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+.comparison-control input {
+  width: 20px;
+  min-height: 20px;
+  accent-color: var(--accent);
+}
+.comparison-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-dasharray: 3 5;
+  vector-effect: non-scaling-stroke;
+}
+.forecast-evaluation {
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 24px;
+}
+.forecast-evaluation > p,
+.forecast-evaluation > ul {
+  margin-block: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.calibration-warning {
+  background: var(--accent-surface);
+  color: var(--ink);
+  border-left: 3px solid var(--accent);
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.point-readout > small {
+  display: block;
+  max-width: 100%;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.metadata-json {
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.onboarding-modal {
+  width: min(900px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin: auto;
+}
+.onboarding-modal::backdrop {
+  background: var(--ink);
+  opacity: 0.6;
+}
+.onboarding-content {
+  padding: 28px;
+  display: grid;
+  gap: 20px;
+}
+.onboarding-content header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+}
+.onboarding-content h2 {
+  font-size: clamp(26px, 4vw, 36px);
+}
+.onboarding-content p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.onboarding-preview {
+  min-width: 0;
+  display: grid;
+  gap: 20px;
+}
+.onboarding-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.data-table-scroll small {
+  display: block;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.result-panel h2,
+.dataset-row strong {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .forecast-controls form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .forecast-controls form,
+  .preview-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .onboarding-content {
+    padding: 20px;
+  }
+  .result-heading {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .point-readout {
+    text-align: left;
+  }
+}
+
+/* Keep import actions visible while the preview itself scrolls. */
+.onboarding-content {
+  max-height: calc(100dvh - 32px);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.onboarding-scroll {
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  gap: 20px;
+  padding: 3px;
+}
+.onboarding-footer {
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 600px) {
+  .forecast-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}

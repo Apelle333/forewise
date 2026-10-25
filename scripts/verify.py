@@ -53,7 +53,7 @@ for filename in filter(None, tracked):
     ):
         sys.exit(f"Forbidden generated/private file is tracked: {filename}")
     file = root / filename
-    if file.suffix == ".png":
+    if file.suffix in {".png", ".xlsx"}:
         continue
     content = file.read_text(encoding="utf-8-sig")
     if re.search(

@@ -191,6 +191,7 @@ async function handle(req: NextRequest) {
         }
         const id = randomUUID();
         await asUser(db, user.id, async (tx) => {
+          await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1::uuid::text,0))', [wid]);
           const count = await tx.query<{ count: number }>(
             'SELECT count(*)::int AS count FROM datasets WHERE workspace_id=$1',
             [wid],

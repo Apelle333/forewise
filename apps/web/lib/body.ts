@@ -1,9 +1,9 @@
 export class BodyTooLargeError extends Error {}
 
 /** Bound accumulated bytes even when Content-Length is absent or incorrect. */
-export async function readLimitedBody(request: Request, limit = 1_100_000): Promise<string> {
+export async function readLimitedBytes(request: Request, limit = 1_100_000): Promise<Buffer> {
   if (Number(request.headers.get('content-length') || 0) > limit) throw new BodyTooLargeError();
-  if (!request.body) return '';
+  if (!request.body) return Buffer.alloc(0);
   const reader = request.body.getReader();
   const chunks: Uint8Array[] = [];
   let size = 0;
@@ -18,8 +18,12 @@ export async function readLimitedBody(request: Request, limit = 1_100_000): Prom
       }
       chunks.push(value);
     }
-    return Buffer.concat(chunks, size).toString('utf8');
+    return Buffer.concat(chunks, size);
   } finally {
     reader.releaseLock();
   }
+}
+
+export async function readLimitedBody(request: Request, limit = 1_100_000): Promise<string> {
+  return (await readLimitedBytes(request, limit)).toString('utf8');
 }

@@ -121,6 +121,27 @@ CREATE POLICY job_member ON forecast_jobs TO forewise_app
 REVOKE INSERT,UPDATE,DELETE ON forecast_jobs FROM forewise_app;
 GRANT SELECT ON forecast_jobs TO forewise_app;
 GRANT INSERT(id,workspace_id,dataset_id,status,payload) ON forecast_jobs TO forewise_app;
+-- A member may requeue a failed job, never alter claims, payloads or attempt counts.
+-- The worker remains the only owner of execution attempts and live leases.
+CREATE OR REPLACE FUNCTION public.retry_forecast_job(job_id uuid) RETURNS uuid
+LANGUAGE plpgsql SECURITY DEFINER SET search_path = pg_catalog, public AS $$
+DECLARE tenant uuid; retried uuid;
+BEGIN
+ SELECT j.workspace_id INTO tenant FROM public.forecast_jobs j
+ WHERE j.id=job_id AND EXISTS(SELECT 1 FROM public.memberships m WHERE m.workspace_id=j.workspace_id
+  AND m.user_id=nullif(current_setting('app.user_id',true),'')::uuid);
+ IF tenant IS NULL THEN RETURN NULL; END IF;
+ PERFORM pg_advisory_xact_lock(hashtextextended(tenant::text,0));
+ UPDATE public.forecast_jobs j SET status='pending',available_at=now(),error=NULL,
+  worker_id=NULL,last_heartbeat=NULL,lease_expires_at=NULL,fence=fence+1,updated_at=now()
+ WHERE j.id=job_id AND j.status='failed' AND j.attempts<3
+ AND (SELECT count(*) FROM public.forecast_jobs WHERE workspace_id=tenant AND status IN ('pending','processing'))<20
+ RETURNING j.id INTO retried;
+ RETURN retried;
+END;
+$$;
+REVOKE ALL ON FUNCTION public.retry_forecast_job(uuid) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.retry_forecast_job(uuid) TO forewise_app;
 -- A trusted local worker has no access to account/session tables.
 DO $$ BEGIN
  IF NOT EXISTS(SELECT 1 FROM pg_roles WHERE rolname='forewise_worker') THEN

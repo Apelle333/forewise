@@ -1,70 +1,51 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { DataOnboarding } from '../onboarding/DataOnboarding';
-import type { Dataset } from '../workspace';
-
+import type { Dataset } from '@/lib/forecast-result';
 export function DatasetsView({
   datasets,
   selected,
-  setSelected,
-  onUpload,
-  showOnboarding,
-  setShowOnboarding,
+  onSelect,
+  onImport,
+  onSample,
   loading,
   busy,
 }: {
   datasets: Dataset[];
   selected: string;
-  setSelected: (id: string) => void;
-  onUpload: (csv: string, name: string, frequency: string) => void;
-  showOnboarding: boolean;
-  setShowOnboarding: (val: boolean) => void;
+  onSelect: (id: string) => void;
+  onImport: () => void;
+  onSample: () => void;
   loading: boolean;
   busy: boolean;
 }) {
   return (
-    <div className="workspace-view">
+    <section className="workspace-view panel" aria-labelledby="datasets-title">
       <div className="panel-heading">
-        <p className="overline">01 / THE STARTING POINT</p>
-        <h2>Bring your history.</h2>
-        <p>
-          A date and a value. <br /> Choose the observation frequency before uploading.
-        </p>
-      </div>>
-
+        <h2 id="datasets-title">Bring your history.</h2>
+        <p>A date, a value, a clearer starting point.</p>
+      </div>
       <div className="upload-zone">
         <span className="upload-symbol" aria-hidden="true">
           ↥
         </span>
-        <strong>Upload a CSV</strong>
-        <p>
-          date,value · 8–5,000 observations
-          <br />
-          Up to 1 MB · Consecutive dates
-        </p>
-        <label className="button subtle file-button">
-          Import Data
-          <input
-            type="file"
-            accept=".csv,.xlsx,.xls"
-            aria-label="Import data"
-            disabled={busy || loading}
-            onChange={() => setShowOnboarding(true)}
-          />
-        </label>
+        <strong>CSV or Excel. Your columns, mapped.</strong>
+        <p>8–5,000 observations / daily, weekly or monthly / up to 1 MB</p>
+        <button className="button primary" onClick={onImport} disabled={busy || loading}>
+          Import data
+        </button>
+        <button className="text-button" onClick={onSample} disabled={busy || loading}>
+          Try sample data
+        </button>
       </div>
-
       <details className="csv-help">
-        <summary>What should my CSV look like?</summary>
+        <summary>What should my file look like?</summary>
         <pre>
           date,value{'\n'}2026-09-01,104{'\n'}2026-09-02,112{'\n'}…
         </pre>
         <p>
-          At least 8 consecutive periods, no duplicates or gaps. Monthly dates must
-          consistently be month starts or month ends.
+          Choose two columns from a single worksheet. Consecutive dates, no duplicates or gaps.
+          Monthly dates must be month starts or month ends. Sample data is synthetic.
         </p>
       </details>
-
       <div className="dataset-list" aria-busy={loading}>
         <h3>
           Your datasets <span>{datasets.length}</span>
@@ -76,8 +57,7 @@ export function DatasetsView({
             <button
               key={d.id}
               className={`dataset-row ${selected === d.id ? 'selected' : ''}`}
-              aria-pressed={selected === d.id}
-              onClick={() => setSelected(d.id)}
+              onClick={() => onSelect(d.id)}
               disabled={busy}
             >
               <span>
@@ -86,13 +66,13 @@ export function DatasetsView({
                   {d.row_count} {d.frequency || 'daily'} observations
                 </small>
               </span>
-              <span aria-hidden="true">{selected === d.id ? '↗' : '→'}</span>
+              <span>View</span>
             </button>
           ))
         ) : (
           <p className="empty">Your uploaded datasets will be listed here.</p>
         )}
       </div>
-    </div>
+    </section>
   );
 }

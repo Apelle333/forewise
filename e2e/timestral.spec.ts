@@ -3,6 +3,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
+import ExcelJS from 'exceljs';
 
 test('real public CSV through dashboard, pinned 209M worker, native quantiles and authorized persisted retrieval', async ({
   page,
@@ -26,12 +27,13 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
   expect(account.ok()).toBe(true);
   await page.setViewportSize({ width: 1440, height: 1100 });
   await page.goto('/workspace');
-  await expect(page.getByLabel('CSV frequency')).toBeEnabled();
-  await page.getByLabel('CSV frequency').selectOption('monthly');
+  await page.getByRole('button', { name: 'Import data', exact: true }).click();
   await page
-    .getByLabel('Choose a CSV', { exact: true })
+    .getByLabel('Choose a CSV or XLSX')
     .setInputFiles('docs/phase-02b/fixtures/air-passengers.csv');
-  await expect(page.getByRole('status')).toContainText('Dataset uploaded');
+  await page.getByLabel('Observation frequency').selectOption('monthly');
+  await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Dataset saved');
   await page.getByLabel('Forecasting model', { exact: true }).selectOption('timestral_209m');
   await page.getByRole('spinbutton', { name: /Forecast horizon/ }).fill('12');
   const python = path.resolve(
@@ -48,7 +50,7 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
       (response) =>
         response.url().endsWith('/api/forecast-jobs') && response.request().method() === 'POST',
     );
-    await page.getByRole('button', { name: 'Generate Timestral forecast', exact: false }).click();
+    await page.getByRole('button', { name: 'Generate model forecast', exact: false }).click();
     const submitted = await submittedPromise;
     expect(submitted.status()).toBe(202);
     const jobId = (await submitted.json()).jobId;
@@ -87,6 +89,80 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
       expect(result.quantiles.p10[i].value).toBeLessThanOrEqual(result.quantiles.p50[i].value);
       expect(result.quantiles.p50[i].value).toBeLessThanOrEqual(result.quantiles.p90[i].value);
     }
+    const wid = session.workspaces[0].id,
+      run = workspace.forecasts[0];
+    const baselineAccepted = await page.request.post('/api/forecast-jobs', {
+      headers: { Origin: 'http://127.0.0.1:3000' },
+      data: {
+        contractVersion: '2',
+        workspaceId: wid,
+        datasetId: run.dataset_id,
+        horizon: 12,
+        model: 'seasonal_naive',
+      },
+    });
+    expect(baselineAccepted.status()).toBe(202);
+    const baselineJob = (await baselineAccepted.json()).jobId;
+    await expect
+      .poll(
+        async () =>
+          (await (await page.request.get(`/api/forecast-jobs/${baselineJob}`)).json()).status,
+        { timeout: 60000 },
+      )
+      .toBe('completed');
+    await page.getByRole('button', { name: /02 Jobs/ }).click();
+    await expect(page.getByRole('region', { name: 'Forecast jobs', exact: true })).toContainText(
+      'completed',
+    );
+    await page.getByRole('button', { name: 'View result', exact: true }).last().click();
+    await page.getByLabel('Saved forecast').selectOption(run.id);
+    await page.getByRole('checkbox', { name: /Compare saved SeasonalNaive/ }).check();
+    await expect(page.getByTestId('baseline-comparison')).toBeAttached();
+    expect(
+      await page.getByTestId('baseline-comparison').evaluate((e) => getComputedStyle(e).stroke),
+    ).not.toBe('none');
+    await expect(page.getByTestId('model-result')).toContainText('Calibration is not established');
+    const xlsx = await page.request.get(
+      `/api/workspaces/${wid}/forecasts/${run.id}/export?format=xlsx`,
+    );
+    expect(xlsx.status()).toBe(200);
+    expect(xlsx.headers()['cache-control']).toBe('private, no-store');
+    const exported = new ExcelJS.Workbook();
+    await exported.xlsx.load((await xlsx.body()) as never);
+    expect(exported.getWorksheet('Forecast')!.getCell('D2').value).toBe(
+      result.quantiles.p10[0].value,
+    );
+    expect(exported.getWorksheet('Forecast')!.getCell('E2').value).toBe(
+      result.quantiles.p50[0].value,
+    );
+    expect(exported.getWorksheet('Forecast')!.getCell('F2').value).toBe(
+      result.quantiles.p90[0].value,
+    );
+    await page.getByRole('slider', { name: /Inspect an observation/ }).focus();
+    await page.keyboard.press('End');
+    await expect(page.getByTestId('point-readout')).toContainText('P10');
+    await expect(page.getByTestId('point-readout')).toContainText('P50');
+    await expect(page.getByTestId('point-readout')).toContainText('P90');
+    await fs.mkdir('docs/phase-03b/evidence', { recursive: true });
+    await fs.writeFile('docs/phase-03b/evidence/native-air-passengers.xlsx', await xlsx.body());
+    await fs.writeFile(
+      'docs/phase-03b/evidence/native-air-passengers.json',
+      JSON.stringify(result, null, 2),
+    );
+    for (const width of [1440, 768, 390]) {
+      await page.setViewportSize({ width, height: 1000 });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      const audit = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+      expect(audit.violations).toEqual([]);
+      await page.screenshot({
+        path: `docs/phase-03b/evidence/results-${width}.png`,
+        fullPage: true,
+      });
+    }
     const other = await playwright.request.newContext({
       baseURL: 'http://127.0.0.1:3000',
       extraHTTPHeaders: { Origin: 'http://127.0.0.1:3000' },
@@ -123,6 +199,8 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
       .getByRole('region', { name: 'Forecast result', exact: true })
       .screenshot({ path: 'docs/phase-02b/evidence/result-mobile.png' });
     await page.reload();
+    await page.getByRole('button', { name: /03 Results/ }).click();
+    await page.getByLabel('Saved forecast').selectOption(run.id);
     await expect(page.getByTestId('model-result')).toContainText('Timestral 209M');
     await expect(page.getByLabel('Forecasting model', { exact: true })).toHaveValue(
       'timestral_209m',

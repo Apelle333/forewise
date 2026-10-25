@@ -7,7 +7,8 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
   try {
     records = parse(csv, {
       columns: (header: string[]) => {
-        if (header.length < 2) throw new Error('CSV must have at least two columns.');
+        if (header.length !== 2 || !header.includes('date') || !header.includes('value'))
+          throw new Error('CSV must contain exactly date,value columns.');
         return header;
       },
       skip_empty_lines: true,
@@ -21,9 +22,6 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
   if (records.length < 8 || records.length > 5000)
     throw new Error('Upload between 8 and 5,000 observations.');
 
-  // Validation Logic: detect the mapped columns (assume the first two if not specified,
-  // but for the refined flow, we should trust the CSV provided by the frontend
-  // which is already mapped to 'date,value').
   const points = records
     .map((row, i) => {
       const date = row.date;
@@ -66,7 +64,7 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
         : gap === 86_400_000 * (frequency === 'weekly' ? 7 : 1);
     if (!valid)
       throw new Error(
-        `Gap or inconsistency found between ${points[i-1].date} and ${points[i].date}. Use consecutive ${frequency} dates.`,
+        `Gap or inconsistency found between ${points[i - 1].date} and ${points[i].date}. Use consecutive ${frequency} dates.`,
       );
   }
   return points;

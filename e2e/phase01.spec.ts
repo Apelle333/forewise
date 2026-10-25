@@ -49,6 +49,7 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
   await page.getByRole('button', { name: 'Create workspace' }).click();
   await expect(page).toHaveURL(/workspace/);
   await expect(page.getByRole('heading', { name: 'A clearer view ahead.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Import data', exact: true }).click();
   await expect(page.locator('input[type=file]')).toBeEnabled();
   await page.locator('input[type=file]').setInputFiles({
     name: 'invalid.csv',
@@ -56,12 +57,16 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
     buffer: Buffer.from('date,value\ninvalid,no'),
   });
   await expect(page.locator('.error[role=alert]')).toContainText('between 8 and 5,000');
+  await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await page.getByRole('button', { name: 'Try sample data' }).click();
   await expect(page.getByRole('status')).toContainText('Dataset uploaded');
+  await page.getByRole('button', { name: /01 Datasets/ }).click();
+  await page.getByRole('button', { name: 'Import data', exact: true }).click();
   await page
     .locator('input[type=file]')
     .setInputFiles({ name: 'Revenue trend.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
-  await expect(page.getByRole('button', { name: 'Revenue trend.csv' })).toBeVisible();
+  await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Revenue trend.csv', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Generate mock forecast' }).click();
   await expect(page.getByRole('status')).toContainText('Mock forecast ready');
   await expect(
@@ -70,10 +75,11 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
     }),
   ).toBeVisible();
   const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: 'Export mock CSV' }).click();
-  expect((await download).suggestedFilename()).toBe('forewise-mock-forecast.csv');
+  await page.getByRole('button', { name: 'Export CSV' }).click();
+  expect((await download).suggestedFilename()).toMatch(/^forewise-[0-9a-f-]+\.csv$/);
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Export mock CSV' })).toBeVisible();
+  await page.getByRole('button', { name: /03 Results/ }).click();
+  await expect(page.getByRole('button', { name: 'Export CSV' })).toBeVisible();
   await page.screenshot({
     path: path.resolve('docs/screenshots/workspace-desktop.png'),
     fullPage: true,
@@ -90,9 +96,10 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
   await page.getByLabel('Workspace name', { exact: true }).fill('Empty workspace');
   await page.getByRole('button', { name: 'Create', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Try sample data' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Generate mock forecast' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /03 Results/ })).toBeDisabled();
   await page.getByLabel('Workspace', { exact: true }).selectOption({ label: 'Acme Planning' });
-  await expect(page.getByRole('button', { name: 'Export mock CSV' })).toBeVisible();
+  await page.getByRole('button', { name: /03 Results/ }).click();
+  await expect(page.getByRole('button', { name: 'Export CSV' })).toBeVisible();
   await page.getByRole('button', { name: 'Sign out' }).click();
   await expect(page).toHaveURL(/login/);
   await page.goto('/workspace');

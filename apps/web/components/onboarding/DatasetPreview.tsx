@@ -1,56 +1,52 @@
 'use client';
-import { useState, useMemo } from 'react';
-import type { Point, Frequency } from '@/lib/csv';
-
-type Mapping = {
-  dateCol: string;
-  valueCol: string;
-};
-
+import type { Frequency } from '@/lib/csv';
+import type { ColumnMapping } from '@/lib/dataset-import';
 export function DatasetPreview({
-  data,
   headers,
+  data,
   mapping,
   onMappingChange,
   frequency,
   onFrequencyChange,
 }: {
-  data: any[][];
   headers: string[];
-  mapping: Mapping;
-  onMappingChange: (mapping: Mapping) => void;
+  data: string[][];
+  mapping: ColumnMapping;
+  onMappingChange: (m: ColumnMapping) => void;
   frequency: Frequency;
-  onFrequencyChange: (frequency: Frequency) => void;
+  onFrequencyChange: (f: Frequency) => void;
 }) {
-  const previewRows = useMemo(() => data.slice(0, 10), [data]);
-
   return (
     <div className="onboarding-preview">
       <div className="preview-controls">
-        <div className="control">
-          <label>Date Column</label>
+        <label>
+          Date column
           <select
             value={mapping.dateCol}
-            onChange={(e) => onMappingChange({ ...mapping, dateCol: e.target.value })}
+            onChange={(e) => onMappingChange({ ...mapping, dateCol: Number(e.target.value) })}
           >
-            {headers.map((h) => (
-              <option key={h} value={h}>{h}</option>
+            {headers.map((h, i) => (
+              <option key={h} value={i}>
+                {h}
+              </option>
             ))}
           </select>
-        </div>
-        <div className="control">
-          <label>Value Column</label>
+        </label>
+        <label>
+          Value column
           <select
             value={mapping.valueCol}
-            onChange={(e) => onMappingChange({ ...mapping, valueCol: e.target.value })}
+            onChange={(e) => onMappingChange({ ...mapping, valueCol: Number(e.target.value) })}
           >
-            {headers.map((h) => (
-              <option key={h} value={h}>{h}</option>
+            {headers.map((h, i) => (
+              <option key={h} value={i}>
+                {h}
+              </option>
             ))}
           </select>
-        </div>
-        <div className="control">
-          <label>Frequency</label>
+        </label>
+        <label>
+          Observation frequency
           <select
             value={frequency}
             onChange={(e) => onFrequencyChange(e.target.value as Frequency)}
@@ -59,26 +55,27 @@ export function DatasetPreview({
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
           </select>
-        </div>
+        </label>
       </div>
-      <div className="preview-table-container">
-        <table className="preview-table">
+      <div className="data-table-scroll" tabIndex={0} role="region" aria-label="Import preview">
+        <table>
+          <caption>
+            First {data.length} observations. Selected columns will be validated before saving.
+          </caption>
           <thead>
             <tr>
               {headers.map((h) => (
-                <th key={h} className={h === mapping.dateCol || h === mapping.valueCol ? 'highlighted' : ''}>
+                <th key={h} scope="col">
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {previewRows.map((row, i) => (
+            {data.map((row, i) => (
               <tr key={i}>
                 {row.map((cell, j) => (
-                  <td key={j} className={headers[j] === mapping.dateCol || headers[j] === mapping.valueCol ? 'highlighted' : ''}>
-                    {String(cell)}
-                  </td>
+                  <td key={j}>{cell || '—'}</td>
                 ))}
               </tr>
             ))}

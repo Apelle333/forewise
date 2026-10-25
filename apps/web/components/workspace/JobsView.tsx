@@ -1,121 +1,152 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import type { Dataset } from '../workspace';
-
-type JobStatus = 'pending' | 'processing' | 'completed' | 'failed';
-
+import { useState, useEffect } from 'react';
 type Job = {
   id: string;
-  status: JobStatus;
   dataset_id: string;
+  result_id: string | null;
+  status: string;
+  attempts: number;
+  error: string | null;
   created_at: string;
-  updated_at: string;
-  error?: string;
-  result_id?: string;
+  model: string | null;
+  horizon: string;
 };
-
 export function JobsView({
   wid,
   onViewResult,
   busy,
 }: {
   wid: string;
-  onViewResult: (datasetId: string) => void;
+  onViewResult: (datasetId: string, forecastId: string, jobId: string) => Promise<void>;
   busy: boolean;
 }) {
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const pollRef = useRef<NodeJS.Timeout | null>(null);
-
-  async function fetchJobs() {
-    try {
-      const res = await fetch(`/api/forecast-jobs?workspaceId=${wid}`);
-      if (!res.ok) throw new Error('Failed to fetch jobs.');
-      const data = await res.json();
-      setJobs(data.jobs || []);
-      setError('');
-    } catch (e) {
-      setError(e instanceof Error ? e.message : 'An error occurred.');
-    } finally {
-      setLoading(false);
-    }
-  }
-
+  const [jobs, setJobs] = useState<Job[]>([]),
+    [loading, setLoading] = useState(true),
+    [error, setError] = useState(''),
+    [retrying, setRetrying] = useState(''),
+    [version, setVersion] = useState(0);
   useEffect(() => {
-    if (!wid) return;
-    fetchJobs();
-
-    pollRef.current = setInterval(fetchJobs, 5000);
+    const controller = new AbortController();
+    let timer: ReturnType<typeof setTimeout>;
+    async function load() {
+      try {
+        const res = await fetch(`/api/forecast-jobs?workspaceId=${wid}`, {
+          signal: controller.signal,
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        setJobs(data.jobs);
+        setError('');
+      } catch (e) {
+        if ((e as Error).name !== 'AbortError') setError((e as Error).message);
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+          timer = setTimeout(() => void load(), 5000);
+        }
+      }
+    }
+    if (wid) void load();
     return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
+      controller.abort();
+      clearTimeout(timer);
     };
-  }, [wid]);
-
-  async function retryJob(jobId: string) {
+  }, [wid, version]);
+  async function retry(id: string) {
+    setRetrying(id);
+    setError('');
     try {
-      const res = await fetch(`/api/forecast-jobs/${jobId}/retry`, { method: 'POST' });
-      if (!res.ok) throw new Error('Retry failed.');
-      await fetchJobs();
+      const res = await fetch(`/api/forecast-jobs/${id}/retry`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setVersion((v) => v + 1);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Retry failed.');
+      setError((e as Error).message);
+    } finally {
+      setRetrying('');
     }
   }
-
   return (
-    <div className="workspace-view">
+    <section className="workspace-view panel" aria-labelledby="jobs-title">
       <div className="panel-heading">
-        <p className="overline">02 / EXECUTION PIPELINE</p>
-        <h2>Forecast Jobs</h2>
-        <p>Monitor and manage your local inference runs.</p>
+        <h2 id="jobs-title">Forecast jobs.</h2>
+        <p>Saved runs continue in the background. At most three execution attempts per job.</p>
       </div>
-
-      {error && <p className="error">{error}</p>}
-
-      <div className="jobs-list" aria-busy={loading}>
-        {loading && jobs.length === 0 ? (
-          <p className="muted">Loading jobs…</p>
-        ) : jobs.length === 0 ? (
-          <p className="empty">No forecast jobs found in this workspace.</p>
+      {error ? (
+        <p className="error" role="alert">
+          {error}
+        </p>
+      ) : null}
+      <div
+        className="data-table-scroll"
+        tabIndex={0}
+        role="region"
+        aria-label="Forecast jobs"
+        aria-busy={loading}
+      >
+        {jobs.length ? (
+          <table>
+            <caption>Latest 100 jobs in this workspace. Refreshes every five seconds.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Run</th>
+                <th scope="col">Status</th>
+                <th scope="col">Attempts</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {jobs.map((job) => (
+                <tr key={job.id}>
+                  <td>
+                    <strong>
+                      {job.model === 'timestral_209m' ? 'Timestral 209M' : 'SeasonalNaive'}
+                    </strong>
+                    <small>
+                      {job.id.slice(0, 8)} / {job.horizon} steps
+                    </small>
+                  </td>
+                  <td>
+                    {job.status}
+                    {job.error ? <p className="error">{job.error}</p> : null}
+                  </td>
+                  <td>{job.attempts} / 3</td>
+                  <td>
+                    {job.status === 'failed' && job.attempts < 3 ? (
+                      <button
+                        className="button subtle"
+                        disabled={busy || !!retrying}
+                        onClick={() => void retry(job.id)}
+                      >
+                        {retrying === job.id ? 'Retrying…' : 'Retry'}
+                      </button>
+                    ) : null}
+                    {job.status === 'failed' && job.attempts >= 3 ? (
+                      <span>Attempt limit reached</span>
+                    ) : null}
+                    {job.status === 'completed' && job.result_id ? (
+                      <button
+                        className="button subtle"
+                        onClick={() =>
+                          void onViewResult(job.dataset_id, job.result_id!, job.id).catch((e) =>
+                            setError(e.message),
+                          )
+                        }
+                      >
+                        View result
+                      </button>
+                    ) : null}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         ) : (
-          <div className="jobs-table">
-            <div className="jobs-table-header">
-              <span>Job ID</span>
-              <span>Status</span>
-              <span>Created</span>
-              <span>Action</span>
-            </div>
-            {jobs.map((job) => (
-              <div key={job.id} className="job-row">
-                <span className="job-id">{job.id.slice(0, 8)}…</span>
-                <span className={`status-badge ${job.status}`}>
-                  {job.status}
-                </span>
-                <span className="muted">{new Date(job.created_at).toLocaleDateString()}</span>
-                <div className="job-actions">
-                  {job.status === 'failed' && (
-                    <button
-                      className="button subtle"
-                      onClick={() => retryJob(job.id)}
-                      disabled={busy}
-                    >
-                      Retry
-                    </button>
-                  )}
-                  {job.status === 'completed' && (
-                    <button
-                      className="button subtle"
-                      onClick={() => onViewResult(job.dataset_id)}
-                    >
-                      View Result
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <p className="empty">
+            {loading ? 'Loading jobs…' : 'No forecast jobs in this workspace yet.'}
+          </p>
         )}
       </div>
-    </div>
+    </section>
   );
 }

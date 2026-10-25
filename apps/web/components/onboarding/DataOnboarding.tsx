@@ -1,171 +1,171 @@
 'use client';
-import { useState, useRef } from 'react';
-import Papa from 'papaparse';
-import * as ExcelJS from 'exceljs';
+import { useEffect, useRef, useState } from 'react';
 import { DatasetPreview } from './DatasetPreview';
-import type { Point, Frequency } from '@/lib/csv';
+import type { Frequency } from '@/lib/csv';
+import type { ColumnMapping } from '@/lib/dataset-import';
 
-type Mapping = {
-  dateCol: string;
-  valueCol: string;
-};
-
+type Preview = { headers: string[]; rows: string[][]; rowCount: number };
 export function DataOnboarding({
+  wid,
   onSuccess,
   onCancel,
 }: {
-  onSuccess: (data: { csv: string; name: string; frequency: Frequency }) => void;
+  wid: string;
+  onSuccess: (id: string) => Promise<void>;
   onCancel: () => void;
 }) {
-  const [file, setFile] = useState<File | null>(null);
-  const [headers, setHeaders] = useState<string[]>([]);
-  const [data, setData] = useState<any[][]>([]);
-  const [mapping, setMapping] = useState<Mapping>({ dateCol: '', valueCol: '' });
-  const [frequency, setFrequency] = useState<Frequency>('daily');
-  const [error, setError] = useState('');
-  const [validating, setValidating] = useState(false);
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (!selectedFile) return;
-
-    if (selectedFile.size > 1_000_000) {
+  const dialog = useRef<HTMLDialogElement>(null),
+    feedback = useRef<HTMLParagraphElement>(null);
+  const [file, setFile] = useState<File | null>(null),
+    [preview, setPreview] = useState<Preview | null>(null);
+  const [mapping, setMapping] = useState<ColumnMapping>({ dateCol: 0, valueCol: 1 });
+  const [frequency, setFrequency] = useState<Frequency>('daily'),
+    [error, setError] = useState(''),
+    [busy, setBusy] = useState(false);
+  const request = useRef<AbortController | null>(null);
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    dialog.current?.showModal();
+    return () => {
+      request.current?.abort();
+      previous?.focus();
+    };
+  }, []);
+  async function send(selected: File, mode: string) {
+    const controller = new AbortController();
+    request.current = controller;
+    const form = new FormData();
+    form.set('file', selected);
+    form.set('mode', mode);
+    form.set('frequency', frequency);
+    form.set('dateCol', String(mapping.dateCol));
+    form.set('valueCol', String(mapping.valueCol));
+    const res = await fetch(`/api/workspaces/${wid}/datasets/import`, {
+      method: 'POST',
+      body: form,
+      signal: controller.signal,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Import failed. Please try again.');
+    return data;
+  }
+  async function choose(selected: File | undefined) {
+    if (!selected) return;
+    setError('');
+    setPreview(null);
+    setFile(null);
+    if (selected.size > 1_000_000) {
       setError('File must be smaller than 1 MB.');
       return;
     }
-
-    setFile(selectedFile);
-    setError('');
-
+    setBusy(true);
     try {
-      if (selectedFile.name.endsWith('.csv')) {
-        const text = await selectedFile.text();
-        Papa.parse(text, {
-          header: false,
-          skipEmptyLines: true,
-          complete: (results) => {
-            if (results.data.length === 0) throw new Error('File is empty.');
-            const rows = results.data as any[][];
-            const head = rows[0].map(String);
-            setHeaders(head);
-            setData(rows.slice(1));
-            setMapping({
-              dateCol: head.find((h) => /date|time/i.test(h)) || head[0],
-              valueCol: head.find((h) => /value|amount|count/i.test(h)) || head[1] || head[0],
-            });
-          },
-        });
-      } else if (selectedFile.name.endsWith('.xlsx')) {
-        const arrayBuffer = await selectedFile.arrayBuffer();
-        const workbook = new ExcelJS.Workbook();
-        await workbook.xlsx.load(arrayBuffer);
-        const worksheet = workbook.getWorksheet(1);
-        if (!worksheet) throw new Error('Workbook contains no sheets.');
-
-        const rows: any[][] = [];
-        worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-          const rowValues = [];
-          row.eachCell({ includeEmpty: true }, (cell) => {
-            // Explicitly reject cells containing formulas
-            if (cell.formula) {
-              throw new Error(`Formula detected at row ${rowNumber}, cell ${cell.address}. Formulas are not permitted.`);
-            }
-            rowValues.push(cell.value);
-          });
-          rows.push(rowValues);
-        });
-
-        if (rows.length === 0) throw new Error('File is empty.');
-        const head = rows[0].map(String);
-        setHeaders(head);
-        setData(rows.slice(1));
-        setMapping({
-          dateCol: head.find((h) => /date|time/i.test(h)) || head[0],
-          valueCol: head.find((h) => /value|amount|count/i.test(h)) || head[1] || head[0],
-        });
-      } else {
-        throw new Error('Unsupported file format. Use CSV or XLSX.');
-      }
+      const data: Preview = await send(selected, 'preview');
+      setPreview(data);
+      setFile(selected);
+      const date = Math.max(
+        0,
+        data.headers.findIndex((h) => /date|time/i.test(h)),
+      );
+      const found = data.headers.findIndex((h, i) => i !== date && /value|amount|count/i.test(h));
+      setMapping({ dateCol: date, valueCol: found < 0 ? (date === 0 ? 1 : 0) : found });
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Unable to read file.');
-    }
-  };
-
-  const handleConfirm = async () => {
-    if (!file) return;
-    setValidating(true);
-    setError('');
-
-    try {
-      // Convert selected data to standard CSV for the existing API
-      const points: any[][] = [
-        [mapping.dateCol, mapping.valueCol],
-        ...data.map((row) => {
-          const dateIdx = headers.indexOf(mapping.dateCol);
-          const valIdx = headers.indexOf(mapping.valueCol);
-          return [row[dateIdx], row[valIdx]];
-        }),
-      ];
-      const csvString = Papa.unparse(points);
-
-      onSuccess({
-        csv: csvString,
-        name: file.name,
-        frequency,
-      });
-    } catch (e) {
-      setError('Validation failed. Please check your column mapping.');
+      if ((e as Error).name !== 'AbortError') setError((e as Error).message);
     } finally {
-      setValidating(false);
+      setBusy(false);
     }
-  };
-
+  }
+  async function confirm() {
+    if (!file) return;
+    setBusy(true);
+    setError('');
+    try {
+      const data = await send(file, 'import');
+      await onSuccess(data.id);
+      onCancel();
+    } catch (e) {
+      if ((e as Error).name !== 'AbortError') {
+        setError((e as Error).message);
+        requestAnimationFrame(() => feedback.current?.focus({ preventScroll: true }));
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
-    <div className="onboarding-modal">
+    <dialog
+      ref={dialog}
+      className="onboarding-modal"
+      aria-labelledby="import-title"
+      onCancel={onCancel}
+    >
       <div className="onboarding-content">
         <header>
-          <h2>Import Dataset</h2>
-          <button className="text-button" onClick={onCancel}>Cancel</button>
+          <div>
+            <h2 id="import-title">Bring your history.</h2>
+          </div>
+          <button className="text-button" onClick={onCancel}>
+            Cancel
+          </button>
         </header>
-
-        {!file ? (
-          <div className="upload-zone">
+        <div className="onboarding-scroll">
+          <p>
+            CSV or XLSX, one worksheet, up to 1 MB. Choose your date and numeric value columns. Use
+            ISO dates or date-only Excel cells.
+          </p>
+          <label className="import-file-label">
+            Choose a CSV or XLSX
             <input
               type="file"
-              id="file-upload"
-              accept=".csv,.xlsx,.xls"
-              onChange={handleFileChange}
-              className="sr-only"
+              accept=".csv,.xlsx"
+              disabled={busy}
+              onChange={(e) => void choose(e.target.files?.[0])}
             />
-            <label htmlFor="file-upload" className="upload-label">
-              <span className="upload-symbol">↥</span>
-              <strong>Drop your data here</strong>
-              <p>CSV or XLSX · Up to 1 MB</p>
-            </label>
+          </label>
+          {error ? (
+            <p ref={feedback} tabIndex={-1} className="error" role="alert">
+              {error}
+            </p>
+          ) : null}
+          {busy ? <p role="status">Checking your data…</p> : null}
+          {preview ? (
+            <>
+              <p>
+                {file?.name} / {preview.rowCount} observations. Nothing is saved until you confirm.
+              </p>
+              <DatasetPreview
+                headers={preview.headers}
+                data={preview.rows}
+                mapping={mapping}
+                onMappingChange={(next) => {
+                  setMapping(next);
+                  setError('');
+                }}
+                frequency={frequency}
+                onFrequencyChange={(next) => {
+                  setFrequency(next);
+                  setError('');
+                }}
+              />
+              <p className="muted">
+                8–5,000 consecutive periods. Duplicates, gaps, invalid numbers and formulas must be
+                corrected in the source file. Missing values are never filled silently.
+              </p>
+            </>
+          ) : null}
+        </div>
+        {preview ? (
+          <div className="onboarding-footer">
+            <button
+              className="button primary"
+              disabled={busy || mapping.dateCol === mapping.valueCol}
+              onClick={() => void confirm()}
+            >
+              Import dataset
+            </button>
           </div>
-        ) : (
-          <div className="onboarding-step">
-            <DatasetPreview
-              data={data}
-              headers={headers}
-              mapping={mapping}
-              onMappingChange={setMapping}
-              frequency={frequency}
-              onFrequencyChange={setFrequency}
-            />
-            <div className="onboarding-footer">
-              {error && <p className="error">{error}</p>}
-              <button
-                className="button primary"
-                disabled={validating}
-                onClick={handleConfirm}
-              >
-                {validating ? 'Validating...' : 'Import Dataset ↗'}
-              </button>
-            </div>
-          </div>
-        )}
+        ) : null}
       </div>
-    </div>
+    </dialog>
   );
 }

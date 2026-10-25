@@ -49,6 +49,10 @@ const scopes = [
       'apps/web/app/globals.css',
       'apps/web/components/workspace.tsx',
       'apps/web/components/chart.tsx',
+      ...['DatasetsView', 'ForecastControls', 'JobsView', 'ResultsView'].map(
+        (n) => `apps/web/components/workspace/${n}.tsx`,
+      ),
+      ...['DataOnboarding', 'DatasetPreview'].map((n) => `apps/web/components/onboarding/${n}.tsx`),
     ],
     routes: [],
   },

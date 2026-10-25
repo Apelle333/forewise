@@ -12,31 +12,27 @@ export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const workspaceId = searchParams.get('workspaceId');
 
-    if (!workspaceId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(workspaceId)) {
+    if (
+      !workspaceId ||
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(workspaceId)
+    ) {
       throw new JobError(400, 'A valid workspaceId is required.');
     }
 
-    const jobs = await asUser(
-      db,
-      userId,
-      async (tx) =>
-        (
-          await tx.query(
-            `SELECT
-              j.id, j.status, j.attempts, j.error, j.created_at, j.updated_at,
-              COALESCE(j.payload->>'contract_version', '1') AS "contractVersion"
-             FROM forecast_jobs j
-             WHERE j.workspace_id=$1
-             ORDER BY j.created_at DESC`,
-            [workspaceId],
-          )
-        ).rows,
-    );
+    const jobs = await asUser(db, userId, async (tx) => {
+      if (!(await tx.query('SELECT id FROM workspaces WHERE id=$1', [workspaceId])).rows.length)
+        throw new JobError(404, 'Workspace not found.');
+      return (
+        await tx.query(
+          `SELECT id,dataset_id,result_id,status,attempts,error,created_at,updated_at,
+         payload->>'model' AS model,payload->>'horizon' AS horizon
+         FROM forecast_jobs WHERE workspace_id=$1 ORDER BY created_at DESC LIMIT 100`,
+          [workspaceId],
+        )
+      ).rows;
+    });
 
-    return NextResponse.json(
-      jobs,
-      { headers: { 'Cache-Control': 'no-store' } },
-    );
+    return NextResponse.json({ jobs }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     return jobError(error);
   }
@@ -96,6 +92,9 @@ export async function POST(req: NextRequest) {
       );
     const jobId = randomUUID();
     await asUser(db, userId, async (tx) => {
+      await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1::uuid::text,0))', [
+        workspaceId,
+      ]);
       const found = await tx.query<{ points: unknown; frequency: string }>(
         'SELECT points,frequency FROM datasets WHERE id=$1 AND workspace_id=$2',
         [datasetId, workspaceId],
