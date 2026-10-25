@@ -18,6 +18,8 @@ Four public series: UCI daily bicycle rental counts, weekly initial unemployment
 
 `scripts/prepare-quality-fixtures.py` pins raw source bytes and fails on source revision drift. `--download` explicitly permits public retrieval; otherwise it uses the ignored local source cache. Prepared CSVs are committed and hash-checked on every benchmark/test. No additional model weights, runtime libraries or customer data are introduced.
 
+Prepared CSVs/manifests and result JSON use explicit UTF-8/LF bytes, with scoped Git attributes; platform text-mode newline conversion must not change a fingerprint. The recorded full-matrix evidence was normalized to this representation after execution: all numerical case data and raw forecast folds were verified unchanged, with both original and canonical fingerprints retained in provenance. Unit tests verify manifest/report identity as well as each CSV digest.
+
 UCI attribution: Fanaee-T, H. (2013), *Bike Sharing*, UCI Machine Learning Repository, [DOI 10.24432/C5W894](https://doi.org/10.24432/C5W894), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Conversion keeps `dteday` and `cnt`, renames to `date,value`, drops unused columns; no imputation or changed numerical observations.
 
 ICSA attribution: U.S. Employment and Training Administration, retrieved from [FRED](https://fred.stlouisfed.org/series/ICSA), Federal Reserve Bank of St. Louis, 25 October 2026; public-domain series, citation requested. Date range ends 27 December 2025. This is a **revised snapshot, not an as-of historical vintage**; seasonal adjustments may use later information. It is useful for pipeline stress testing, not proof of historically achievable trading/business performance.

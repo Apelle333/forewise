@@ -3,7 +3,7 @@
   "model": "mistralai/Timestral-209M",
   "weights_revision": "9874d252ab0aae16f7f7c999f98f98d6ad7d8365",
   "implementation_revision": "a534bdbd244d64f3d9d743f46c7bf6fc330ed4ff",
-  "fixture_manifest_sha256": "6a67f8cbea1a1a347610445a50d01e43d252747524dcbdfab91b8f8a6b9c9b3f",
+  "fixture_manifest_sha256": "3efddea77af2fabccfc390a6e492c1edce4e9f7a8197805d5fa63c2e18fbb1fd",
   "protocol": {
     "calibration_windows": 30,
     "test_windows": 30,

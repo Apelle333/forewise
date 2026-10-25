@@ -230,11 +230,11 @@ def main():
     }
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    output.write_bytes((json.dumps(report, indent=2, allow_nan=False) + "\n").encode("utf-8"))
     if args.folds_output:
         target = Path(args.folds_output)
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(json.dumps(audit, allow_nan=False), encoding="utf-8")
+        target.write_bytes(json.dumps(audit, allow_nan=False).encode("utf-8"))
 
 
 if __name__ == "__main__":

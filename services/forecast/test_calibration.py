@@ -120,6 +120,10 @@ def test_interval_metrics_refuse_malformed_or_infinite_intervals():
 def test_committed_fixture_hashes_counts_and_ingestion_contract_are_valid():
     root = Path(__file__).resolve().parents[2] / "docs/phase-03a/fixtures"
     manifest = json.loads((root / "manifest.json").read_text())
+    manifest_bytes = (root / "manifest.json").read_bytes()
+    assert b"\r\n" not in manifest_bytes
+    report = json.loads((root.parent / "evidence/benchmark.json").read_text())
+    assert report["fixture_manifest_sha256"] == hashlib.sha256(manifest_bytes).hexdigest()
     for series in manifest["series"]:
         path = root / f"{series['name']}.csv"
         assert hashlib.sha256(path.read_bytes()).hexdigest() == series["sha256"]

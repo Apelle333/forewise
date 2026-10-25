@@ -145,8 +145,8 @@ def main():
             "Explicit synthetic stress fixture, deterministic seed 20261025. See generator; no business validation.",
             [1, 6, 12] if monthly else [1, 7, 28],
         )
-    (TARGET / "manifest.json").write_text(
-        json.dumps({"sources": SOURCES, "series": manifest}, indent=2) + "\n", encoding="utf-8"
+    (TARGET / "manifest.json").write_bytes(
+        (json.dumps({"sources": SOURCES, "series": manifest}, indent=2) + "\n").encode("utf-8")
     )
     print(json.dumps([{"name": s["name"], "count": s["count"]} for s in manifest]))
 

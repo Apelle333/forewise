@@ -13,7 +13,8 @@
     "evaluated_cases": 21,
     "explicitly_insufficient_cases": 4,
     "real_inference_calls": 1260,
-    "targeted_resize_repetitions_passed": 15
+    "targeted_resize_repetitions_passed": 15,
+    "cross_platform_fingerprints": "Explicit UTF-8/LF serialization; manifest/report/CSV identity validated; numerical cases and raw folds unchanged after normalization."
   },
   "production_api_worker_ui_changed": false,
   "claude_review": {
