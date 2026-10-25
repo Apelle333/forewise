@@ -158,10 +158,11 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
         .analyze();
       expect(audit.violations).toEqual([]);
-      await page.screenshot({
+      const screenshot = await page.screenshot({
         path: phase03bEvidencePath(`results-${width}.png`),
         fullPage: true,
       });
+      expect(screenshot.readUInt32BE(16), 'PNG width must match its viewport label').toBe(width);
     }
     const other = await playwright.request.newContext({
       baseURL: 'http://127.0.0.1:3000',
@@ -179,24 +180,6 @@ test('real public CSV through dashboard, pinned 209M worker, native quantiles an
     expect((await other.get(`/api/forecast-jobs/${jobId}`)).status()).toBe(404);
     expect((await other.get(`/api/workspaces/${session.workspaces[0].id}`)).status()).toBe(404);
     await other.dispose();
-    await fs.writeFile(
-      phase03bEvidencePath('real-air-passengers-result.json'),
-      JSON.stringify(result, null, 2),
-    );
-    await page
-      .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: phase03bEvidencePath('result-desktop.png') });
-    await page.setViewportSize({ width: 768, height: 1024 });
-    await page
-      .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: phase03bEvidencePath('result-tablet.png') });
-    await page.setViewportSize({ width: 390, height: 844 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
-    await page
-      .getByRole('region', { name: 'Forecast result', exact: true })
-      .screenshot({ path: phase03bEvidencePath('result-mobile.png') });
     await page.reload();
     await page.getByRole('button', { name: /03 Results/ }).click();
     await page.getByLabel('Saved forecast').selectOption(run.id);

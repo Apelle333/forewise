@@ -1,0 +1,29 @@
+{
+  "run_url": "https://github.com/Apelle333/forewise/actions/runs/40243760957",
+  "head_revision": "39dd4e7fc4335860a6bde36dfaa36509c5183fc6",
+  "artifact_id": 12617284490,
+  "archive_sha256": "7e51c8d600c3bb1225acdd4ecfcdb6aa7690f05555fba14c23fa0a55ebe5da90",
+  "browser": {
+    "total": 36,
+    "expected": 36,
+    "unexpected": 0,
+    "flaky": 0,
+    "skipped": 0
+  },
+  "browser_platform": "linux",
+  "browser_manifest_hashes_verified": 12,
+  "render_targets": 4,
+  "render_screenshots_sha256_verified": 20,
+  "render_browser": {
+    "success": true,
+    "executablePath": "/opt/google/chrome/chrome",
+    "version": "Chrome/155.0.8059.39",
+    "sandbox": "Sandbox Status\nLayer 1 Sandbox\tNamespace\nPID namespaces\tYes\nNetwork namespaces\tYes\nSeccomp-BPF sandbox\tYes\nSeccomp-BPF sandbox supports TSYNC\tYes\nPtrace Protection with Yama LSM (Broker)\tYes\nPtrace Protection with Yama LSM (Non-broker)\tNo\n\nYou are adequately sandboxed.",
+    "sandboxFields": {
+      "Layer 1 Sandbox": "Namespace",
+      "PID namespaces": "Yes",
+      "Network namespaces": "Yes",
+      "Seccomp-BPF sandbox": "Yes"
+    }
+  }
+}
