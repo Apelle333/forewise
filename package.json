@@ -21,7 +21,8 @@
     "design:setup": "python scripts/install-hallmark.py",
     "design:audit": "npm run design:setup && node scripts/hallmark-audit.mjs",
     "design:render": "npm run design:setup && node scripts/hallmark-audit.mjs --render",
-    "design:check": "npm run design:setup && node scripts/hallmark-audit.mjs --check"
+    "design:check": "npm run design:setup && node scripts/hallmark-audit.mjs --check",
+    "test:design": "npm run design:setup && node --test scripts/hallmark-gate.test.mjs && python -m unittest discover -s scripts -p test_hallmark_install.py -v"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",

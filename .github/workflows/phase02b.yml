@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   local-foundation-and-ai:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     services:
       postgres:
@@ -26,8 +26,12 @@ jobs:
       FORECAST_SERVICE_TOKEN: local-ci-only-internal-service-token-123456
       RUN_TIMESTRAL_INTEGRATION: '1'
       FOREWISE_MODEL_DEVICE: cpu
+      # Chrome stable has Ubuntu's supported AppArmor profile. Keep its sandbox enabled.
+      CHROME_PATH: /opt/google/chrome/chrome
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24.18.0'
@@ -43,6 +47,10 @@ jobs:
           npm ci
           npx playwright install --with-deps chromium
       - run: node --import tsx scripts/database.mjs
+      - name: Verify supported Chrome installation
+        run: |
+          test -x "$CHROME_PATH"
+          "$CHROME_PATH" --version
       - run: npm run verify
       - name: Phase 03A real-model CPU quality smoke test
         run: .venv/bin/python scripts/benchmark-quality.py --device cpu --only bike_daily --horizons 1 --output .data/phase03a-ci-smoke.json
@@ -64,6 +72,8 @@ jobs:
             docs/phase-02b/evidence/
             .data/checks/results.json
             .data/phase03a-ci-smoke.json
-            .data/hallmark/*/render.json
-            .data/hallmark/*/.hallmark/shots/*.png
+            .data/checks/*.log
+            .data/hallmark/render-results.json
+            .data/hallmark/render-*/
+          include-hidden-files: true
           retention-days: 14

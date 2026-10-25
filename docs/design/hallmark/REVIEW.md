@@ -1,5 +1,7 @@
 # Hallmark integration and scoped polish
 
+**CI evidence correction:** the initial green run did not execute Hallmark rendering on Linux because Chromium startup failed. Its green conclusion must not be used as rendered evidence. See [the verification repair and independent-review contract](CI-GATE-REPAIR.md); local visual evidence and the functional test suite are separate.
+
 Owner request: apply [Nutlope/Hallmark](https://github.com/Nutlope/hallmark) while continuing Forewise. This is an existing approved design, so the intervention preserves Forecast Horizon, Fieldnotes, Three.js, typography, palette, routes, model contracts and synthetic-data disclosures. No theme was dealt and no product feature was added.
 
 ## Reproducible local integration
