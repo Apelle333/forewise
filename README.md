@@ -1,6 +1,6 @@
 # Forewise
 
-**Phase 02B approved for continued development on 25 October 2026; commercial release remains unapproved.** Current milestone: [Phase 03A forecast quality protocol](docs/phase-03a/PROTOCOL.md). Research-only interval adjustments and model recommendations do not change the operational API or defaults. Each Phase 03 milestone stops for independent Claude review and owner acceptance.
+**Phase 02B approved for continued development on 25 October 2026; commercial release remains unapproved.** Current milestone: [Phase 03A forecast quality protocol](docs/phase-03a/PROTOCOL.md). Research-only interval adjustments and model recommendations do not change the operational API or defaults. Each Phase 03 milestone stops for independent Claude review.
 
 An English, general-purpose B2B forecasting workspace. **Phase 02B: genuine local Timestral 209M and SeasonalNaive through the secure asynchronous PostgreSQL queue.** Public cinematic demos remain synthetic. No production deployment, payments or paid infrastructure is configured. See [Phase 02B setup, contracts, license and limitations](docs/phase-02b/README.md) and [measured CPU/GPU benchmarks](docs/phase-02b/BENCHMARKS.md).
 
@@ -75,4 +75,4 @@ Visual checks: `node scripts/capture-design.mjs after` captures 10 states at 144
 
 This is not a production-ready release. Email verification/recovery, invitations, hosted infrastructure hardening, backup/restore, customer data handling, monitoring and domain-specific model validation/calibration remain production gates. The local PostgreSQL queue and real model evaluation are implemented. Billing remains disabled. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency/model licenses remain with their respective authors.
 
-**STOP: independent review and owner acceptance are required at each Phase 03 milestone. Production deployment, commercial release and merge remain unapproved.**
+**STOP: independent Claude review is required at each Phase 03 milestone. Production deployment, commercial release and merge remain unapproved.**

@@ -55,4 +55,4 @@ Do not tune the candidate against this exposed test matrix and then call the sam
 
 Thirty origins per lead is pilot evidence, not a promise of adequate precision. Bootstrap ranges preserve short origin blocks but do not establish exchangeability, stationarity, pretraining independence or production coverage. The ICSA snapshot is revised, not a historical vintage.
 
-Validation and CI outcome are recorded separately after execution. No frontend/worker/authorization/model-contract changes are included. Phase 03B starts only after this milestone review and owner acceptance.
+Validation and CI outcome are recorded separately after execution. No frontend/worker/authorization/model-contract changes are included. Phase 03B starts only after this milestone independent review.

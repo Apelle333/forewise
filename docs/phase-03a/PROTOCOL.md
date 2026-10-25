@@ -8,7 +8,7 @@ The owner approved Phase 02B at `d460913` for continued development on 25 Octobe
 
 Phase 03 milestones:
 
-1. **03A / quality evidence**: larger past-only evaluation, empirical interval calibration, statistical model comparison and auditable decision rules. Stop for independent Claude review and owner acceptance.
+1. **03A / quality evidence**: larger past-only evaluation, empirical interval calibration, statistical model comparison and auditable decision rules. Stop for independent Claude review.
 2. **03B / usable data-to-decision flow**: CSV/Excel onboarding, explicit treatment of imperfect data, understandable results/exports/error recovery. Scope and acceptance refine from the 03A evidence; no silent interpolation or new dependency by default.
 3. **03C / private beta readiness**: security/load limits, measured per-job resource/cost accounting, monitoring and private beta checklist. No public launch or paid infrastructure activation by implication.
 
@@ -74,4 +74,4 @@ Compare Timestral median with the existing period-7 daily / period-1 weekly-mont
 
 CPU smoke test in CI uses `--only bike_daily --horizons 1`; it is clearly marked as a smoke result, not the full matrix. Full matrix evidence runs the same pinned 209M model as Phase 02B. Raw calibration/test forecasts and targets are retained in the user-facing handoff archive for audit; no fabricated benchmark predictions. Unit tests use explicitly labelled analytic fixtures/spies only to check arithmetic and control flow.
 
-No candidate reaches production merely because this harness passes tests. Independent Claude review must examine leakage, sample adequacy, numerical correctness, coverage/width tradeoffs and unchanged tenant/worker/API behavior. Owner acceptance ends this milestone.
+No candidate reaches production merely because this harness passes tests. Independent Claude review must examine leakage, sample adequacy, numerical correctness, coverage/width tradeoffs and unchanged tenant/worker/API behavior. A genuine independent Claude review is required before advancing within the approved Phase 03 development scope. Commercial release, production deployment and merges still require explicit owner authorization.
