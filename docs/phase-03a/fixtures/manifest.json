@@ -1,0 +1,123 @@
+{
+  "sources": {
+    "bike.zip": [
+      "https://archive.ics.uci.edu/static/public/275/bike+sharing+dataset.zip",
+      "b70182d0d0508e9abbb79306ce5c0cec34869000f8220175ac83d11dbe845401"
+    ],
+    "sunspots.csv": [
+      "https://vincentarelbundock.github.io/Rdatasets/csv/datasets/sunspots.csv",
+      "8db04db1d4406f8a005c00fc3a4647de1845fd3e7e7bbde4ad176a19037c9e60"
+    ],
+    "claims.csv": [
+      "https://fred.stlouisfed.org/graph/fredgraph.csv?id=ICSA&cosd=2010-01-02&coed=2025-12-27",
+      "9eaba9b572e1361490d848900c2a4e6ffc3549af1b5c819355ebfb787632e22e"
+    ]
+  },
+  "series": [
+    {
+      "name": "bike_daily",
+      "frequency": "daily",
+      "units": "daily rental count",
+      "count": 731,
+      "sha256": "056322659bbc94409cd7ea8a03fb12e8a7688613657c8f10fad228b55e503d30",
+      "source": "UCI Bike Sharing; Fanaee-T (2013), DOI 10.24432/C5W894; CC BY 4.0. dteday/cnt only; no imputation.",
+      "horizons": [
+        1,
+        7,
+        14,
+        28
+      ]
+    },
+    {
+      "name": "sunspots_monthly",
+      "frequency": "monthly",
+      "units": "monthly mean relative sunspot number",
+      "count": 2820,
+      "sha256": "1512ba1508c36f087448a547101be27dca7ec7cd8fd768357dc173635ace9879",
+      "source": "R datasets sunspots (1749\u20131983), Andrews/Herzberg; Swiss Federal/Tokyo observatory. Rdatasets mirror; numerical observations unchanged.",
+      "horizons": [
+        1,
+        6,
+        12
+      ]
+    },
+    {
+      "name": "initial_claims_weekly",
+      "frequency": "weekly",
+      "units": "initial claims, seasonally adjusted count",
+      "count": 835,
+      "sha256": "5dd95deecbd2c3b0ad4de1bce6d3f9964ad903ec43bcc10c95ba38dbe369c94b",
+      "source": "U.S. Employment and Training Administration, ICSA via FRED; public domain, citation requested. 2010-01-02 through 2025-12-27; revision snapshot retrieved 2026-10-25, not an as-of vintage.",
+      "horizons": [
+        1,
+        4,
+        12
+      ]
+    },
+    {
+      "name": "air_passengers",
+      "frequency": "monthly",
+      "units": "thousands of international airline passengers",
+      "count": 144,
+      "sha256": "9312906f56e35f92a7b6d54c0aad123092299b07d2ad7b930b031451ad6755af",
+      "source": "Same public R AirPassengers series as Phase 02B; Box/Jenkins attribution and source notices retained there.",
+      "horizons": [
+        1,
+        6,
+        12
+      ]
+    },
+    {
+      "name": "synthetic_demand",
+      "frequency": "daily",
+      "units": "synthetic units",
+      "count": 2000,
+      "sha256": "5cd06756e25ab68d64bce0c6af458239908f944d17e2c0bc047fac81d4d0a7f8",
+      "source": "Explicit synthetic stress fixture, deterministic seed 20261025. See generator; no business validation.",
+      "horizons": [
+        1,
+        7,
+        28
+      ]
+    },
+    {
+      "name": "synthetic_intermittent",
+      "frequency": "daily",
+      "units": "synthetic units",
+      "count": 2000,
+      "sha256": "5f6c25fcbbdef683ef8f4a75fea1e71cc61254d0803487ce20d751e262e02f71",
+      "source": "Explicit synthetic stress fixture, deterministic seed 20261025. See generator; no business validation.",
+      "horizons": [
+        1,
+        7,
+        28
+      ]
+    },
+    {
+      "name": "synthetic_regime_shift",
+      "frequency": "daily",
+      "units": "synthetic units",
+      "count": 2000,
+      "sha256": "33a1329eb627e9bead1f25e2d777464e6d2b44c6707a6919d1c42a29970213dd",
+      "source": "Explicit synthetic stress fixture, deterministic seed 20261025. See generator; no business validation.",
+      "horizons": [
+        1,
+        7,
+        28
+      ]
+    },
+    {
+      "name": "synthetic_revenue",
+      "frequency": "monthly",
+      "units": "synthetic units",
+      "count": 1000,
+      "sha256": "76dfb8cf0375650ffc71e4ef48e132af38902672824a76ff3f94e3454a24b17c",
+      "source": "Explicit synthetic stress fixture, deterministic seed 20261025. See generator; no business validation.",
+      "horizons": [
+        1,
+        6,
+        12
+      ]
+    }
+  ]
+}
