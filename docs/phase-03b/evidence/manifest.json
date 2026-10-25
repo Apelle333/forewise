@@ -1,0 +1,456 @@
+{
+  "tested_code_commit": "074a305605f1e25e07cb1996dba0518a282cec90",
+  "working_source_clean_after_checks": true,
+  "source_checks": {
+    "timestamp_utc": "2026-10-25T19:46:12.979441+00:00",
+    "checks": [
+      {
+        "check": "lint",
+        "exit_code": 0
+      },
+      {
+        "check": "format",
+        "exit_code": 0
+      },
+      {
+        "check": "hallmark-baseline",
+        "exit_code": 0
+      },
+      {
+        "check": "hallmark-positive-negative-tests",
+        "exit_code": 0
+      },
+      {
+        "check": "python-lint",
+        "exit_code": 0
+      },
+      {
+        "check": "python-format",
+        "exit_code": 0
+      },
+      {
+        "check": "typecheck",
+        "exit_code": 0
+      },
+      {
+        "check": "unit-tests",
+        "exit_code": 0
+      },
+      {
+        "check": "python-tests",
+        "exit_code": 0
+      },
+      {
+        "check": "python-dependencies",
+        "exit_code": 0
+      },
+      {
+        "check": "build",
+        "exit_code": 0
+      },
+      {
+        "check": "npm-audit",
+        "exit_code": 0
+      },
+      {
+        "check": "python-audit",
+        "exit_code": 0
+      }
+    ]
+  },
+  "tests": {
+    "node_postgres": {
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0
+    },
+    "python": {
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser_chromium_windows": {
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0
+    },
+    "hallmark_gate_positive_negative": {
+      "passed": 20
+    },
+    "hallmark_installer": {
+      "passed": 12
+    }
+  },
+  "render": {
+    "purpose": "required-render-audit",
+    "revision": "074a305605f1e25e07cb1996dba0518a282cec90",
+    "success": true,
+    "requiredTargets": [
+      "http://127.0.0.1:3000/",
+      "http://127.0.0.1:3000/explorations",
+      "http://127.0.0.1:3000/register",
+      "http://127.0.0.1:3000/login"
+    ],
+    "targets": [
+      {
+        "target": "http://127.0.0.1:3000/",
+        "success": true,
+        "report": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/raw-report.json",
+        "render": "ran",
+        "screenshots": [
+          {
+            "tag": "375",
+            "width": 375,
+            "height": 5139,
+            "sha256": "f1fee94922aa2b07fd6052f4e6db34dba0313df0513823fbf322dda62a144777",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-375.png"
+          },
+          {
+            "tag": "1280x800",
+            "width": 1280,
+            "height": 800,
+            "sha256": "28ed770320ece1806ca621be94a9fdbd33c3c3e215efd4e2c1495c2907afa5ed",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1280x800.png"
+          },
+          {
+            "tag": "1440x900",
+            "width": 1440,
+            "height": 900,
+            "sha256": "f6a7f0650d0a5b2614db36358e8739bc6e0b5472d2cdc7e4921b5e74d9ea5d4e",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1440x900.png"
+          },
+          {
+            "tag": "1920x1080",
+            "width": 1920,
+            "height": 1080,
+            "sha256": "edb3e883507ea304cd22ac97333f6511753de9e65d2dd65f55747d0f1d60fac3",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1920x1080.png"
+          },
+          {
+            "tag": "1440-full",
+            "width": 1440,
+            "height": 4514,
+            "sha256": "b6114e4dec01bcaaef1f9dbda587252a7c920d10ae65e3763facf8d0cb451548",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1440-full.png"
+          }
+        ]
+      },
+      {
+        "target": "http://127.0.0.1:3000/explorations",
+        "success": true,
+        "report": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/raw-report.json",
+        "render": "ran",
+        "screenshots": [
+          {
+            "tag": "375",
+            "width": 375,
+            "height": 1756,
+            "sha256": "7bd026e1f0efaaffd7e2b905816591cde867f3c823fb58267c0abeb516905010",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-375.png"
+          },
+          {
+            "tag": "1280x800",
+            "width": 1280,
+            "height": 800,
+            "sha256": "cf52834f0a02c9804c955aed7dfd60d1c16140312f20fe35e71ccb1a46c07408",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1280x800.png"
+          },
+          {
+            "tag": "1440x900",
+            "width": 1440,
+            "height": 900,
+            "sha256": "d46588d653115e6dfd702f616dac28ddeb72932b5dfe3d3afde745efc7e6299a",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1440x900.png"
+          },
+          {
+            "tag": "1920x1080",
+            "width": 1920,
+            "height": 1080,
+            "sha256": "c754151679b43b3135901634ae22b9b5290bd422f029ee35125102181418bfa6",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1920x1080.png"
+          },
+          {
+            "tag": "1440-full",
+            "width": 1440,
+            "height": 1750,
+            "sha256": "dc4d0b7e09367038f3b6bb082fc2af8a9529506b7abf90e7285272af3b5cdf73",
+            "file": ".data/hallmark/render-MOIvvZ/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1440-full.png"
+          }
+        ]
+      },
+      {
+        "target": "http://127.0.0.1:3000/register",
+        "success": true,
+        "report": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/raw-report.json",
+        "render": "ran",
+        "screenshots": [
+          {
+            "tag": "375",
+            "width": 375,
+            "height": 1018,
+            "sha256": "5d759aa4eb3fc8af9a006ab7e2163c1e4ee97b0beb18490aa328d6d6134d9a4f",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-375.png"
+          },
+          {
+            "tag": "1280x800",
+            "width": 1280,
+            "height": 800,
+            "sha256": "9ca13329f965ffd6dd2c9eea1b36f15d153a6ed8421ea30fef30f2a8095cbb9e",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1280x800.png"
+          },
+          {
+            "tag": "1440x900",
+            "width": 1440,
+            "height": 900,
+            "sha256": "4d8810dd7fad0383673f4391f785341ab28b19f76b017979eeaa665868d67a8b",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1440x900.png"
+          },
+          {
+            "tag": "1920x1080",
+            "width": 1920,
+            "height": 1080,
+            "sha256": "fda2ea8c8db48662f5c8a8a651b343c50d142ff70f15ace317decb4d3cc4c606",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1920x1080.png"
+          },
+          {
+            "tag": "1440-full",
+            "width": 1440,
+            "height": 1043,
+            "sha256": "cfe2222f6ab16ca665ff3e43e3fb78744d0b1722e2e37635508792f9023c883c",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1440-full.png"
+          }
+        ]
+      },
+      {
+        "target": "http://127.0.0.1:3000/login",
+        "success": true,
+        "report": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/raw-report.json",
+        "render": "ran",
+        "screenshots": [
+          {
+            "tag": "375",
+            "width": 375,
+            "height": 800,
+            "sha256": "9ea612dc51dbaee64f4561411c812020d1b0b718adc8da59e519276d097ed076",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-375.png"
+          },
+          {
+            "tag": "1280x800",
+            "width": 1280,
+            "height": 800,
+            "sha256": "aa342a326f751557f60b0ee65bf04931635ecd4e2e56ab99fde40d8e8d3eb9da",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1280x800.png"
+          },
+          {
+            "tag": "1440x900",
+            "width": 1440,
+            "height": 900,
+            "sha256": "8bc0d21c78136cf010ab15f70235317335118381cdbd2d068ed4ce72f76e4c05",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1440x900.png"
+          },
+          {
+            "tag": "1920x1080",
+            "width": 1920,
+            "height": 1080,
+            "sha256": "9cb78f04502c99ff43bfe36c1a1f35ef5176a1189362b2f108e49d2a35025d50",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1920x1080.png"
+          },
+          {
+            "tag": "1440-full",
+            "width": 1440,
+            "height": 904,
+            "sha256": "a8af312b0b533bacc046d9514bc6ac03a32ac03c1108771b5d933cb765b13ccb",
+            "file": ".data/hallmark/render-MOIvvZ/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1440-full.png"
+          }
+        ]
+      }
+    ],
+    "browser": {
+      "success": true,
+      "executablePath": "C:\\Users\\lucab\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe",
+      "version": "Chrome/156.0.8078.4",
+      "sandbox": "Platform-default sandbox; no bypass flags"
+    }
+  },
+  "raw_static_findings": 44,
+  "raw_rendered_findings": 79,
+  "remote_ci_run": null,
+  "independent_claude_approval": false,
+  "files": [
+    {
+      "path": "before-desktop.png",
+      "sha256": "e20b06006a0426680376cb414e54a6ddf411cd4c366ba2431624c254478f63cd",
+      "bytes": 151311
+    },
+    {
+      "path": "before-mobile.png",
+      "sha256": "778b7eab5dcbc1362eefa6ea3df15fa18337fb0de2830d4bdcd9cd78f06942b6",
+      "bytes": 121626
+    },
+    {
+      "path": "checks/build.log",
+      "sha256": "2483108f6d1d4f0167aaffbd79e55c2615f2966754a6021e717cd095246279de",
+      "bytes": 1184
+    },
+    {
+      "path": "checks/format.log",
+      "sha256": "ec21a7f90de93cff17583004c40567cffbcbad8872cd6cafdcfd1fbc5f0a7e72",
+      "bytes": 274
+    },
+    {
+      "path": "checks/hallmark-baseline.log",
+      "sha256": "31de2134b320b7ce73adc5e9cf0b6dc593ad98d7a33c474249e1dd93070cc066",
+      "bytes": 567
+    },
+    {
+      "path": "checks/hallmark-positive-negative-tests.log",
+      "sha256": "9373e1df75ec70c2c6f51623dbbe229ed5a430aef2c15f49570051c50f2f934f",
+      "bytes": 3452
+    },
+    {
+      "path": "checks/lint.log",
+      "sha256": "a4c0db8522facd7603d65e9bf0844eda7f590c4c24c9307230f877ad7bc50ec7",
+      "bytes": 154
+    },
+    {
+      "path": "checks/npm-audit.log",
+      "sha256": "4b02d4a3c23d969c46bd2041360f80bfcb1fe760d9db864009acdd710f9de601",
+      "bytes": 25
+    },
+    {
+      "path": "checks/python-audit.log",
+      "sha256": "0a520aa0fdf2e5950d5b1d019e5a739c040f6782b0602de35beca787f59b4f5f",
+      "bytes": 223
+    },
+    {
+      "path": "checks/python-dependencies.log",
+      "sha256": "672aec65a45bed50e70229c70934a7eebf0462595c459b83023027645d57cccf",
+      "bytes": 31
+    },
+    {
+      "path": "checks/python-format.log",
+      "sha256": "e56908782c442203ceb904007635c80cb44759dcef75708c06e3c0e9c608eb15",
+      "bytes": 28
+    },
+    {
+      "path": "checks/python-lint.log",
+      "sha256": "a4443afdcfb6d7363adb285762515ccf7cf50473b1a05c20c1a50f6bed4d26b0",
+      "bytes": 20
+    },
+    {
+      "path": "checks/python-tests.log",
+      "sha256": "1c6c795bc566e78b75b4cc12db7c078370ad2babe4969cd401b706d0c94d5eb4",
+      "bytes": 102
+    },
+    {
+      "path": "checks/results.json",
+      "sha256": "807867cf3d168f9fca3d4ac309f4bbf0f4a07e890d7a2f696c35b327dc1835b0",
+      "bytes": 979
+    },
+    {
+      "path": "checks/typecheck.log",
+      "sha256": "996dc27a15f358a7dc6f447e82a3c3c898807051a89e63f513e849eeeffb9bda",
+      "bytes": 167
+    },
+    {
+      "path": "checks/unit-tests.log",
+      "sha256": "c6adf663f3aaccb7fae25ebf7de1013b79f28f5bad8d47e08fa47cf85fb54bf6",
+      "bytes": 3285
+    },
+    {
+      "path": "detail-observations.json",
+      "sha256": "370c8c6842bce55da57a2953feb7038b0cb92fdb70edc86b6b86ef62d2fdce45",
+      "bytes": 301
+    },
+    {
+      "path": "hallmark-render-findings.json",
+      "sha256": "337f70466220155b1f82d618ebfdba5f6dcbb8f4e6653b205d681ca4f0be298c",
+      "bytes": 35795
+    },
+    {
+      "path": "hallmark-render-results.json",
+      "sha256": "ad807f9b82abc44f8db18a0ee1e2944993af98e96ade1f87cb2d19ccbd3e7179",
+      "bytes": 7780
+    },
+    {
+      "path": "hallmark-static-findings.json",
+      "sha256": "903d0041a11edc1e58e50a5f9fdc42d30b23b940c584a6713ff12dd612238cbe",
+      "bytes": 20033
+    },
+    {
+      "path": "mobile-calibration-detail.png",
+      "sha256": "2fb7457ee2d678c24fad79b381a2039b3cf672c051ea5d5872c7e55cbd39a0af",
+      "bytes": 65218
+    },
+    {
+      "path": "mobile-quantiles-detail.png",
+      "sha256": "3fb613b7ca92b232bfe161fab329eeee4be546c3024b59921aa85b37e4a771d9",
+      "bytes": 62185
+    },
+    {
+      "path": "native-air-passengers.json",
+      "sha256": "4956539a0cacc3d5d02eceae115a30d067aa39ef3ffe71f4acfd13a66ab5e2c6",
+      "bytes": 6078
+    },
+    {
+      "path": "native-air-passengers.xlsx",
+      "sha256": "fabf51c12d4567157a1be8f5de9db79b98773b2908fdf1c47c46ab31ba1bcb89",
+      "bytes": 16271
+    },
+    {
+      "path": "onboarding-1440.png",
+      "sha256": "de037c6b551f4b80baa17d4c94ebbc5ac7e874b5e75b03dbe0ee6080b85387e8",
+      "bytes": 116247
+    },
+    {
+      "path": "onboarding-390.png",
+      "sha256": "1d4a9a4c6a689b414d24156e9834f0fcc939432169968c6f0b876f9e42da43f4",
+      "bytes": 59321
+    },
+    {
+      "path": "onboarding-768.png",
+      "sha256": "5505127c97b24cdb61a5fcec57b1081f03e9ed62adf74f353bf5007a56ecf4ec",
+      "bytes": 75344
+    },
+    {
+      "path": "phase03b-commit-verify.log",
+      "sha256": "3d7ef37b807faae93b80e2adc5ade2590712f8b2d25ba6d7f8a95c8488d0eca8",
+      "bytes": 520
+    },
+    {
+      "path": "phase03b-full-browser.log",
+      "sha256": "3e1f71e7d0d2e845aa53a998c4d054e710d34b3fe13702c95792d11210ecd26b",
+      "bytes": 5257
+    },
+    {
+      "path": "phase03b-hallmark-render.log",
+      "sha256": "70a7e6b8dead80ddccbbb9961d8254b5c2a6a8400ac9907993dfb0e55ff5c037",
+      "bytes": 799
+    },
+    {
+      "path": "phase03b-initial-postgres-tests.log",
+      "sha256": "7bebe9b29dd0ecc109f33278cab1ebdfc4de80e2cbe9fc4cff7874d15a2e319a",
+      "bytes": 2172
+    },
+    {
+      "path": "phase03b-initial-tests.log",
+      "sha256": "a55ffd0c889a649dc48826e523045669dce28d5086ffa8818a8f953528f50d74",
+      "bytes": 2180
+    },
+    {
+      "path": "results-1440.png",
+      "sha256": "8e11e76d882403fbd75a322cbfe8a9ee1c5f4cf84eeaa31741d5b3a391c1aac0",
+      "bytes": 292649
+    },
+    {
+      "path": "results-390.png",
+      "sha256": "0a7ef456484a3e7f724a93e701f46be6ac7b9347f8e00e49c36f26892abcf144",
+      "bytes": 259159
+    },
+    {
+      "path": "results-768.png",
+      "sha256": "115af8d5af35b4c0b28ca5ef1ffc00effb7be649733c2170b2f60e12705ec897",
+      "bytes": 279696
+    }
+  ]
+}
