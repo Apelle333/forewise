@@ -1,6 +1,40 @@
 # Forewise
 
-An English, general-purpose B2B forecasting workspace. **Phase 01: local development preview, awaiting owner review.** No deployment, payments, external model calls, or paid infrastructure is configured.
+An independent TypeScript/Python forecasting-workspace prototype. **Main branch: Phase 01, local development preview with mock forecasts.** No hosted deployment, payments, or external model calls are configured on this branch.
+
+## Portfolio review: API and data integration
+
+This is an independent engineering project, not a customer case study. The
+`main` branch is the Phase 01 local prototype: its forecast is explicitly a
+weekly-repeat **mock**, not a trained or validated forecasting model. Later
+development branches explore additional features; the instructions below
+describe `main` only.
+
+The useful integration example is the complete data flow:
+
+1. A Next.js interface uploads a daily CSV, which is validated server-side.
+2. Authenticated API routes enforce workspace membership and persist the data.
+3. TypeScript calls a separate Python/FastAPI service using a server-only
+   bearer token, a bounded timeout and explicit failure handling.
+4. The result is stored, visualised and exported, with mock output labelled.
+
+Start the code review with:
+
+- [Next.js API boundary](apps/web/app/api/%5B...path%5D/route.ts)
+- [Python service and request validation](services/forecast/app.py)
+- [CSV validation](apps/web/lib/csv.ts)
+- [Restricted database role and tenant boundary](packages/db/src/index.ts)
+- [API contract](docs/API.md) and [architecture](docs/ARCHITECTURE.md)
+- [Contract tests](services/forecast/test_app.py) and
+  [browser/API scenarios](e2e/phase01.spec.ts)
+
+![Local prototype using synthetic test data](docs/screenshots/workspace-desktop.png)
+
+The screenshot is an existing local test capture with synthetic data, not a
+live customer deployment. Historical verification is recorded in
+[the Phase 01 gate](docs/PHASE-01.md); it does not certify subsequent commits.
+
+
 
 ## Run locally
 
@@ -59,6 +93,6 @@ See [architecture](docs/ARCHITECTURE.md), [API contract](docs/API.md), [starter 
 
 ## Boundaries
 
-Phase 01 is not a production-ready release. Email verification/recovery, invitations, infrastructure hardening, hosted PostgreSQL migration, backups, customer data handling, a job queue, real model evaluation and billing need later decisions. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is private; no license grants for Forewise source are made here. Dependency licenses remain with their respective authors.
+Phase 01 is not a production-ready release. Email verification/recovery, invitations, infrastructure hardening, hosted PostgreSQL migration, backups, customer data handling, a job queue, real model evaluation and billing need later decisions. There are no customer logos, fabricated testimonials, validated accuracy claims, published prices, or invented traction. Source is public for portfolio review; no additional license grants for Forewise source are made here. Dependency licenses remain with their respective authors.
 
 **STOP: owner review of Phase 01 is required before starting Phase 02 or deployment.**
