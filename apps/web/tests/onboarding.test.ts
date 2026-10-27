@@ -123,6 +123,77 @@ async function alteredWorkbook(edit: (zip: JSZip) => Promise<void>) {
   return zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
 }
 
+async function numericWorkbook(value: string, explicitType = false) {
+  return alteredWorkbook(async (zip) => {
+    const name = 'xl/worksheets/sheet1.xml';
+    const xml = await zip.file(name)!.async('string');
+    assert.match(xml, /<c r="B2"[^>]*><v>1<\/v><\/c>/);
+    zip.file(
+      name,
+      xml.replace(
+        /<c r="B2"[^>]*><v>1<\/v><\/c>/,
+        `<c r="B2"${explicitType ? ' t="n"' : ''}><v>${value}</v></c>`,
+      ),
+    );
+  });
+}
+
+for (const value of ['12 units', '1e', '0x10']) {
+  test(`numeric XLSX XML rejects the entire malformed representation / ${value}`, async () => {
+    for (const explicitType of [false, true]) {
+      const bytes = await numericWorkbook(value, explicitType);
+      assert.equal(bytes.readUInt32LE(0), 0x04034b50);
+      await assert.rejects(readImport(bytes, 'malformed.xlsx'), /Invalid XLSX numeric cell/);
+    }
+  });
+}
+
+test('numeric XLSX XML preserves signed decimals, exponent values and date serials', async () => {
+  for (const [raw, value] of [
+    ['-12.5', -12.5],
+    ['.25', 0.25],
+    ['+1.25e-2', 0.0125],
+    ['2E+3', 2000],
+  ] as const) {
+    const table = await readImport(await numericWorkbook(raw), 'valid.xlsx');
+    const points = mappedDataset(table, { dateCol: 0, valueCol: 1 }, 'daily');
+    assert.equal(points[0].value, value);
+    assert.equal(points[0].date, '2026-01-01');
+  }
+});
+
+test('numeric XLSX validation rejects nonfinite, empty, nested and excessive values before loading', async () => {
+  for (const raw of [
+    '',
+    'NaN',
+    'INF',
+    '1e999',
+    '12 3',
+    '--1',
+    '0b10',
+    '<x>12</x>',
+    '1'.repeat(2049),
+  ])
+    await assert.rejects(
+      readImport(await numericWorkbook(raw), 'invalid.xlsx'),
+      /Invalid XLSX numeric cell/,
+    );
+});
+
+test('unsupported cell types cannot reach ExcelJS default numeric conversion', async () => {
+  for (const type of ['number', 'N', 'd']) {
+    const bytes = await alteredWorkbook(async (zip) => {
+      const name = 'xl/worksheets/sheet1.xml';
+      const xml = await zip.file(name)!.async('string');
+      zip.file(
+        name,
+        xml.replace(/<c r="B2"[^>]*><v>1<\/v><\/c>/, `<c r="B2" t="${type}"><v>12 units</v></c>`),
+      );
+    });
+    await assert.rejects(readImport(bytes, 'unsupported.xlsx'), /Unsupported XLSX cell type/);
+  }
+});
+
 async function workbookDateSerials(start: number, date1904 = false) {
   const zip = await JSZip.loadAsync(
     await workbookBytes((w) => {

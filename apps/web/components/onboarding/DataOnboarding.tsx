@@ -11,7 +11,7 @@ export function DataOnboarding({
   onCancel,
 }: {
   wid: string;
-  onSuccess: (id: string) => Promise<void>;
+  onSuccess: (id: string, signal: AbortSignal) => Promise<void>;
   onCancel: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null),
@@ -34,6 +34,7 @@ export function DataOnboarding({
     };
   }, []);
   async function send(selected: File, mode: string) {
+    request.current?.abort();
     const controller = new AbortController();
     request.current = controller;
     const form = new FormData();
@@ -47,9 +48,11 @@ export function DataOnboarding({
       body: form,
       signal: controller.signal,
     });
+    controller.signal.throwIfAborted();
     const data = await res.json();
+    controller.signal.throwIfAborted();
     if (!res.ok) throw new Error(data.error || 'Import failed. Please try again.');
-    return data;
+    return { data, signal: controller.signal };
   }
   async function choose(selected: File | undefined) {
     if (!selected || busy) return;
@@ -64,7 +67,11 @@ export function DataOnboarding({
     }
     setBusy(true);
     try {
-      const data: Preview = await send(selected, 'preview');
+      const { data, signal }: { data: Preview; signal: AbortSignal } = await send(
+        selected,
+        'preview',
+      );
+      signal.throwIfAborted();
       setPreview(data);
       setFile(selected);
       const date = Math.max(
@@ -84,9 +91,11 @@ export function DataOnboarding({
     setBusy(true);
     setError('');
     try {
-      const data = await send(file, 'import');
-      await onSuccess(data.id);
-      onCancel();
+      const { data, signal } = await send(file, 'import');
+      signal.throwIfAborted();
+      await onSuccess(data.id, signal);
+      signal.throwIfAborted();
+      cancel();
     } catch (e) {
       if ((e as Error).name !== 'AbortError') {
         setError((e as Error).message);
@@ -96,19 +105,23 @@ export function DataOnboarding({
       setBusy(false);
     }
   }
+  function cancel() {
+    request.current?.abort();
+    onCancel();
+  }
   return (
     <dialog
       ref={dialog}
       className="onboarding-modal"
       aria-labelledby="import-title"
-      onCancel={onCancel}
+      onCancel={cancel}
     >
       <div className="onboarding-content">
         <header>
           <div>
             <h2 id="import-title">Bring your history.</h2>
           </div>
-          <button className="text-button" onClick={onCancel}>
+          <button className="text-button" onClick={cancel}>
             Cancel
           </button>
         </header>

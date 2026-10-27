@@ -1,0 +1,78 @@
+{
+  "xlsx": [
+    {
+      "raw": "12 units",
+      "acceptedValue": 12
+    },
+    {
+      "raw": "1e",
+      "acceptedValue": 1
+    },
+    {
+      "raw": "0x10",
+      "acceptedValue": 0
+    }
+  ],
+  "metadata": [
+    [
+      "export_version",
+      "1"
+    ],
+    [
+      "workspace_id",
+      "qa"
+    ],
+    [
+      "forecast_id",
+      "f"
+    ],
+    [
+      "created_at",
+      "null"
+    ],
+    [
+      "dataset_id",
+      "d"
+    ],
+    [
+      "dataset_name",
+      "QA"
+    ],
+    [
+      "frequency",
+      "daily"
+    ],
+    [
+      "observations",
+      1
+    ],
+    [
+      "horizon",
+      1
+    ],
+    [
+      "result.mock",
+      "true"
+    ],
+    [
+      "result.model",
+      "test"
+    ],
+    [
+      "result.notice",
+      "fixture"
+    ],
+    [
+      "result.evaluation.windows",
+      1
+    ],
+    [
+      "result.evaluation.evaluated_points",
+      1
+    ],
+    [
+      "result.evaluation.unavailable",
+      "null"
+    ]
+  ]
+}

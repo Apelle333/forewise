@@ -141,11 +141,32 @@ export function inspectWorkbookZip(bytes: Buffer) {
       let elements = 0,
         strings = 0,
         styles = 0;
+      let cellType: string | null = null,
+        numericValue: string | null = null,
+        valueSeen = false;
+      const numericError = () =>
+        invalid('Invalid XLSX numeric cell. Use a finite decimal or scientific-notation value.');
       parser.on('doctype', () => invalid('XML entities are not supported.'));
       parser.on('opentag', (node) => {
         if (++elements > 500_000) invalid('XLSX XML exceeds the import budget.');
         const tag = node.name.split(':').at(-1);
         const attr = (key: string) => String(node.attributes[key] ?? '');
+        // Validate raw lexical content before ExcelJS's permissive parseFloat loses it.
+        // Numeric cells include date serials. Shared strings and plain text are separate types.
+        if (worksheet) {
+          if (numericValue !== null) numericError(); // A numeric <v> may not contain elements.
+          if (tag === 'c') {
+            if (cellType !== null) invalid('Malformed XLSX cell nesting.');
+            cellType = attr('t') || 'n';
+            if (!['n', 's', 'str', 'inlineStr', 'b', 'e'].includes(cellType))
+              invalid('Unsupported XLSX cell type. Use plain values and date serials.');
+            valueSeen = false;
+          } else if (tag === 'v' && cellType === 'n') {
+            if (valueSeen) numericError();
+            valueSeen = true;
+            numericValue = '';
+          }
+        }
         if (tag === 'definedNames' || tag === 'definedName')
           invalid('Named ranges are not supported. Export a plain data worksheet.');
         if (
@@ -169,6 +190,25 @@ export function inspectWorkbookZip(bytes: Buffer) {
           if (number < 1 || number > 5001 || col > 32)
             invalid('Use at most 5,000 observations and 32 columns.');
         }
+      });
+      const collectNumber = (text: string) => {
+        if (numericValue === null) return;
+        if (numericValue.length + text.length > 2048) numericError();
+        numericValue += text;
+      };
+      parser.on('text', collectNumber);
+      parser.on('cdata', collectNumber);
+      parser.on('closetag', (node) => {
+        const tag = node.name.split(':').at(-1);
+        if (tag === 'v' && numericValue !== null) {
+          const value = numericValue.trim(); // XML numeric whitespace is insignificant.
+          if (
+            !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/.test(value) ||
+            !Number.isFinite(Number(value))
+          )
+            numericError();
+          numericValue = null;
+        } else if (worksheet && tag === 'c') cellType = null;
       });
       try {
         parser.write(xml).close();

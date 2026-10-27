@@ -28,7 +28,7 @@ Public inspiration inspected: [Motion in Design](https://www.motionin.design), [
 
 The illustration is an explanatory metaphor, not a measured physical model. Its mobile drawing is an overview; readable stage controls and descriptions provide the details. No CAD/mesh geometry audit is claimed. Native grouped disclosures and CSS `:has` enhance supported browsers; older browsers retain static geometry and native disclosure content. Browser automation checks Chromium on local Windows, not a physical touch device or field Core Web Vitals. Smoothness on low-end GPUs remains unmeasured; 2D stays available and reduced motion defaults to it.
 
-Existing out-of-scope Phase 03B review findings remain: malformed numeric XLSX XML handling, cancellation/workspace callback race, and omission of empty metadata containers in export. This visual milestone does not resolve or approve those findings. Calibration limitations also remain; no candidate calibration was shipped.
+At this visual milestone, three out-of-scope Phase 03B findings remained: malformed numeric XLSX XML handling, cancellation/workspace callback race, and omission of empty metadata containers in export. They are addressed in the subsequent [pre-beta repair](../../phase-03b/PRE-BETA-REPAIR.md); this historical visual milestone did not resolve or approve them. Calibration limitations remain; no candidate calibration was shipped.
 
 ## Browser evidence and measurements
 
