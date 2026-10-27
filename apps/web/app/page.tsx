@@ -1,169 +1,113 @@
 import Link from 'next/link';
-import { Chart } from '@/components/chart';
-const history = [48, 55, 51, 64, 61, 58, 70, 67, 75, 68, 82, 79, 88, 81, 95, 91, 99, 94].map(
-  (value, i) => ({ date: `2026-10-${String(i + 1).padStart(2, '0')}`, value }),
-);
-const future = [103, 98, 110, 106, 116, 111, 121].map((value, i) => ({
-  date: `2026-10-${i + 19}`,
-  value,
-}));
+import { Brand } from '@/components/brand';
+import { ForecastDemo } from '@/components/forecast-demo';
+import { HorizonExperience } from '@/components/horizon-experience';
+import { HorizonStory } from '@/components/horizon-story';
+import './horizon.css';
+
 export default function Home() {
   return (
-    <>
-      <header className="nav shell">
-        <Link className="brand" href="/">
-          <span className="brand-icon">f</span>forewise<span className="brand-dot">.</span>
-        </Link>
+    <div className="horizon-page">
+      <header className="h-nav">
+        <Brand />
         <nav aria-label="Main navigation">
-          <a href="#how-it-works">How it works</a>
-          <a href="#possibilities">Use cases</a>
-          <Link className="nav-signin" href="/login">
-            Sign in ↗
+          <a href="#how-it-works">The perspective</a>
+          <a href="#demo">The working demo</a>
+          <Link href="/login">
+            Sign in <span aria-hidden="true">↗</span>
           </Link>
         </nav>
       </header>
       <main id="main">
-        <section className="hero shell">
-          <div className="eyebrow">
-            <span className="live-dot" /> A clearer view of what comes next
-          </div>
-          <h1>
-            Less guesswork.
-            <br />
-            More <span className="serif">foresight.</span>
-          </h1>
-          <p className="hero-description">
-            Turn your business data into a clearer next move.
-            <br className="desktop-break" /> Explore demand, revenue, and operations in one calm
-            workspace.
-          </p>
-          <div className="hero-actions">
-            <Link className="button primary" href="/register">
-              Explore your workspace <span>↗</span>
-            </Link>
-            <a className="text-link" href="#how-it-works">
-              See how it works <span>↓</span>
-            </a>
-          </div>
-          <p className="micro">Private development preview · No credit card · Mock forecasts</p>
-          <div className="product-preview">
-            <div className="preview-sidebar">
-              <span className="mini-logo">f.</span>
-              <span className="sidebar-active">◫ Overview</span>
-              <span>▤ Datasets</span>
-              <span>↗ Forecasts</span>
-              <span className="sidebar-bottom">◉ Sample workspace</span>
-            </div>
-            <div className="preview-content">
-              <div className="preview-top">
-                <span>
-                  Workspace <span className="muted">/ Overview</span>
-                </span>
-                <span className="small-badge">ILLUSTRATIVE DATA</span>
-              </div>
-              <div className="preview-heading">
-                <div>
-                  <p className="overline">A LITTLE CLARITY GOES A LONG WAY</p>
-                  <h2>Your next chapter, in view.</h2>
-                </div>
-                <span className="avatar">FW</span>
-              </div>
-              <div className="preview-metrics">
-                <div>
-                  <span>Metric</span>
-                  <strong>Daily demand</strong>
-                  <small>One series. A clearer perspective.</small>
-                </div>
-                <div>
-                  <span>Forecast horizon</span>
-                  <strong>
-                    7 days <span className="green">↗</span>
-                  </strong>
-                  <small>Look a little further ahead</small>
-                </div>
-                <div>
-                  <span>Model status</span>
-                  <strong>Demo preview</strong>
-                  <small>No accuracy claims. No surprises.</small>
-                </div>
-              </div>
-              <div className="chart-heading">
-                <strong>See the direction. Explore the possibilities.</strong>
-                <span>
-                  <i /> Historical <i className="lime" /> Illustrative forecast
-                </span>
-              </div>
-              <Chart history={history} future={future} />
-            </div>
-          </div>
-        </section>
-        <section className="possibilities shell" id="possibilities">
-          <p className="overline">ONE WORKSPACE. MANY WHAT-IFS.</p>
-          <div className="usecases">
-            <span>Revenue & sales</span>
-            <span>Demand & inventory</span>
-            <span>Operations & capacity</span>
-          </div>
-          <p className="muted">Start with a daily time series. The business question is yours.</p>
-        </section>
-        <section className="steps shell" id="how-it-works">
-          <div className="section-title">
-            <p className="overline">FROM SPREADSHEET TO PERSPECTIVE</p>
-            <h2>
-              Complex data.
+        <HorizonExperience />
+        <section className="h-story" id="how-it-works">
+          <div className="h-story-sticky">
+            <span className="h-small">
+              FROM THE KNOWN
               <br />
-              <span className="serif">Simple next steps.</span>
+              TO THE POSSIBLE
+            </span>
+            <h2>
+              The future isn’t
+              <br />a single <em>line.</em>
             </h2>
-            <p>You bring the question. Forewise gives it a place to start.</p>
+            <p>
+              A useful forecast starts with perspective.
+              <br />A responsible one keeps its limits in view.
+            </p>
+            <HorizonStory />
+            <span className="h-story-foot">SCROLL TO UNFOLD THE SCENARIOS ↓</span>
           </div>
-          <div className="step-grid">
-            {[
-              [
-                '01',
-                'Bring your data',
-                'Upload a simple CSV with dates and values. Check the format before you go further.',
-              ],
-              [
-                '02',
-                'Set your horizon',
-                'Choose how far ahead to explore, from one day to ninety. Keep every run in your workspace.',
-              ],
-              [
-                '03',
-                'See what comes next',
-                'Compare your history with a clearly marked mock forecast. Real model evaluation comes next.',
-              ],
-            ].map(([n, title, body]) => (
-              <article key={n}>
-                <span className="step-number">
-                  {n} <span>↗</span>
-                </span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </article>
-            ))}
+          <div className="h-chapters">
+            <article>
+              <span>01 / OBSERVE</span>
+              <h3>
+                Every signal
+                <br />
+                has a history.
+              </h3>
+              <p>
+                Start with daily observations. Look for patterns, interruptions and the context
+                behind the numbers.
+              </p>
+              <span className="h-chapter-detail">28 observations → a point of departure</span>
+            </article>
+            <article>
+              <span>02 / EXPLORE</span>
+              <h3>
+                Give uncertainty
+                <br />
+                some space.
+              </h3>
+              <p>
+                Change the horizon and compare constructed scenarios. A wider shape invites
+                questions; it does not establish their likelihood.
+              </p>
+              <span className="h-chapter-detail">One history → multiple possible paths</span>
+            </article>
+            <article>
+              <span>03 / UNDERSTAND</span>
+              <h3>
+                Keep the wonder.
+                <br />
+                <em>Read the values.</em>
+              </h3>
+              <p>
+                Step from the spatial illustration into a precise, accessible chart. Inspect the
+                mock, read its method and decide what still needs evidence.
+              </p>
+              <a href="#demo">
+                Go to the working example <span aria-hidden="true">↗</span>
+              </a>
+            </article>
           </div>
         </section>
-        <section className="closing shell">
-          <span className="eyebrow">MAKE ROOM FOR A CLEARER TOMORROW</span>
+        <section className="h-working" aria-labelledby="working-title">
+          <div className="h-working-head">
+            <span className="h-small">THE WORKING EXAMPLE / 02</span>
+            <h2 id="working-title">Back on solid ground.</h2>
+            <p>Demand, revenue or capacity. The same transparent mock, down to the last value.</p>
+          </div>
+          <ForecastDemo />
+        </section>
+        <section className="h-end">
+          <span className="h-small">A LITTLE HISTORY. A NEW PERSPECTIVE.</span>
           <h2>
-            Your data has a story.
+            What’s on
             <br />
-            <span className="serif">See the next page.</span>
+            <em>your horizon?</em>
           </h2>
-          <Link className="button primary" href="/register">
-            Get started with Forewise ↗
+          <Link href="/register" className="h-action">
+            Explore your workspace <span aria-hidden="true">↗</span>
           </Link>
-          <p className="micro">Phase 01 preview. No billing enabled.</p>
+          <p>Phase 01 · Local mock preview · No billing</p>
         </section>
       </main>
-      <footer className="footer shell">
-        <Link className="brand" href="/">
-          forewise.
-        </Link>
-        <span>A little less uncertainty.</span>
-        <span>© {new Date().getFullYear()} Forewise · Development preview</span>
+      <footer className="h-footer">
+        <Brand />
+        <span>Past observed. Next explored.</span>
+        <Link href="/explorations">View the three visual studies ↗</Link>
       </footer>
-    </>
+    </div>
   );
 }

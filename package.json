@@ -14,13 +14,21 @@
     "typecheck": "npm run typecheck -w @forewise/web",
     "test": "tsx --test packages/db/src/*.test.ts apps/web/tests/*.test.ts",
     "test:e2e": "playwright test",
-    "start": "npm run start -w @forewise/web"
+    "start": "npm run start -w @forewise/web",
+    "lint": "eslint apps/web packages/db e2e scripts/*.mjs playwright.config.ts eslint.config.mjs --max-warnings=0",
+    "check:format": "prettier --check apps/web/app apps/web/components apps/web/lib apps/web/tests packages/db/src e2e scripts/*.mjs *.mjs *.json playwright.config.ts",
+    "verify": "python scripts/verify.py"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@next/eslint-plugin-next": "^16.4.3",
     "@playwright/test": "1.64.1",
+    "eslint": "^10.13.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "prettier": "^3.6.2",
     "tsx": "4.22.4",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.72.0"
   },
   "engines": {
     "node": ">=22.13"

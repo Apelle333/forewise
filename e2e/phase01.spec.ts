@@ -10,7 +10,7 @@ const unique = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 test('landing is responsive and accessible by keyboard', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Less guesswork.');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A wider view');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Tab');
@@ -55,7 +55,7 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
     buffer: Buffer.from('date,value\ninvalid,no'),
   });
   await expect(page.locator('.error[role=alert]')).toContainText('between 8 and 5,000');
-  await page.getByRole('button', { name: 'Or try sample data' }).click();
+  await page.getByRole('button', { name: 'Try sample data' }).click();
   await expect(page.getByRole('status')).toContainText('Dataset uploaded');
   await page
     .locator('input[type=file]')
@@ -88,7 +88,7 @@ test('real registration, CSV upload, mock forecast, persistence, workspace switc
   await page.getByRole('button', { name: 'New workspace' }).click();
   await page.getByLabel('Workspace name', { exact: true }).fill('Empty workspace');
   await page.getByRole('button', { name: 'Create', exact: true }).click();
-  await expect(page.getByText('A fresh start. Your first dataset will appear here.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Try sample data' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Generate mock forecast' })).toBeDisabled();
   await page.getByLabel('Workspace', { exact: true }).selectOption({ label: 'Acme Planning' });
   await expect(page.getByRole('button', { name: 'Export mock CSV' })).toBeVisible();
@@ -144,6 +144,14 @@ test('API enforces authentication, CSRF, rate limits, tenant isolation, invalid 
     });
     expect(uploaded.status()).toBe(201);
     const did = (await uploaded.json()).id;
+    expect((await a.post('/api/auth/register/extra', { data: {} })).status()).toBe(404);
+    expect(
+      (
+        await a.post(`/api/workspaces/${wa}/datasets`, {
+          data: { name: 'too-large.csv', csv: 'x'.repeat(1_100_001) },
+        })
+      ).status(),
+    ).toBe(413);
     expect(
       (
         await b.post(`/api/workspaces/${wb}/forecasts`, { data: { datasetId: did, horizon: 7 } })

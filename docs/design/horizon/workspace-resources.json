@@ -1,0 +1,21 @@
+{
+  "resources": [
+    "http://127.0.0.1:3000/_next/static/chunks/15lr2ae_e1fsk.css",
+    "http://127.0.0.1:3000/_next/static/chunks/1x6obpmlu1_c2.js",
+    "http://127.0.0.1:3000/_next/static/chunks/2r4s4h5xul1n-.js",
+    "http://127.0.0.1:3000/_next/static/chunks/3wbm-994r45kr.js",
+    "http://127.0.0.1:3000/_next/static/chunks/2e268anpfvdoc.js",
+    "http://127.0.0.1:3000/_next/static/chunks/turbopack-2c3mg3r-05n1w.js",
+    "http://127.0.0.1:3000/_next/static/chunks/0umf92h1sb77c.js",
+    "http://127.0.0.1:3000/_next/static/chunks/27s4xd-17pa7o.js",
+    "http://127.0.0.1:3000/_next/static/media/dm-sans-latin-wght-normal.0tm8u-h63rec8.woff2",
+    "http://127.0.0.1:3000/api/session",
+    "http://127.0.0.1:3000/?_rsc=Xsk9VVY3wQvHYMzX",
+    "http://127.0.0.1:3000/_next/static/chunks/2fi_8sbwv9kqg.css"
+  ],
+  "landingOnlyScripts": [
+    "http://127.0.0.1:3000/_next/static/chunks/2lwuywx6g5fmm.js",
+    "http://127.0.0.1:3000/_next/static/chunks/0t41vkcrmx2z4.js",
+    "http://127.0.0.1:3000/_next/static/chunks/3bs_r06c9_j5t.js"
+  ]
+}

@@ -1,4 +1,5 @@
 """Phase 01 internal mock service. No trained models or external AI calls."""
+
 import hmac
 import os
 from datetime import date, timedelta
@@ -21,6 +22,8 @@ class ForecastRequest(BaseModel):
 
     @model_validator(mode="after")
     def consecutive_daily(self):
+        if (date.max - self.points[-1].date).days < self.horizon:
+            raise ValueError("Forecast horizon exceeds the supported calendar")
         for previous, current in zip(self.points, self.points[1:]):
             if current.date - previous.date != timedelta(days=1):
                 raise ValueError("Observations must be consecutive daily dates")
@@ -37,7 +40,7 @@ def forecast(payload: ForecastRequest, authorization: Annotated[str | None, Head
     secret = os.getenv("FORECAST_SERVICE_TOKEN", "")
     if len(secret) < 32:
         raise HTTPException(503, "Internal service token is not configured")
-    if not hmac.compare_digest(authorization or "", f"Bearer {secret}"):
+    if not hmac.compare_digest((authorization or "").encode(), f"Bearer {secret}".encode()):
         raise HTTPException(401, "Unauthorized")
     week = payload.points[-7:]
     last_date = payload.points[-1].date
