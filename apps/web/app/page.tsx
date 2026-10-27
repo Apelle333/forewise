@@ -3,7 +3,9 @@ import { Brand } from '@/components/brand';
 import { ForecastDemo } from '@/components/forecast-demo';
 import { HorizonExperience } from '@/components/horizon-experience';
 import { HorizonStory } from '@/components/horizon-story';
+import { ForecastInstrument } from '@/components/forecast-instrument';
 import './horizon.css';
+import './forecast-instrument.css';
 
 export default function Home() {
   return (
@@ -87,6 +89,7 @@ export default function Home() {
             </article>
           </div>
         </section>
+        <ForecastInstrument />
         <section className="h-working" aria-labelledby="working-title">
           <div className="h-working-head">
             <span className="h-small">THE WORKING EXAMPLE / 02</span>

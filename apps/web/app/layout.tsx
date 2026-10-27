@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@fontsource-variable/dm-sans';
 import './globals.css';
+import './onboarding-feedback.css';
 export const metadata: Metadata = {
   title: 'Forewise — See what comes next.',
   description:

@@ -62,7 +62,7 @@ for (const format of ['csv', 'xlsx'] as const) {
       }
       await page.getByLabel('Observation frequency').selectOption('monthly');
       await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
-      await expect(page.getByRole('status')).toContainText('Dataset saved');
+      await expect(page.getByRole('status').filter({ hasText: 'Dataset saved' })).toBeVisible();
       await page.getByLabel('Forecasting model', { exact: true }).selectOption('timestral_209m');
       await page.getByRole('spinbutton', { name: /Forecast horizon/ }).fill('12');
       const python = path.resolve(

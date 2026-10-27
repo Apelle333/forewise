@@ -29,6 +29,9 @@ const scopes = [
     files: [
       'apps/web/app/globals.css',
       'apps/web/app/horizon.css',
+      'apps/web/app/horizon-controls.css',
+      'apps/web/app/forecast-instrument.css',
+      'apps/web/components/forecast-instrument.tsx',
       'apps/web/components/horizon-experience.tsx',
       'apps/web/components/horizon-story.tsx',
     ],
@@ -47,6 +50,7 @@ const scopes = [
     scope: 'app',
     files: [
       'apps/web/app/globals.css',
+      'apps/web/app/onboarding-feedback.css',
       'apps/web/components/workspace.tsx',
       'apps/web/components/chart.tsx',
       ...['DatasetsView', 'ForecastControls', 'JobsView', 'ResultsView'].map(

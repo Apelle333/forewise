@@ -1,5 +1,6 @@
 /* Hallmark · checked: 2026-10-25 · genre: atmospheric · built: the project · redesign: polish · theme: locked Forecast Horizon · v2.0.0 */
 /* Critique: keep cinematic storytelling and native controls; make data headings readable and retain the approved palette. */
+@import './horizon-controls.css';
 :root {
   --h-bg: #080f11;
   --h-text: #e7efeb;

@@ -1,0 +1,191 @@
+{
+  "purpose": "required-render-audit",
+  "revision": "f904e0b8136a00fdc3d366b97dd5ec7fce613cdf",
+  "success": true,
+  "requiredTargets": [
+    "http://127.0.0.1:3000/",
+    "http://127.0.0.1:3000/explorations",
+    "http://127.0.0.1:3000/register",
+    "http://127.0.0.1:3000/login"
+  ],
+  "targets": [
+    {
+      "target": "http://127.0.0.1:3000/",
+      "success": true,
+      "report": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/raw-report.json",
+      "render": "ran",
+      "screenshots": [
+        {
+          "tag": "375",
+          "width": 375,
+          "height": 6793,
+          "sha256": "a131e0ba5ad6b80f4f4b2692179bd05f167e0d59b5c13f7326bc6699b476c9d2",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-375.png"
+        },
+        {
+          "tag": "1280x800",
+          "width": 1280,
+          "height": 800,
+          "sha256": "96c330932bd4baa065a2b943e29f74779957aa49a74f4b2a95d88446e4d2ad7e",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1280x800.png"
+        },
+        {
+          "tag": "1440x900",
+          "width": 1440,
+          "height": 900,
+          "sha256": "b4808a2ce1ab682237a541b16f5da8f4a80fc0c6a5d06d4e069b0c3ee5bba67f",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1440x900.png"
+        },
+        {
+          "tag": "1920x1080",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "8ffa5f4bf2795dd58c6881e1121e767bbe41de15e189852cef412d669963b2a1",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1920x1080.png"
+        },
+        {
+          "tag": "1440-full",
+          "width": 1440,
+          "height": 6045,
+          "sha256": "405a0e9612143aaa00e5d532fdcfd05c85e374648e5906ccfdd687e2685e7880",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000/.hallmark/shots/127.0.0.1-3000-1440-full.png"
+        }
+      ]
+    },
+    {
+      "target": "http://127.0.0.1:3000/explorations",
+      "success": true,
+      "report": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/raw-report.json",
+      "render": "ran",
+      "screenshots": [
+        {
+          "tag": "375",
+          "width": 375,
+          "height": 2179,
+          "sha256": "9534d76527943d3fac331ba0d7076ee5d9b78a6038fcc55a6943d13b7b5ead61",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-375.png"
+        },
+        {
+          "tag": "1280x800",
+          "width": 1280,
+          "height": 800,
+          "sha256": "a1c93c5b172a7102100c76288c8fb2018e536a4d608ab8aa29e14bc9b49e02f4",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1280x800.png"
+        },
+        {
+          "tag": "1440x900",
+          "width": 1440,
+          "height": 900,
+          "sha256": "30442ac5fa0e9d9b6d3251f350b3b97d3bcd8147cec17482094a12c1b7b909b0",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1440x900.png"
+        },
+        {
+          "tag": "1920x1080",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "c555ed62c37596b6a5da8910a2b8fd0802d3a1f5dd1cc2d0a5f9972e4cb4f766",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1920x1080.png"
+        },
+        {
+          "tag": "1440-full",
+          "width": 1440,
+          "height": 2025,
+          "sha256": "88fb67098c70e6a01c266e00dcd53081abde2e52edfde0e29c7239fb78e9f0eb",
+          "file": ".data/hallmark/render-GbgAMY/public/127.0.0.1-3000-explorations/.hallmark/shots/127.0.0.1-3000-explorations-1440-full.png"
+        }
+      ]
+    },
+    {
+      "target": "http://127.0.0.1:3000/register",
+      "success": true,
+      "report": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/raw-report.json",
+      "render": "ran",
+      "screenshots": [
+        {
+          "tag": "375",
+          "width": 375,
+          "height": 1018,
+          "sha256": "5d759aa4eb3fc8af9a006ab7e2163c1e4ee97b0beb18490aa328d6d6134d9a4f",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-375.png"
+        },
+        {
+          "tag": "1280x800",
+          "width": 1280,
+          "height": 800,
+          "sha256": "9ca13329f965ffd6dd2c9eea1b36f15d153a6ed8421ea30fef30f2a8095cbb9e",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1280x800.png"
+        },
+        {
+          "tag": "1440x900",
+          "width": 1440,
+          "height": 900,
+          "sha256": "4d8810dd7fad0383673f4391f785341ab28b19f76b017979eeaa665868d67a8b",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1440x900.png"
+        },
+        {
+          "tag": "1920x1080",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "fda2ea8c8db48662f5c8a8a651b343c50d142ff70f15ace317decb4d3cc4c606",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1920x1080.png"
+        },
+        {
+          "tag": "1440-full",
+          "width": 1440,
+          "height": 1043,
+          "sha256": "cfe2222f6ab16ca665ff3e43e3fb78744d0b1722e2e37635508792f9023c883c",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-register/.hallmark/shots/127.0.0.1-3000-register-1440-full.png"
+        }
+      ]
+    },
+    {
+      "target": "http://127.0.0.1:3000/login",
+      "success": true,
+      "report": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/raw-report.json",
+      "render": "ran",
+      "screenshots": [
+        {
+          "tag": "375",
+          "width": 375,
+          "height": 800,
+          "sha256": "9ea612dc51dbaee64f4561411c812020d1b0b718adc8da59e519276d097ed076",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-375.png"
+        },
+        {
+          "tag": "1280x800",
+          "width": 1280,
+          "height": 800,
+          "sha256": "aa342a326f751557f60b0ee65bf04931635ecd4e2e56ab99fde40d8e8d3eb9da",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1280x800.png"
+        },
+        {
+          "tag": "1440x900",
+          "width": 1440,
+          "height": 900,
+          "sha256": "8bc0d21c78136cf010ab15f70235317335118381cdbd2d068ed4ce72f76e4c05",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1440x900.png"
+        },
+        {
+          "tag": "1920x1080",
+          "width": 1920,
+          "height": 1080,
+          "sha256": "9cb78f04502c99ff43bfe36c1a1f35ef5176a1189362b2f108e49d2a35025d50",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1920x1080.png"
+        },
+        {
+          "tag": "1440-full",
+          "width": 1440,
+          "height": 904,
+          "sha256": "a8af312b0b533bacc046d9514bc6ac03a32ac03c1108771b5d933cb765b13ccb",
+          "file": ".data/hallmark/render-GbgAMY/auth/127.0.0.1-3000-login/.hallmark/shots/127.0.0.1-3000-login-1440-full.png"
+        }
+      ]
+    }
+  ],
+  "browser": {
+    "success": true,
+    "executablePath": "C:\\Users\\lucab\\AppData\\Local\\ms-playwright\\chromium-1248\\chrome-win64\\chrome.exe",
+    "version": "Chrome/156.0.8078.4",
+    "sandbox": "Platform-default sandbox; no bypass flags"
+  }
+}
