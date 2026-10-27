@@ -9,6 +9,11 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Windows' redirected console can default to cp1252; preserve diagnostic output
+# and the original failing check rather than raising on Node's Unicode symbols.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+
 root = Path(__file__).resolve().parents[1]
 os.chdir(root)
 npm = shutil.which("npm.cmd" if os.name == "nt" else "npm")

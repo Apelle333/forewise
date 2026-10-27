@@ -26,30 +26,46 @@ export function JobsView({
     [retrying, setRetrying] = useState(''),
     [version, setVersion] = useState(0);
   useEffect(() => {
-    const controller = new AbortController();
+    let request: AbortController | null = null;
+    let stopped = false;
     let timer: ReturnType<typeof setTimeout>;
     async function load() {
+      if (!wid || stopped || document.hidden) return;
+      request?.abort();
+      const controller = new AbortController();
+      request = controller;
       try {
         const res = await fetch(`/api/forecast-jobs?workspaceId=${wid}`, {
           signal: controller.signal,
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
-        setJobs(data.jobs);
-        setError('');
-      } catch (e) {
-        if ((e as Error).name !== 'AbortError') setError((e as Error).message);
-      } finally {
         if (!controller.signal.aborted) {
-          setLoading(false);
-          timer = setTimeout(() => void load(), 5000);
+          setJobs(data.jobs);
+          setError('');
+        }
+      } catch (e) {
+        if (!controller.signal.aborted) setError((e as Error).message);
+      } finally {
+        if (request === controller) {
+          request = null;
+          if (!controller.signal.aborted) setLoading(false);
+          if (!stopped && !document.hidden) timer = setTimeout(() => void load(), 5000);
         }
       }
     }
+    function visibilityChanged() {
+      clearTimeout(timer);
+      if (document.hidden) request?.abort();
+      else void load();
+    }
+    document.addEventListener('visibilitychange', visibilityChanged);
     if (wid) void load();
     return () => {
-      controller.abort();
+      stopped = true;
+      request?.abort();
       clearTimeout(timer);
+      document.removeEventListener('visibilitychange', visibilityChanged);
     };
   }, [wid, version]);
   async function retry(id: string) {
@@ -86,7 +102,9 @@ export function JobsView({
       >
         {jobs.length ? (
           <table>
-            <caption>Latest 100 jobs in this workspace. Refreshes every five seconds.</caption>
+            <caption>
+              Latest 100 jobs in this workspace. Refreshes every five seconds while visible.
+            </caption>
             <thead>
               <tr>
                 <th scope="col">Run</th>

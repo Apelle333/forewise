@@ -2,7 +2,12 @@ import ExcelJS from 'exceljs';
 import type { Dataset, Forecast } from './forecast-result';
 
 type Cell = string | number;
-export function exportRows(workspaceId: string, dataset: Dataset, forecast: Forecast): Cell[][] {
+type ExportForecast = Omit<Forecast, 'created_at'> & { created_at?: Date | string | null };
+export function exportRows(
+  workspaceId: string,
+  dataset: Dataset,
+  forecast: ExportForecast,
+): Cell[][] {
   const rows: Cell[][] = [
     ['record_type', 'date', 'value', 'p10', 'p50', 'p90', 'metadata_key', 'metadata_value'],
   ];
@@ -23,7 +28,10 @@ export function exportRows(workspaceId: string, dataset: Dataset, forecast: Fore
     export_version: '1',
     workspace_id: workspaceId,
     forecast_id: forecast.id,
-    created_at: forecast.created_at ?? null,
+    created_at:
+      forecast.created_at instanceof Date
+        ? forecast.created_at.toISOString()
+        : (forecast.created_at ?? null),
     dataset_id: dataset.id,
     dataset_name: dataset.name,
     frequency: dataset.frequency ?? 'daily',

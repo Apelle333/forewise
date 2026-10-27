@@ -8,7 +8,9 @@ for (const width of [1440, 768, 390]) {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('.h-intro')).toContainText('workspace in development');
-    await expect(page.locator('.h-intro')).toContainText('daily CSV data: date + value');
+    await expect(page.locator('.h-intro')).toContainText('CSV/XLSX history: date + value');
+    await expect(page.locator('.h-intro')).toContainText('authenticated development workspace');
+    await expect(page.locator('.h-preview-note')).not.toContainText('unavailable');
     await expect(page.locator('.h-intro')).toContainText('not validated predictions');
     const entry = page
       .getByRole('navigation', { name: 'Main navigation' })

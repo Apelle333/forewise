@@ -5,6 +5,7 @@ import { database } from '@/lib/db';
 import { digest, hashPassword, newSession, sessionCookie, verifyPassword } from '@/lib/auth';
 import { parseDataset, type Point, type Frequency } from '@/lib/csv';
 import { BodyTooLargeError, readLimitedBody } from '@/lib/body';
+import { createWorkspace } from '@/lib/workspaces';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -140,16 +141,8 @@ async function handle(req: NextRequest) {
     if (write && path.join('/') === 'workspaces') {
       const name = text(body.name, 80),
         id = randomUUID();
-      await db.transaction(async (tx) => {
-        const count = await tx.query<{ count: number }>(
-          'SELECT count(*)::int AS count FROM memberships WHERE user_id=$1',
-          [user.id],
-        );
-        if (count.rows[0].count >= 10)
-          fail(400, 'Phase 01 supports up to 10 workspaces per account.');
-        await tx.query('INSERT INTO workspaces(id,name) VALUES($1,$2)', [id, name]);
-        await tx.query("INSERT INTO memberships VALUES($1,$2,'owner')", [id, user.id]);
-      });
+      if (!(await createWorkspace(db, user.id, id, name)))
+        fail(400, 'Phase 01 supports up to 10 workspaces per account.');
       return NextResponse.json({ id, name }, { status: 201 });
     }
     if (path[0] === 'workspaces' && uuid(path[1] || '')) {

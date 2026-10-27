@@ -224,3 +224,107 @@ test('ASCII ZIP entries with Unicode-path overrides are rejected', async () => {
   bytes.writeUInt32LE(bytes.readUInt32LE(end + 12) + extra.length, end + 12);
   assert.throws(() => inspectWorkbookZip(bytes), /Unsupported XLSX path/);
 });
+
+test('Excel date-only imports preserve leap day and reject UTC time components', async () => {
+  const bytes = await workbookBytes((w) => {
+    for (let i = 0; i < 8; i++)
+      w.worksheets[0].getCell(i + 2, 1).value = new Date(Date.UTC(2024, 1, 26 + i));
+  });
+  const points = mappedDataset(
+    await readImport(bytes, 'leap.xlsx'),
+    { dateCol: 0, valueCol: 1 },
+    'daily',
+  );
+  assert.equal(points[3].date, '2024-02-29');
+  assert.equal(points[4].date, '2024-03-01');
+  await assert.rejects(
+    readImport(
+      await workbookBytes((w) => {
+        w.worksheets[0].getCell('A2').value = new Date('2026-01-01T00:00:01.000Z');
+      }),
+      'time.xlsx',
+    ),
+    /date-only Excel dates without times/,
+  );
+});
+
+test('mapped XLSX values preserve negative, decimal and scientific numbers', async () => {
+  const values = [-0.125, -42.75, 1.25e-7, -4.2e6, 0, 1e12, 3.125, 6.022e3];
+  const bytes = await workbookBytes((w) => {
+    values.forEach((value, i) => {
+      w.worksheets[0].getCell(i + 2, 2).value = i === 2 ? '1.25e-7' : value;
+    });
+  });
+  const points = mappedDataset(
+    await readImport(bytes, 'numbers.xlsx'),
+    { dateCol: 0, valueCol: 1 },
+    'daily',
+  );
+  assert.deepEqual(
+    points.map((point) => point.value),
+    values,
+  );
+});
+
+test('empty and mixed text values in the mapped XLSX column are rejected', async () => {
+  for (const value of [null, '12 units']) {
+    const bytes = await workbookBytes((w) => {
+      w.worksheets[0].getCell('B5').value = value;
+    });
+    const table = await readImport(bytes, 'invalid-numbers.xlsx');
+    assert.throws(
+      () => mappedDataset(table, { dateCol: 0, valueCol: 1 }, 'daily'),
+      /Invalid numeric value/,
+    );
+  }
+});
+
+test('cached and shared formulas are rejected even with valid cached numeric values', async () => {
+  const cached = await workbookBytes((w) => {
+    w.worksheets[0].getCell('B2').value = { formula: '1+1', result: 2 };
+  });
+  await assert.rejects(readImport(cached, 'cached-formula.xlsx'), /Formula detected/);
+  const shared = await alteredWorkbook(async (zip) => {
+    const xml = await zip.file('xl/worksheets/sheet1.xml')!.async('string');
+    zip.file(
+      'xl/worksheets/sheet1.xml',
+      xml
+        .replace(
+          /(<c r="B2"[^>]*>).*?(<\/c>)/,
+          '$1<f t="shared" ref="B2:B9" si="0">1+1</f><v>2</v>$2',
+        )
+        .replace(/(<c r="B3"[^>]*>).*?(<\/c>)/, '$1<f t="shared" si="0"/><v>2</v>$2'),
+    );
+  });
+  await assert.rejects(readImport(shared, 'shared-formula.xlsx'), /Formula detected/);
+});
+
+test('hidden observations and a sole hidden worksheet remain included', async () => {
+  const bytes = await workbookBytes((w) => {
+    w.worksheets[0].state = 'hidden';
+    w.worksheets[0].getRow(3).hidden = true;
+    w.worksheets[0].getCell('B3').value = -12.5;
+  });
+  const points = mappedDataset(
+    await readImport(bytes, 'hidden.xlsx'),
+    { dateCol: 0, valueCol: 1 },
+    'daily',
+  );
+  assert.equal(points.length, 8);
+  assert.deepEqual(points[1], { date: '2026-01-02', value: -12.5 });
+  await assert.rejects(
+    readImport(
+      await workbookBytes((w) => {
+        w.addWorksheet('Hidden', { state: 'veryHidden' });
+      }),
+      'extra-hidden.xlsx',
+    ),
+    /one worksheet/,
+  );
+});
+
+test('OLE-container magic is rejected as XLSX; this is not a genuine encrypted-workbook fixture', async () => {
+  const ole = Buffer.alloc(512);
+  Buffer.from('d0cf11e0a1b11ae1', 'hex').copy(ole);
+  await assert.rejects(readImport(ole, 'protected.xlsx'), /Invalid XLSX archive/);
+});

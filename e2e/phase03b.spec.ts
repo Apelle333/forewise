@@ -14,6 +14,7 @@ async function register(ctx: APIRequestContext, label: string) {
   expect(
     (
       await ctx.post('/api/auth/register', {
+        headers: { Origin: origin },
         data: {
           name: 'Phase03B QA',
           workspace: label,
@@ -39,6 +40,76 @@ const upload = (name: string, buffer: Buffer, mode = 'preview') => ({
     dateCol: '1',
     valueCol: '0',
   },
+});
+
+test('visible job monitoring pauses in background and accepted runs allow workspace navigation', async ({
+  page,
+}) => {
+  const wid = await register(page.request, 'monitor');
+  const otherResponse = await page.request.post('/api/workspaces', {
+    headers: { Origin: origin },
+    data: { name: 'Monitor destination' },
+  });
+  expect(otherResponse.status()).toBe(201);
+  const other = (await otherResponse.json()).id;
+  expect(
+    (
+      await page.request.post(`/api/workspaces/${wid}/datasets/import`, {
+        headers: { Origin: origin },
+        ...upload('monitor.csv', Buffer.from(csv), 'import'),
+      })
+    ).status(),
+  ).toBe(201);
+  await page.goto('/workspace');
+  await page.getByLabel('Workspace', { exact: true }).selectOption(wid);
+  await page.getByRole('button', { name: /03 Results/ }).click();
+  await expect(page.locator('.chart-key')).toHaveText('Historical');
+  await page.clock.install();
+  let listRequests = 0,
+    statusRequests = 0;
+  await page.route('**/api/forecast-jobs?workspaceId=*', async (route) => {
+    listRequests++;
+    await route.fulfill({ json: { jobs: [] } });
+  });
+  // Simulate visibility deterministically; this is not a physical background-tab test.
+  const visibility = (hidden: boolean) =>
+    page.evaluate((value) => {
+      Object.defineProperty(document, 'hidden', { configurable: true, value });
+      document.dispatchEvent(new Event('visibilitychange'));
+    }, hidden);
+  await page.getByRole('button', { name: /02 Jobs/ }).click();
+  await expect.poll(() => listRequests).toBe(1);
+  await visibility(true);
+  await page.clock.runFor(15000);
+  expect(listRequests).toBe(1);
+  await visibility(false);
+  await expect.poll(() => listRequests).toBe(2);
+  await page.getByRole('button', { name: /03 Results/ }).click();
+  await page.clock.runFor(10000);
+  expect(listRequests).toBe(2);
+  await page.route('**/api/forecast-jobs/00000000-0000-0000-0000-000000000123', async (route) => {
+    statusRequests++;
+    await route.fulfill({ json: { status: 'pending' } });
+  });
+  await page.route('**/api/forecast-jobs', async (route) => {
+    await route.fulfill({ status: 202, json: { jobId: '00000000-0000-0000-0000-000000000123' } });
+  });
+  await page.getByLabel('Forecasting model', { exact: true }).selectOption('seasonal_naive');
+  await page.getByRole('button', { name: /Generate model forecast/ }).click();
+  await expect(page.getByRole('status')).toContainText('Job saved');
+  await expect(page.getByLabel('Workspace', { exact: true })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /Sign out/ })).toBeEnabled();
+  await visibility(true);
+  await page.clock.runFor(10000);
+  expect(statusRequests).toBe(0);
+  await visibility(false);
+  await page.clock.runFor(1100);
+  await expect.poll(() => statusRequests).toBe(1);
+  await page.getByLabel('Workspace', { exact: true }).selectOption(other);
+  await page.clock.runFor(10000);
+  expect(statusRequests).toBe(1);
+  await expect(page.getByLabel('Workspace', { exact: true })).toHaveValue(other);
+  await expect(page.getByRole('button', { name: 'Import data', exact: true })).toBeEnabled();
 });
 
 test('authorized import and export enforce tenant boundaries and server validation', async ({

@@ -70,6 +70,7 @@ export function Chart({
     futureKind === 'mock'
       ? formatDate(value)
       : new Date(`${value}T00:00:00Z`).toLocaleDateString('en-US', {
+          day: 'numeric',
           month: 'short',
           year: 'numeric',
           timeZone: 'UTC',
@@ -96,10 +97,12 @@ export function Chart({
               <i className="history-key" />
               Historical
             </span>
-            <span>
-              <i className="mock-key" />
-              {futureLabel}
-            </span>
+            {future.length > 0 ? (
+              <span>
+                <i className="mock-key" />
+                {futureLabel}
+              </span>
+            ) : null}
           </div>
           {quantiles ? <p className="interval-note">Shaded P10–P90 / line P50</p> : null}
           {comparison ? (

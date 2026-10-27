@@ -83,3 +83,23 @@ test('CSV text guards include fullwidth spreadsheet operators', () => {
     assert.equal(rows[0][1], '-2');
   }
 });
+
+test('CSV and XLSX preserve database Date, ISO string and null creation timestamps', async () => {
+  const timestamp = '2026-10-25T12:34:56.789Z';
+  for (const created_at of [new Date(timestamp), timestamp, null]) {
+    const expected = created_at === null ? 'null' : timestamp;
+    const rows = exportRows('w', dataset, { ...forecast, created_at });
+    const csv = parse(exportCsv(rows)) as string[][];
+    assert.deepEqual(
+      csv.filter((row) => row[6] === 'created_at').map((row) => row[7]),
+      [expected],
+    );
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load((await exportXlsx(rows)) as never);
+    const timestamps: ExcelJS.CellValue[] = [];
+    workbook.getWorksheet('Metadata')!.eachRow((row) => {
+      if (row.getCell(7).value === 'created_at') timestamps.push(row.getCell(8).value);
+    });
+    assert.deepEqual(timestamps, [expected]);
+  }
+});

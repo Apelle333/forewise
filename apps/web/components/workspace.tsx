@@ -40,6 +40,34 @@ async function api(path: string, body?: unknown, signal?: AbortSignal) {
   return data;
 }
 
+function waitForPoll(signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    let timer: ReturnType<typeof setTimeout>;
+    function cleanup() {
+      clearTimeout(timer);
+      signal.removeEventListener('abort', stop);
+      document.removeEventListener('visibilitychange', schedule);
+    }
+    function stop() {
+      cleanup();
+      reject(new DOMException('Aborted', 'AbortError'));
+    }
+    function schedule() {
+      clearTimeout(timer);
+      if (!document.hidden) {
+        timer = setTimeout(() => {
+          cleanup();
+          resolve();
+        }, 1000);
+      }
+    }
+    signal.addEventListener('abort', stop, { once: true });
+    document.addEventListener('visibilitychange', schedule);
+    if (signal.aborted) stop();
+    else schedule();
+  });
+}
+
 export function Workspace() {
   const router = useRouter();
   const [account, setAccount] = useState<Account | null>(null),
@@ -58,6 +86,7 @@ export function Workspace() {
   const [showCreate, setShowCreate] = useState(false),
     [showOnboarding, setShowOnboarding] = useState(false);
   const [workspaceName, setWorkspaceName] = useState('');
+  const [monitoring, setMonitoring] = useState(false);
 
   const poll = useRef<AbortController | null>(null);
   const resultLoad = useRef<AbortController | null>(null);
@@ -65,6 +94,7 @@ export function Workspace() {
   useEffect(
     () => () => {
       poll.current?.abort();
+      poll.current = null;
       resultLoad.current?.abort();
     },
     [],
@@ -124,6 +154,7 @@ export function Workspace() {
     if (id === wid) return;
     poll.current?.abort();
     resultLoad.current?.abort();
+    setMonitoring(false);
     activeWorkspace.current = id;
     setResultId('');
     setActiveTab('datasets');
@@ -194,51 +225,55 @@ export function Workspace() {
       const controller = new AbortController();
       poll.current?.abort();
       poll.current = controller;
-      if (selectedModel === 'mock') {
-        const run = await api(
-          `workspaces/${wid}/forecasts`,
-          { datasetId: selected, horizon },
-          controller.signal,
-        );
-        await refresh();
-        setResultId(run.id);
-        setMessage('Mock forecast ready. Illustrative only.');
-      } else {
-        const accepted = await api(
-          'forecast-jobs',
-          {
-            contractVersion: '2',
-            workspaceId: wid,
-            datasetId: selected,
-            horizon,
-            model: selectedModel,
-          },
-          controller.signal,
-        );
-        setMessage('Job saved. You can monitor it in Jobs; computation continues if you leave.');
-        for (let i = 0; i < 180; i++) {
-          await new Promise<void>((resolve, reject) => {
-            const stop = () => {
-              clearTimeout(timer);
-              reject(new DOMException('Aborted', 'AbortError'));
-            };
-            const timer = setTimeout(() => {
-              controller.signal.removeEventListener('abort', stop);
-              resolve();
-            }, 1000);
-            controller.signal.addEventListener('abort', stop, { once: true });
-          });
-          const job = await api(`forecast-jobs/${accepted.jobId}`, undefined, controller.signal);
-          if (job.status === 'failed')
-            throw new Error(job.error || 'Forecast failed. Check Jobs for details.');
-          if (job.status === 'completed') {
-            await refresh();
-            setResultId(job.result_id);
-            setMessage('Model forecast ready. Review its historical evaluation and limitations.');
-            return;
+      try {
+        if (selectedModel === 'mock') {
+          const run = await api(
+            `workspaces/${wid}/forecasts`,
+            { datasetId: selected, horizon },
+            controller.signal,
+          );
+          await refresh(controller.signal);
+          if (controller.signal.aborted || activeWorkspace.current !== wid) return;
+          setResultId(run.id);
+          setMessage('Mock forecast ready. Illustrative only.');
+        } else {
+          const accepted = await api(
+            'forecast-jobs',
+            {
+              contractVersion: '2',
+              workspaceId: wid,
+              datasetId: selected,
+              horizon,
+              model: selectedModel,
+            },
+            controller.signal,
+          );
+          if (controller.signal.aborted || activeWorkspace.current !== wid) return;
+          setMonitoring(true);
+          setMessage('Job saved. You can monitor it in Jobs; computation continues if you leave.');
+          for (let i = 0; i < 180; i++) {
+            await waitForPoll(controller.signal);
+            const job = await api(`forecast-jobs/${accepted.jobId}`, undefined, controller.signal);
+            if (controller.signal.aborted || activeWorkspace.current !== wid) return;
+            if (job.status === 'failed')
+              throw new Error(job.error || 'Forecast failed. Check Jobs for details.');
+            if (job.status === 'completed') {
+              await refresh(controller.signal);
+              if (controller.signal.aborted || activeWorkspace.current !== wid) return;
+              setResultId(job.result_id);
+              setMessage('Model forecast ready. Review its historical evaluation and limitations.');
+              return;
+            }
           }
+          setMessage('Still computing. Follow this saved run in Jobs.');
         }
-        setMessage('Still computing. Follow this saved run in Jobs.');
+      } catch (e) {
+        if (!controller.signal.aborted) throw e;
+      } finally {
+        if (poll.current === controller) {
+          poll.current = null;
+          setMonitoring(false);
+        }
       }
     });
   }
@@ -252,9 +287,12 @@ export function Workspace() {
         </span>
         <button
           className="text-button"
-          disabled={busy}
+          disabled={busy && !monitoring}
           onClick={() =>
             act(async () => {
+              poll.current?.abort();
+              resultLoad.current?.abort();
+              setMonitoring(false);
               await api('auth/logout', {});
               router.push('/login');
               router.refresh();
@@ -274,7 +312,7 @@ export function Workspace() {
             <select
               id="workspace-select"
               value={wid}
-              disabled={busy || loading}
+              disabled={(busy && !monitoring) || loading}
               onChange={(e) => selectWorkspace(e.target.value)}
             >
               {account?.workspaces.map((w) => (

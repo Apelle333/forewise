@@ -36,6 +36,7 @@ Hallmark now includes all extracted workspace/onboarding source files. Only exac
 ## Deliberate limits
 
 - One series, one worksheet; CSV/XLSX only. No legacy XLS, named ranges, formulas, merged-data interpretation, arbitrary date guessing, imputation or automatic gap repair.
+- Imports include hidden rows and a sole hidden worksheet, reject time-bearing dates and additional sheets, and have OLE-container rejection evidence rather than a genuine password-encrypted workbook fixture.
 - Twenty datasets and twenty active jobs per workspace. Job view shows the latest 100 jobs; workspace summary holds the latest twenty forecasts, with exact older results obtainable from the displayed jobs.
 - Calibration remains unestablished; the observed AirPassengers P10–P90 coverage limitation is not fixed by presentation. Native model performance depends on hardware, history and horizon. Inference timing excludes queue/upload time.
 - Local synthetic/public fixture verification does not establish production scalability or commercial reliability. Independent Claude review is still required before milestone acceptance.
