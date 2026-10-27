@@ -1,0 +1,38 @@
+{
+  "environment": "Local optimized Chromium on Windows, loopback, no throttling; not field CWV or physical touch hardware.",
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "resourceBytes": 353743,
+      "dpr": 1,
+      "canvasSize": [
+        1000,
+        570
+      ],
+      "errors": []
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "resourceBytes": 353743,
+      "dpr": 1,
+      "canvasSize": [
+        768,
+        430
+      ],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "resourceBytes": 353743,
+      "dpr": 1,
+      "canvasSize": [
+        390,
+        200
+      ],
+      "errors": []
+    }
+  ]
+}

@@ -62,7 +62,7 @@ for (const format of ['csv', 'xlsx'] as const) {
       }
       await page.getByLabel('Observation frequency').selectOption('monthly');
       await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
-      await expect(page.getByRole('status')).toContainText('Dataset saved');
+      await expect(page.getByRole('status').filter({ hasText: 'Dataset saved' })).toBeVisible();
       await page.getByLabel('Forecasting model', { exact: true }).selectOption('timestral_209m');
       await page.getByRole('spinbutton', { name: /Forecast horizon/ }).fill('12');
       const python = path.resolve(
@@ -256,9 +256,20 @@ for (const format of ['csv', 'xlsx'] as const) {
         'p90',
         'metadata_key',
         'metadata_value',
+        'metadata_type',
       ];
       expect(csvRows[0]).toEqual(header);
-      const expectedHistory = history.map((p) => ['history', p.date, p.value, '', '', '', '', '']);
+      const expectedHistory = history.map((p) => [
+        'history',
+        p.date,
+        p.value,
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ]);
       const expectedForecast = persisted.result.points.map(
         (p: { date: string; value: number }, i: number) => [
           'forecast',
@@ -267,14 +278,27 @@ for (const format of ['csv', 'xlsx'] as const) {
           ...['p10', 'p50', 'p90'].map((key) => persisted.result.quantiles[key][i].value),
           '',
           '',
+          '',
         ],
       );
       // Build the expected metadata independently from the saved database records.
       const expectedMetadata: (string | number)[][] = [];
       function flatten(value: unknown, key: string) {
         if (value !== null && typeof value === 'object') {
+          if (key)
+            expectedMetadata.push([
+              'metadata',
+              '',
+              '',
+              '',
+              '',
+              '',
+              key,
+              Object.keys(value).length ? '' : Array.isArray(value) ? '[]' : '{}',
+              Array.isArray(value) ? 'array' : 'object',
+            ]);
           for (const [child, entry] of Object.entries(value))
-            flatten(entry, key ? `${key}.${child}` : child);
+            flatten(entry, key ? `${key}.${child.replace(/[.\\]/g, '\\$&')}` : child);
         } else
           expectedMetadata.push([
             'metadata',
@@ -285,11 +309,12 @@ for (const format of ['csv', 'xlsx'] as const) {
             '',
             key,
             value === null ? 'null' : typeof value === 'number' ? value : String(value),
+            value === null ? 'null' : typeof value,
           ]);
       }
       flatten(
         {
-          export_version: '1',
+          export_version: '2',
           workspace_id: wid,
           forecast_id: persisted.forecast_id,
           created_at: persisted.created_at.toISOString(),
@@ -329,11 +354,14 @@ for (const format of ['csv', 'xlsx'] as const) {
         const sheet = exported.getWorksheet(name)!;
         expect(sheet).toBeTruthy();
         expect(sheet.rowCount).toBe(expected.length + 1);
-        expect(Array.from({ length: 8 }, (_, i) => sheet.getRow(1).getCell(i + 1).value)).toEqual(
-          header,
-        );
+        expect(
+          Array.from({ length: header.length }, (_, i) => sheet.getRow(1).getCell(i + 1).value),
+        ).toEqual(header);
         const actual = Array.from({ length: expected.length }, (_, i) =>
-          Array.from({ length: 8 }, (_, col) => sheet.getRow(i + 2).getCell(col + 1).value ?? ''),
+          Array.from(
+            { length: header.length },
+            (_, col) => sheet.getRow(i + 2).getCell(col + 1).value ?? '',
+          ),
         );
         if (name === 'Metadata')
           expect(sortedMetadata(actual as (string | number)[][])).toEqual(sortedMetadata(expected));

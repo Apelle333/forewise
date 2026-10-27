@@ -1,0 +1,123 @@
+/* Hallmark · checked: 2026-10-27 · genre: atmospheric · theme: locked Forecast Horizon · v2.0.0 */
+/* Critique: exact inspection and explicit motion controls belong beside the visual feedback. */
+.h-inspection {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 22px 48px;
+  border: 1px solid var(--h-line);
+  padding: 24px 28px;
+  background: var(--h-glow);
+}
+.h-inspection-heading {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.h-inspection-state {
+  color: var(--h-dim);
+  font-size: 12px;
+}
+.h-scene-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.h-scene-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.h-inspected-value {
+  border-left: 1px solid var(--h-mint-muted);
+  padding-left: 24px;
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--h-dim);
+}
+.h-inspected-value strong {
+  color: var(--h-text);
+  font-size: 28px;
+  font-weight: 400;
+}
+.h-inspected-value strong small {
+  display: inline;
+  font-size: 12px;
+}
+.h-motion-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: start;
+}
+.h-motion-controls button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--h-line);
+  border-radius: 2px;
+  background: var(--h-bg);
+  color: var(--h-text);
+  font-size: 12px;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+.h-motion-controls button:hover:not(:disabled),
+.h-motion-controls button[aria-pressed='true'] {
+  border-color: var(--h-mint);
+  color: var(--h-mint);
+}
+.h-motion-controls button:focus-visible {
+  outline: 2px solid var(--h-mint);
+  outline-offset: 4px;
+}
+.h-motion-controls button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.h-motion-hint {
+  margin: 0;
+  color: var(--h-dim);
+  font-size: 12px;
+  line-height: 1.7;
+}
+@media (min-width: 901px) {
+  .h-lab > .h-disclosure {
+    grid-row: 2;
+  }
+}
+@media (max-width: 900px) {
+  .h-inspection {
+    padding: 22px;
+    gap: 20px;
+  }
+  .h-inspection-heading {
+    align-items: start;
+  }
+  .h-inspection-heading .h-small {
+    letter-spacing: 0;
+  }
+}
+@media (max-width: 600px) {
+  .h-inspection {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 18px;
+  }
+  .h-inspection-heading {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .h-inspected-value {
+    padding-left: 16px;
+  }
+  .h-motion-controls {
+    gap: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-motion-controls button {
+    transition: none;
+  }
+}

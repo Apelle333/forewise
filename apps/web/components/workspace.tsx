@@ -549,9 +549,13 @@ export function Workspace() {
       </div>
       {showOnboarding && (
         <DataOnboarding
+          key={wid}
           wid={wid}
-          onSuccess={async (id) => {
-            await refresh();
+          onSuccess={async (id, signal) => {
+            signal.throwIfAborted();
+            if (activeWorkspace.current !== wid) return;
+            await refresh(signal);
+            if (signal.aborted || activeWorkspace.current !== wid) return;
             setSelected(id);
             setResultId('');
             setActiveTab('results');

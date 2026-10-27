@@ -9,9 +9,19 @@ export function exportRows(
   forecast: ExportForecast,
 ): Cell[][] {
   const rows: Cell[][] = [
-    ['record_type', 'date', 'value', 'p10', 'p50', 'p90', 'metadata_key', 'metadata_value'],
+    [
+      'record_type',
+      'date',
+      'value',
+      'p10',
+      'p50',
+      'p90',
+      'metadata_key',
+      'metadata_value',
+      'metadata_type',
+    ],
   ];
-  for (const p of dataset.points) rows.push(['history', p.date, p.value, '', '', '', '', '']);
+  for (const p of dataset.points) rows.push(['history', p.date, p.value, '', '', '', '', '', '']);
   for (const [i, p] of forecast.result.points.entries())
     rows.push([
       'forecast',
@@ -22,10 +32,11 @@ export function exportRows(
       forecast.result.quantiles?.p90[i]?.value ?? '',
       '',
       '',
+      '',
     ]);
   // Preserve the complete model/evaluation payload, including revisions and warning text.
   const metadata = {
-    export_version: '1',
+    export_version: '2',
     workspace_id: workspaceId,
     forecast_id: forecast.id,
     created_at:
@@ -43,7 +54,23 @@ export function exportRows(
   };
   function add(value: unknown, key: string) {
     if (value !== null && typeof value === 'object') {
-      for (const [k, v] of Object.entries(value)) add(v, key ? `${key}.${k}` : k);
+      const kind = Array.isArray(value) ? 'array' : 'object';
+      if (key)
+        rows.push([
+          'metadata',
+          '',
+          '',
+          '',
+          '',
+          '',
+          key,
+          Object.keys(value).length ? '' : kind === 'array' ? '[]' : '{}',
+          kind,
+        ]);
+      for (const [k, v] of Object.entries(value)) {
+        const segment = k.replaceAll('\\', '\\\\').replaceAll('.', '\\.');
+        add(v, key ? `${key}.${segment}` : segment);
+      }
     } else
       rows.push([
         'metadata',
@@ -54,6 +81,7 @@ export function exportRows(
         '',
         key,
         value === null ? 'null' : typeof value === 'number' ? value : String(value),
+        value === null ? 'null' : typeof value,
       ]);
   }
   add(metadata, '');

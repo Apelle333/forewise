@@ -103,3 +103,65 @@ test('CSV and XLSX preserve database Date, ISO string and null creation timestam
     assert.deepEqual(timestamps, [expected]);
   }
 });
+
+test('export v2 distinguishes empty containers, null, missing fields and literal strings', async () => {
+  const rows = exportRows('w', dataset, {
+    ...forecast,
+    result: {
+      ...forecast.result,
+      evaluation: {
+        windows: 1,
+        evaluated_points: 1,
+        warnings: [],
+        context: {},
+        unavailable: null,
+        literalArray: '[]',
+        literalObject: '{}',
+        literalNull: 'null',
+        nested: { values: [0, false, ''] },
+      },
+    },
+  });
+  const expected = [
+    ['result.evaluation.warnings', '[]', 'array'],
+    ['result.evaluation.context', '{}', 'object'],
+    ['result.evaluation.unavailable', 'null', 'null'],
+    ['result.evaluation.literalArray', '[]', 'string'],
+    ['result.evaluation.literalObject', '{}', 'string'],
+    ['result.evaluation.literalNull', 'null', 'string'],
+    ['result.evaluation.nested.values.0', '0', 'number'],
+    ['result.evaluation.nested.values.1', 'false', 'boolean'],
+    ['result.evaluation.nested.values.2', '', 'string'],
+  ];
+  const csv = parse(exportCsv(rows)) as string[][];
+  assert.equal(csv[0][8], 'metadata_type');
+  assert.equal(csv.find((r) => r[6] === 'export_version')?.[7], '2');
+  for (const [key, value, kind] of expected)
+    assert.deepEqual(csv.find((r) => r[6] === key)?.slice(7), [value, kind]);
+  assert.equal(
+    csv.some((r) => r[6] === 'result.evaluation.absent'),
+    false,
+  );
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load((await exportXlsx(rows)) as never);
+  const metadata = new Map<string, unknown[]>();
+  workbook.getWorksheet('Metadata')!.eachRow((row) => {
+    metadata.set(String(row.getCell(7).value), [row.getCell(8).value ?? '', row.getCell(9).value]);
+  });
+  for (const [key, value, kind] of expected)
+    assert.deepEqual(metadata.get(key), [kind === 'number' ? Number(value) : value, kind]);
+  assert.equal(metadata.has('result.evaluation.absent'), false);
+});
+
+test('export v2 escapes literal dots and backslashes without colliding with nested paths', () => {
+  const rows = exportRows('w', dataset, {
+    ...forecast,
+    result: { ...forecast.result, metadata: { 'a.b': [], a: { b: {} }, 'a\\b': null } },
+  });
+  for (const [key, value, kind] of [
+    ['result.metadata.a\\.b', '[]', 'array'],
+    ['result.metadata.a.b', '{}', 'object'],
+    ['result.metadata.a\\\\b', 'null', 'null'],
+  ])
+    assert.deepEqual(rows.find((r) => r[6] === key)?.slice(7), [value, kind]);
+});

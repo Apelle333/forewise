@@ -27,6 +27,8 @@ Claude's original 29-file handoff is committed separately at `51cd03e` and backe
 
 CSV contains history, forecast values, available P10/P50/P90 and metadata records. XLSX contains Observations, Forecast and Metadata sheets with primitive typed values. Include run/dataset/workspace identity, timestamps, horizon/frequency, model/weight/code revisions, evaluation, performance and warning metadata supplied by the engine. Formula-leading text (including fullwidth operators) is escaped in CSV; validated negative numbers remain numeric. XLSX text is never assigned as formulas. CSV first-open escaping is not a universal guarantee after subsequent spreadsheet saves.
 
+Pre-beta repair introduces export v2: the first eight columns are retained and `metadata_type` is appended. Empty/nonempty containers and null have explicit typed rows; missing fields have none. See [the serialization contract and regression evidence](PRE-BETA-REPAIR.md).
+
 ## Stage 5 verification and review
 
 The tests exercise production parser/export modules rather than copied UI checks. Browser tests cover mapped CSV and genuine XLSX ingestion, failed validation, focus/Escape, desktop/tablet/mobile overflow/accessibility, concurrent quota requests, retry authorization/races/cap, exact older-result retrieval, genuine model inference, comparison and quantile export. Existing PostgreSQL RLS, worker-fencing and model tests remain required.

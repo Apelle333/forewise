@@ -1,7 +1,25 @@
 import * as THREE from 'three';
 import { horizonHistory, scenarioValue, type Direction } from '@/lib/horizon-data';
+import {
+  easePose,
+  illustrativeValue,
+  inspectHorizon,
+  motionTime,
+  orbitAt,
+  particleAt,
+} from '@/lib/horizon-motion';
 
-type Settings = { days: number; spread: number; direction: Direction; reduced: boolean };
+export type HorizonSettings = {
+  days: number;
+  spread: number;
+  direction: Direction;
+  reduced: boolean;
+  cursor?: number;
+  rangeVisible?: boolean;
+  playing?: boolean;
+  replay?: number;
+};
+type Settings = HorizonSettings;
 
 export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () => void) {
   const renderer = new THREE.WebGLRenderer({
@@ -23,8 +41,16 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
   let progress = 0;
   let pointerX = 0;
   let pointerY = 0;
-  let rotationY = -0.24;
-  let rotationX = 0;
+  let fromX = 0,
+    fromY = -0.24,
+    targetX = 0,
+    targetY = -0.24;
+  let transitionAt = performance.now();
+  let clock: { offset: number; startedAt: number | null } = { offset: 0, startedAt: null };
+  let lastRender = 0;
+  let cursorLine: THREE.Line;
+  let cursorDot: THREE.Mesh;
+  let particles: THREE.Points;
   let storyProgress: number | null = null;
   let futurePhase = false;
   const disposable: (THREE.BufferGeometry | THREE.Material)[] = [];
@@ -82,6 +108,7 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
           lane === 0 ? 1 : 0.5,
           lane === 0 ? 0.02 : 0,
         );
+        group.children.at(-1)!.userData.range = lane !== 0;
       }
       line([new THREE.Vector3(0, -6, 0), new THREE.Vector3(0, 6, 0)], amber, 0.35);
       line([new THREE.Vector3(-6, 0, 0), new THREE.Vector3(6, 0, 0)], mint, 0.2);
@@ -113,6 +140,7 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
           lane === 0 ? 1 : 0.38 + Math.abs(lane) / 60,
           lane === 0 ? 0.028 : 0.012,
         );
+        group.children.at(-1)!.userData.range = lane !== 0;
       }
       if (settings.direction === 'atlas') {
         for (let day = 1; day <= settings.days; day += 2) {
@@ -129,6 +157,7 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
             mint,
             0.25,
           );
+          group.children.at(-1)!.userData.range = true;
         }
       } else {
         // A translucent elliptic sleeve makes the scenario fan spatially legible.
@@ -163,6 +192,7 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
         });
         group.add(new THREE.Mesh(skin, skinMaterial));
         group.children.at(-1)!.userData.future = true;
+        group.children.at(-1)!.userData.range = true;
         disposable.push(skin, skinMaterial);
         for (const day of [7, 14, 21, 28].filter((d) => d <= settings.days)) {
           const t = day / 28;
@@ -179,6 +209,7 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
             0.5,
           );
           group.children.at(-1)!.userData.revealAfter = day / 28;
+          group.children.at(-1)!.userData.range = true;
         }
       }
       futurePhase = false;
@@ -204,7 +235,82 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
         group.add(point);
       }
     }
+    const cursorGeometry = new THREE.BufferGeometry();
+    cursorGeometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(new Float32Array(6), 3),
+    );
+    const cursorMaterial = new THREE.LineBasicMaterial({
+      color: 0xe2f5ef,
+      transparent: true,
+      opacity: 0.35,
+    });
+    cursorLine = new THREE.Line(cursorGeometry, cursorMaterial);
+    cursorLine.frustumCulled = false;
+    const dotGeometry = new THREE.SphereGeometry(0.075, 12, 8);
+    const dotMaterial = new THREE.MeshBasicMaterial({ color: 0xe2f5ef });
+    cursorDot = new THREE.Mesh(dotGeometry, dotMaterial);
+    group.add(cursorLine, cursorDot);
+    const particleGeometry = new THREE.BufferGeometry();
+    particleGeometry.setAttribute(
+      'position',
+      new THREE.Float32BufferAttribute(new Float32Array(32 * 3), 3),
+    );
+    particleGeometry.setAttribute(
+      'opacity',
+      new THREE.Float32BufferAttribute(new Float32Array(32), 1),
+    );
+    const particleMaterial = new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      uniforms: { tint: { value: new THREE.Color(mint) } },
+      vertexShader:
+        'attribute float opacity; varying float fade; void main(){fade=opacity; vec4 p=modelViewMatrix*vec4(position,1.0); gl_Position=projectionMatrix*p; gl_PointSize=3.5;}',
+      fragmentShader:
+        'uniform vec3 tint; varying float fade; void main(){float r=length(gl_PointCoord-vec2(0.5))*2.0; gl_FragColor=vec4(tint,fade*(1.0-smoothstep(0.0,1.0,r)));}',
+    });
+    particles = new THREE.Points(particleGeometry, particleMaterial);
+    particles.frustumCulled = false;
+    group.add(particles);
+    disposable.push(
+      cursorGeometry,
+      cursorMaterial,
+      dotGeometry,
+      dotMaterial,
+      particleGeometry,
+      particleMaterial,
+    );
+    retarget();
     request();
+  }
+
+  function visible() {
+    const rect = host.getBoundingClientRect();
+    return !!rect.width && !!rect.height && rect.bottom > 0 && rect.top < innerHeight;
+  }
+  function syncClock() {
+    const now = performance.now();
+    clock = {
+      offset: motionTime(clock, now),
+      startedAt:
+        settings.playing && !settings.reduced && !document.hidden && visible() ? now : null,
+    };
+    renderer.domElement.dataset.playing = String(clock.startedAt !== null);
+    renderer.domElement.dataset.motionTime = clock.offset.toFixed(3);
+  }
+  function retarget() {
+    const now = performance.now();
+    fromX = easePose(fromX, targetX, now - transitionAt);
+    fromY = easePose(fromY, targetY, now - transitionAt);
+    targetX = settings.reduced ? 0 : pointerY * 0.05;
+    targetY =
+      storyProgress !== null
+        ? -0.5 + storyProgress * 0.7
+        : settings.direction === 'observatory'
+          ? -0.16
+          : -0.24 + (settings.reduced ? 0 : pointerX * 0.12 + progress * 0.28);
+    transitionAt = settings.reduced ? now - 360 : now;
   }
 
   function draw() {
@@ -219,19 +325,49 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
       rect.top >= innerHeight
     )
       return;
+    const now = performance.now();
+    const running = clock.startedAt !== null;
+    if (running && now - lastRender < 32) {
+      request();
+      return;
+    }
+    lastRender = now;
+    const time = motionTime(clock, now);
     const radial = settings.direction === 'observatory';
     camera.position.set(radial ? 0 : 1, radial ? 1 : 5.2, innerWidth < 600 ? 29 : 20);
     camera.lookAt(radial ? 0 : 0.5, -0.2, 0);
-    const targetX = settings.reduced ? 0 : pointerY * 0.05;
-    const targetY =
-      storyProgress !== null
-        ? -0.5 + storyProgress * 0.7
-        : radial
-          ? -0.16
-          : -0.24 + (settings.reduced ? 0 : pointerX * 0.12 + progress * 0.28);
-    rotationX += (targetX - rotationX) * 0.12;
-    rotationY += (targetY - rotationY) * 0.12;
-    group.rotation.set(rotationX, rotationY, radial ? 0 : 0.08);
+    const orbit = orbitAt(time, settings.reduced || storyProgress !== null);
+    group.rotation.set(
+      easePose(fromX, targetX, now - transitionAt) + orbit.x,
+      easePose(fromY, targetY, now - transitionAt) + orbit.y,
+      radial ? 0 : 0.08,
+    );
+    const point = inspectHorizon(settings.cursor ?? 0, settings.days, settings.spread);
+    const cx = point.day <= 0 ? -8 + ((point.day + 27) / 27) * 6 : -2 + (point.day / 28) * 10;
+    const cy = (point.value - 161) / 22;
+    const marker = cursorLine.geometry.getAttribute('position');
+    marker.setXYZ(0, cx, -4, 0);
+    marker.setXYZ(1, cx, cy, 0);
+    marker.needsUpdate = true;
+    cursorDot.position.set(cx, cy, 0);
+    cursorLine.visible = cursorDot.visible = !radial && storyProgress === null;
+    for (const child of group.children)
+      if (child.userData.range) child.visible = settings.rangeVisible !== false;
+    particles.visible = !settings.reduced && !radial && storyProgress === null;
+    const positions = particles.geometry.getAttribute('position'),
+      opacity = particles.geometry.getAttribute('opacity');
+    for (let i = 0; i < 32; i++) {
+      const p = particleAt(i, time),
+        day = p.phase * settings.days;
+      positions.setXYZ(
+        i,
+        -2 + (day / 28) * 10,
+        (illustrativeValue(day, 0, settings.spread) - 161) / 22,
+        p.lane * 0.12,
+      );
+      opacity.setX(i, p.alpha * 0.65);
+    }
+    positions.needsUpdate = opacity.needsUpdate = true;
     if (storyProgress !== null) {
       const reveal = Math.min(1, storyProgress * 1.7);
       group.scale.z = 0.08 + storyProgress * 0.92;
@@ -248,7 +384,13 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
     }
     renderer.render(scene, camera);
     renderer.domElement.dataset.rendered = 'true';
-    if (Math.abs(rotationX - targetX) + Math.abs(rotationY - targetY) > 0.0002) request();
+    renderer.domElement.dataset.motionTime = time.toFixed(3);
+    renderer.domElement.dataset.playing = String(running);
+    if (
+      running ||
+      (now - transitionAt < 360 && Math.abs(fromX - targetX) + Math.abs(fromY - targetY) > 0.0002)
+    )
+      request();
   }
   function request() {
     if (!frame && !disposed) frame = requestAnimationFrame(draw);
@@ -261,36 +403,58 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
     request();
   });
   resize.observe(host);
-  const intersection = new IntersectionObserver(request);
+  const intersection = new IntersectionObserver(() => {
+    syncClock();
+    request();
+  });
   intersection.observe(host);
   function move(event: PointerEvent) {
     if (event.pointerType === 'touch' || settings.reduced) return;
     const rect = host.getBoundingClientRect();
     pointerX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     pointerY = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+    retarget();
     request();
   }
   function scroll() {
     progress = Math.max(0, Math.min(1, window.scrollY / window.innerHeight));
+    retarget();
+    syncClock();
     request();
   }
   function lost(event: Event) {
     event.preventDefault();
     onLost();
   }
+  function visibility() {
+    syncClock();
+    request();
+  }
   host.addEventListener('pointermove', move);
   window.addEventListener('scroll', scroll, { passive: true });
-  document.addEventListener('visibilitychange', request);
+  document.addEventListener('visibilitychange', visibility);
   renderer.domElement.addEventListener('webglcontextlost', lost);
   rebuild();
   return {
     setStoryProgress(value: number) {
       storyProgress = value;
+      retarget();
       request();
     },
     update(next: Settings) {
+      syncClock();
+      if (next.replay !== settings.replay) clock = { offset: 0, startedAt: null };
+      const geometryChanged =
+        settings.days !== next.days ||
+        settings.spread !== next.spread ||
+        settings.direction !== next.direction;
       settings = next;
-      rebuild();
+      syncClock();
+      if (geometryChanged) rebuild();
+      else {
+        retarget();
+        request();
+      }
     },
     dispose() {
       disposed = true;
@@ -299,10 +463,11 @@ export function mountHorizon(host: HTMLElement, initial: Settings, onLost: () =>
       intersection.disconnect();
       host.removeEventListener('pointermove', move);
       window.removeEventListener('scroll', scroll);
-      document.removeEventListener('visibilitychange', request);
+      document.removeEventListener('visibilitychange', visibility);
       renderer.domElement.removeEventListener('webglcontextlost', lost);
       for (const resource of disposable) resource.dispose();
       renderer.dispose();
+      renderer.forceContextLoss();
       renderer.domElement.remove();
     },
   };

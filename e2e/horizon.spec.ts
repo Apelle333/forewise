@@ -90,7 +90,7 @@ test('reduced motion and unavailable WebGL keep a complete usable alternative', 
     } as typeof original;
   });
   await page.reload();
-  await expect(page.getByRole('status')).toContainText('3D is unavailable');
+  await expect(page.getByRole('status').filter({ hasText: '3D is unavailable' })).toBeVisible();
   await expect(page.locator('.h-flat svg')).toBeVisible();
   await page.screenshot({ path: `${evidence}/webgl-fallback.png` });
   await page.getByText('Read the scenario values and method', { exact: true }).click();
@@ -103,7 +103,7 @@ test('WebGL context loss falls back and route changes release the canvas', async
   await page.locator('.h-canvas canvas').evaluate((canvas: HTMLCanvasElement) => {
     canvas.getContext('webgl2')?.getExtension('WEBGL_lose_context')?.loseContext();
   });
-  await expect(page.getByRole('status')).toContainText('3D is unavailable');
+  await expect(page.getByRole('status').filter({ hasText: '3D is unavailable' })).toBeVisible();
   await expect(page.locator('.h-canvas canvas')).toHaveCount(0);
   await page.getByRole('link', { name: 'View the three visual studies' }).click();
   await expect(page.locator('.h-stage')).toHaveAttribute('data-renderer', 'webgl');

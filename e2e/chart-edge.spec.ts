@@ -23,7 +23,7 @@ test('signed data stays inside the plot and exact values remain available', asyn
     .locator('input[type=file]')
     .setInputFiles({ name: 'Net change.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
   await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
-  await expect(page.getByRole('status')).toContainText('Dataset saved');
+  await expect(page.getByRole('status').filter({ hasText: 'Dataset saved' })).toBeVisible();
   const coordinates = await page.locator('.history-line').getAttribute('points');
   for (const pair of coordinates!.split(' ')) {
     const y = Number(pair.split(',')[1]);

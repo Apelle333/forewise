@@ -1,0 +1,1834 @@
+{
+  "summary": {
+    "fails": 18,
+    "reflex": 3,
+    "warns": 4,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 177,
+    "files": 7,
+    "render": "ran"
+  },
+  "findings": [
+    {
+      "gate": "19",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\components\\horizon-experience.tsx",
+      "line": 394,
+      "evidence": "dash \"—\" in copy",
+      "fix": "A comma, a colon, a full stop or parentheses; never a dash"
+    },
+    {
+      "gate": "38i",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\components\\horizon-experience.tsx",
+      "line": 227,
+      "evidence": "<em>/<i> inside <h1>",
+      "fix": "Roman headers; emphasis via weight or accent"
+    },
+    {
+      "gate": "44d",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[1920px] hero runs past the 1920x1080 screen (hero ends at 1828px)",
+      "fix": "Cap vw-sized visuals and display sizes"
+    },
+    {
+      "gate": "54",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\components\\horizon-experience.tsx",
+      "line": 223,
+      "evidence": "eyebrow \"BUSINESS FORECASTING / PRODUCT …\" before <h1>",
+      "fix": "Cut it; the heading already says this (craft.md § 7 has twelve other openings)"
+    },
+    {
+      "gate": "56",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 759,
+      "evidence": "two sticky top:0 elements: .data-table-scroll thead, .h-table-scroll thead + .…",
+      "fix": "Offset the second sticky by banner height"
+    },
+    {
+      "gate": "63",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\components\\horizon-experience.tsx",
+      "line": 391,
+      "evidence": "middle-dot meta string \"DAY · SYNTHETIC UNITS — Illustrative extent · not…\"",
+      "fix": "Line breaks, columns or hairlines; one dot in a byline at most"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 149,
+      "evidence": ".overline: uppercase tracked 0.12em at 11px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 257,
+      "evidence": ".badge, .demo-badge: uppercase tracked 0.05em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 299,
+      "evidence": ".hero-folio, .hero-caption, .section-label: letter-spaced tracked 0.08em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 307,
+      "evidence": ".edition: letter-spaced tracked 0.12em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 468,
+      "evidence": ".point-readout b: letter-spaced tracked 0.06em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 940,
+      "evidence": ".preview-label: letter-spaced tracked 0.09em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1734,
+      "evidence": ".chart-caption .overline: letter-spaced tracked 0.06em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 91,
+      "evidence": ".h-eyebrow, .h-small, .h-stage-top, .h-annotations, .h-scene-note, .h-chapters article > span, .h-study-nav: letter-spa…",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 353,
+      "evidence": ".h-readout > span: letter-spaced tracked 0.1em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 432,
+      "evidence": ".h-story-foot: letter-spaced tracked 0.1em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 736,
+      "evidence": ".h-eyebrow: letter-spaced tracked 0.08em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "67",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 1008,
+      "evidence": ".h-narrative > span: letter-spaced tracked 0.1em at 12px in a label role",
+      "fix": "Labels, captions, table heads, nav links and meta are the body face (or the theme's label face), a step smaller, sentence case, untracked"
+    },
+    {
+      "gate": "38iii",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 323,
+      "evidence": "accented word inside a heading (.hero h1 .serif)",
+      "fix": "Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero"
+    },
+    {
+      "gate": "38iii",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1293,
+      "evidence": "accented word inside a heading (.dataset-list h3 span)",
+      "fix": "Set the whole head one way: a line break, a second line at a second size, or the whole head in the accent. Guard: the theme names the coloured word as its signature and it appears once on the page, in the hero"
+    },
+    {
+      "gate": "49b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[320px] link \"Back to selected design ↗\" wraps to 2 lines (a)",
+      "fix": "Shorten the label or set nowrap"
+    },
+    {
+      "gate": "3",
+      "grade": "WARN",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 916,
+      "evidence": "side stripe border-left: 3px solid on .error, .success",
+      "fix": "Hairline all round, none, or an accent square"
+    },
+    {
+      "gate": "3",
+      "grade": "WARN",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2402,
+      "evidence": "side stripe border-left: 3px solid var(--accent) on .calibration-warning",
+      "fix": "Hairline all round, none, or an accent square"
+    },
+    {
+      "gate": "F3",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 117,
+      "evidence": "no text-wrap: balance on any display head (47 head rule(s), e.g. h1, h2, h3)",
+      "fix": "Add text-wrap: balance to h1/h2-level heads"
+    },
+    {
+      "gate": "F15",
+      "grade": "WARN",
+      "tier": "finish",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1,
+      "evidence": "9 different column gaps across multi-column sections (48px, 24px, 96px, 40px, 100px, 30px, 60px, 80px, 64px)",
+      "fix": "One column gap for every multi-column section"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 27,
+      "evidence": "margin: 0 0 3px (off the 4px scale) on .fi-heading > p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 41,
+      "evidence": "padding: 24px 30px 0 (off the 4px scale) on .fi-card-label",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 50,
+      "evidence": "padding: 12px 26px 0 (off the 4px scale) on .fi-drawing",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 156,
+      "evidence": "padding: 0 30px (off the 4px scale) on .fi-controls",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 169,
+      "evidence": "padding: 18px 12px 16px (off the 4px scale) on .fi-step > summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 213,
+      "evidence": "margin-top: 7px (off the 4px scale) on .fi-step-preview",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 236,
+      "evidence": "padding: 30px 12px (off the 4px scale) on .fi-detail",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 262,
+      "evidence": "padding: 20px 42px (off the 4px scale) on .fi-figure figcaption",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 324,
+      "evidence": "padding-inline: 18px (off the 4px scale) on .fi-controls",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 340,
+      "evidence": "padding-inline: 26px (off the 4px scale) on .fi-figure figcaption",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 350,
+      "evidence": "gap: 22px (off the 4px scale) on .fi-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 362,
+      "evidence": "padding: 22px 0 8px (off the 4px scale) on .fi-drawing",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 366,
+      "evidence": "padding-inline: 14px (off the 4px scale) on .fi-controls",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 372,
+      "evidence": "padding: 14px 9px (off the 4px scale) on .fi-step > summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 394,
+      "evidence": "padding: 26px 9px (off the 4px scale) on .fi-detail",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\forecast-instrument.css",
+      "line": 403,
+      "evidence": "padding: 17px 23px (off the 4px scale) on .fi-figure figcaption",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 165,
+      "evidence": "gap: 10px (off the 4px scale) on .brand",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 172,
+      "evidence": "margin-left: 5px (off the 4px scale) on .brand-punctuation",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 203,
+      "evidence": "padding: 14px 20px (off the 4px scale) on .button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 244,
+      "evidence": "padding: 10px 0 (off the 4px scale) on .text-button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 262,
+      "evidence": "padding: 6px 9px (off the 4px scale) on .badge, .demo-badge",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 285,
+      "evidence": "padding: 14px (off the 4px scale) on .skip:focus",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 295,
+      "evidence": "padding-top: 38px (off the 4px scale) on .hero",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 316,
+      "evidence": "margin: 30px 0 44px (off the 4px scale) on .hero-lead",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 333,
+      "evidence": "margin-bottom: 22px (off the 4px scale) on .hero-aside p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 358,
+      "evidence": "gap: 26px (off the 4px scale) on .demo-tabs",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 363,
+      "evidence": "padding: 18px 0 (off the 4px scale) on .demo-tabs button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 374,
+      "evidence": "padding: 25px 32px 0 (off the 4px scale) on .forecast-demo .series-figure",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 384,
+      "evidence": "padding: 26px 32px 24px (off the 4px scale) on .demo-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 391,
+      "evidence": "margin: 9px 0 0 (off the 4px scale) on .demo-bottom p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 447,
+      "evidence": "gap: 7px (off the 4px scale) on .chart-key span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 472,
+      "evidence": "margin-left: 7px (off the 4px scale) on .point-readout b",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 480,
+      "evidence": "margin-top: 5px (off the 4px scale) on .point-readout strong",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 579,
+      "evidence": "padding: 0 6px (off the 4px scale) on .horizon-annotation",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 586,
+      "evidence": "margin: 14px 14px 22px 52px (off the 4px scale) on .date-axis",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 595,
+      "evidence": "margin: 0 14px 0 52px (off the 4px scale) on .inspect-control",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 613,
+      "evidence": "padding: 14px 0 (off the 4px scale) on .data-disclosure summary",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 640,
+      "evidence": "padding: 11px 12px (off the 4px scale) on th, td",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 689,
+      "evidence": "padding: 27px 0 (off the 4px scale) on .usecase-rows article",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 718,
+      "evidence": "margin: 24px 0 10px (off the 4px scale) on .process-layout > div > p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 730,
+      "evidence": "padding: 22px 0 (off the 4px scale) on .process-list li",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 736,
+      "evidence": "padding-top: 5px (off the 4px scale) on .process-list li > span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 753,
+      "evidence": "padding-top: 54px (off the 4px scale) on .truth-section",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 852,
+      "evidence": "margin: 38px 0 (off the 4px scale) on .auth-story svg",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 871,
+      "evidence": "margin: 19px 0 14px (off the 4px scale) on .auth-card h1",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 884,
+      "evidence": "margin: 9px 0 22px (off the 4px scale) on .field-hint",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 889,
+      "evidence": "margin: 22px 0 (off the 4px scale) on .auth-switch",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 912,
+      "evidence": "padding: 13px 16px (off the 4px scale) on .error, .success",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 947,
+      "evidence": "padding: 0 14px (off the 4px scale) on .preview-label > span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 957,
+      "evidence": "padding: 32px 22px (off the 4px scale) on .workspace-sidebar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 966,
+      "evidence": "padding: 10px (off the 4px scale) on .workspace-switcher select",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 977,
+      "evidence": "padding: 14px (off the 4px scale) on .create-workspace",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 978,
+      "evidence": "margin: 5px -8px 18px (off the 4px scale) on .create-workspace",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 999,
+      "evidence": "gap: 18px (off the 4px scale) on .workspace-anchor-nav a",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1032,
+      "evidence": "gap: 10px (off the 4px scale) on .profile",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1064,
+      "evidence": "padding: 38px 36px (off the 4px scale) on .workspace-main",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1080,
+      "evidence": "margin: 14px 0 0 (off the 4px scale) on .workspace-heading > div > p:last-child",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1085,
+      "evidence": "gap: 18px (off the 4px scale) on .notice",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1088,
+      "evidence": "margin: 26px 0 28px (off the 4px scale) on .notice",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1089,
+      "evidence": "padding: 14px 0 (off the 4px scale) on .notice",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1122,
+      "evidence": "gap: 18px (off the 4px scale) on .result-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1123,
+      "evidence": "padding-bottom: 26px (off the 4px scale) on .result-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1131,
+      "evidence": "margin-top: 9px (off the 4px scale) on .result-heading h2",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1136,
+      "evidence": "margin: 10px 0 0 (off the 4px scale) on .result-heading p:last-child",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1141,
+      "evidence": "padding: 10px 12px (off the 4px scale) on .result-heading .button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1167,
+      "evidence": "padding-top: 22px (off the 4px scale) on .forecast-form",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1193,
+      "evidence": "margin: 14px 0 (off the 4px scale) on .panel-heading h2",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1198,
+      "evidence": "margin-bottom: 22px (off the 4px scale) on .panel-heading > p:last-child",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1202,
+      "evidence": "padding: 24px 14px (off the 4px scale) on .upload-zone",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1211,
+      "evidence": "margin-bottom: 14px (off the 4px scale) on .upload-symbol",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1220,
+      "evidence": "margin: 12px 0 18px (off the 4px scale) on .upload-zone p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1243,
+      "evidence": "margin-top: 14px (off the 4px scale) on .sample-again",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1256,
+      "evidence": "margin-top: 9px (off the 4px scale) on .sample-again .micro",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1261,
+      "evidence": "margin: 18px 0 28px (off the 4px scale) on .csv-help",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1272,
+      "evidence": "padding: 15px (off the 4px scale) on .csv-help pre",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1304,
+      "evidence": "padding: 15px 8px (off the 4px scale) on .dataset-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1325,
+      "evidence": "margin-top: 7px (off the 4px scale) on .dataset-row small",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1340,
+      "evidence": "padding: 18px 10px 24px (off the 4px scale) on .empty-chart",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1361,
+      "evidence": "margin: 0 0 22px (off the 4px scale) on .empty-chart > p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1377,
+      "evidence": "padding-top: 22px (off the 4px scale) on .loading-state",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1390,
+      "evidence": "margin-bottom: 30px (off the 4px scale) on .skeleton-line",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1455,
+      "evidence": "padding: 30px 24px (off the 4px scale) on .workspace-main",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1462,
+      "evidence": "padding: 22px (off the 4px scale) on .result-panel",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1578,
+      "evidence": "margin-top: 6px (off the 4px scale) on .workspace-switcher select",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1664,
+      "evidence": "gap: 18px (off the 4px scale) on .nav nav",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1683,
+      "evidence": "margin: 26px 0 30px (off the 4px scale) on .hero-lead",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1700,
+      "evidence": "gap: 42px (off the 4px scale) on .hero-aside .button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1705,
+      "evidence": "margin-top: 14px (off the 4px scale) on .hero-aside .micro",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1713,
+      "evidence": "gap: 23px (off the 4px scale) on .demo-tabs",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1719,
+      "evidence": "padding: 17px 0 (off the 4px scale) on .demo-tabs button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1724,
+      "evidence": "padding: 0 0 13px (off the 4px scale) on .demo-badge",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1728,
+      "evidence": "padding: 20px 14px 0 (off the 4px scale) on .forecast-demo .series-figure",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1732,
+      "evidence": "padding-bottom: 30px (off the 4px scale) on .chart-caption",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1741,
+      "evidence": "gap: 8px 15px (off the 4px scale) on .chart-key",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1743,
+      "evidence": "margin-top: 10px (off the 4px scale) on .chart-key",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1753,
+      "evidence": "margin-left: 3px (off the 4px scale) on .point-readout b",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1766,
+      "evidence": "margin-left: 45px (off the 4px scale) on .plot-area",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1774,
+      "evidence": "margin: 12px 8px 20px 45px (off the 4px scale) on .date-axis",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1782,
+      "evidence": "margin: 0 0 0 45px (off the 4px scale) on .inspect-control",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1796,
+      "evidence": "gap: 22px (off the 4px scale) on .demo-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1797,
+      "evidence": "padding: 22px 20px (off the 4px scale) on .demo-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1849,
+      "evidence": "gap: 22px (off the 4px scale) on .possibilities-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1861,
+      "evidence": "gap: 12px 18px (off the 4px scale) on .usecase-rows article",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1862,
+      "evidence": "padding: 23px 0 (off the 4px scale) on .usecase-rows article",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1881,
+      "evidence": "gap: 22px (off the 4px scale) on .process-list li",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1882,
+      "evidence": "padding: 22px 0 (off the 4px scale) on .process-list li",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1915,
+      "evidence": "margin-bottom: 18px (off the 4px scale) on .closing .button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1945,
+      "evidence": "margin: 30px auto (off the 4px scale) on .auth-layout",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1977,
+      "evidence": "padding: 14px 20px (off the 4px scale) on .workspace-sidebar",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 1993,
+      "evidence": "margin-top: 10px (off the 4px scale) on .workspace-anchor-nav",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2000,
+      "evidence": "padding: 26px 20px (off the 4px scale) on .workspace-main",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2004,
+      "evidence": "gap: 10px (off the 4px scale) on .workspace-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2016,
+      "evidence": "padding: 5px (off the 4px scale) on .workspace-heading .badge",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2026,
+      "evidence": "padding: 13px 0 (off the 4px scale) on .notice",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2041,
+      "evidence": "gap: 34px (off the 4px scale) on .workspace-columns",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2047,
+      "evidence": "gap: 14px (off the 4px scale) on .result-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2048,
+      "evidence": "padding-bottom: 22px (off the 4px scale) on .result-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2096,
+      "evidence": "padding-top: 26px (off the 4px scale) on .data-panel",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2108,
+      "evidence": "padding: 22px (off the 4px scale) on .upload-zone",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2131,
+      "evidence": "padding: 17px 12px (off the 4px scale) on .dataset-row",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2145,
+      "evidence": "margin-bottom: 30px (off the 4px scale) on .empty-chart svg",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2190,
+      "evidence": "margin: 0 0 14px (off the 4px scale) on .empty-chart h3",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2221,
+      "evidence": "margin-top: -9px (off the 4px scale) on input[type='range']::-webkit-slider-thumb",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2248,
+      "evidence": "margin-top: -5px (off the 4px scale) on .horizon-control input[type='range']::-webkit-slider-thumb",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2263,
+      "evidence": "padding: 18px 20px (off the 4px scale) on .forecast-details",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2306,
+      "evidence": "padding: 14px (off the 4px scale) on .forecast-details",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2372,
+      "evidence": "gap: 10px (off the 4px scale) on .comparison-control label",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\globals.css",
+      "line": 2501,
+      "evidence": "padding: 3px (off the 4px scale) on .onboarding-scroll",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon-controls.css",
+      "line": 7,
+      "evidence": "gap: 22px 48px (off the 4px scale) on .h-inspection",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon-controls.css",
+      "line": 57,
+      "evidence": "padding: 10px 14px (off the 4px scale) on .h-motion-controls button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon-controls.css",
+      "line": 93,
+      "evidence": "padding: 22px (off the 4px scale) on .h-inspection",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon-controls.css",
+      "line": 106,
+      "evidence": "padding: 18px (off the 4px scale) on .h-inspection",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon-controls.css",
+      "line": 110,
+      "evidence": "gap: 6px (off the 4px scale) on .h-inspection-heading",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 78,
+      "evidence": "gap: 18px (off the 4px scale) on .h-nav nav .h-nav-demo",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 81,
+      "evidence": "padding-top: 47px (off the 4px scale) on .h-intro",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 99,
+      "evidence": "gap: 10px (off the 4px scale) on .h-eyebrow",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 112,
+      "evidence": "margin: 35px 0 24px (off the 4px scale) on .h-intro h1",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 127,
+      "evidence": "gap: 18px 30px (off the 4px scale) on .h-intro-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 164,
+      "evidence": "gap: 65px (off the 4px scale) on .h-action",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 165,
+      "evidence": "padding: 17px 23px (off the 4px scale) on .h-action",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 197,
+      "evidence": "padding-top: 17px (off the 4px scale) on .h-stage-top",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 239,
+      "evidence": "margin-top: 6px (off the 4px scale) on .h-annotations b",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 271,
+      "evidence": "gap: 7px (off the 4px scale) on .h-scene-note > span > span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 298,
+      "evidence": "padding: 10px 12px (off the 4px scale) on .h-scene-note button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 305,
+      "evidence": "padding-block: 38px (off the 4px scale) on .h-lab",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 363,
+      "evidence": "margin: 5px 0 (off the 4px scale) on .h-readout strong",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 391,
+      "evidence": "padding-top: 15px (off the 4px scale) on .h-data p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 410,
+      "evidence": "padding: 10px (off the 4px scale) on .h-data td, .h-data th",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 437,
+      "evidence": "margin-top: 70px (off the 4px scale) on .h-story-foot",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 488,
+      "evidence": "padding: 80px max(28px, calc((100% -… (off the 4px scale) on .h-working",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 493,
+      "evidence": "gap: 18px 60px (off the 4px scale) on .h-working-head",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 540,
+      "evidence": "padding-block: 115px (off the 4px scale) on .h-end",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 545,
+      "evidence": "margin-block: 30px (off the 4px scale) on .h-end h2",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 556,
+      "evidence": "padding-block: 30px (off the 4px scale) on .h-footer",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 637,
+      "evidence": "gap: 25px (off the 4px scale) on .h-atlas .h-intro-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 660,
+      "evidence": "gap: 22px (off the 4px scale) on .h-nav nav",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 669,
+      "evidence": "gap: 30px (off the 4px scale) on .h-intro-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 686,
+      "evidence": "gap: 26px (off the 4px scale) on .h-lab",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 698,
+      "evidence": "gap: 50px (off the 4px scale) on .h-story",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 734,
+      "evidence": "padding-top: 34px (off the 4px scale) on .h-intro",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 745,
+      "evidence": "margin-block: 26px (off the 4px scale) on .h-intro h1, .h-observatory .h-intro h1, .h-atlas .h-intro h1",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 790,
+      "evidence": "gap: 9px (off the 4px scale) on .h-scene-note",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 795,
+      "evidence": "gap: 6px 12px (off the 4px scale) on .h-scene-note > span",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 800,
+      "evidence": "padding: 7px 10px (off the 4px scale) on .h-scene-note button",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 811,
+      "evidence": "padding-bottom: 130px (off the 4px scale) on .h-flat",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 819,
+      "evidence": "gap: 14px (off the 4px scale) on .h-lab",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 832,
+      "evidence": "margin-top: 6px (off the 4px scale) on .h-lab-heading h2",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 835,
+      "evidence": "margin-top: 6px (off the 4px scale) on .h-lab-heading p",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 842,
+      "evidence": "padding-top: 70px (off the 4px scale) on .h-story",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 862,
+      "evidence": "padding: 55px 20px (off the 4px scale) on .h-working",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 907,
+      "evidence": "gap: 8px 22px (off the 4px scale) on .h-study-nav",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 950,
+      "evidence": "gap: 14px (off the 4px scale) on .h-experience:not(.h-exploration) .h-intro-bottom",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "24b",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "C:\\Users\\lucab\\forewise\\apps\\web\\app\\horizon.css",
+      "line": 1020,
+      "evidence": "margin-top: 30px (off the 4px scale) on .h-story-foot",
+      "fix": "Use the 4px spacing scale"
+    },
+    {
+      "gate": "44c",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[1440px] hero runs past the 1440x900 fold (hero ends at 1863px)",
+      "fix": "Size the display and the visual so the hero is one screen"
+    },
+    {
+      "gate": "58",
+      "grade": "NOTE",
+      "tier": "floor",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[1440px] 197 words on one screen (from y=1100)",
+      "fix": "One idea per screen: cut to about 80 words, make the section an object"
+    },
+    {
+      "gate": "58",
+      "grade": "NOTE",
+      "tier": "floor",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[1440px] hero carries 3 text blocks before its actions",
+      "fix": "Headline, one sentence, actions; delete the rest"
+    },
+    {
+      "gate": "77",
+      "grade": "NOTE",
+      "tier": "reflex",
+      "file": "http://127.0.0.1:3000/explorations",
+      "line": 1,
+      "evidence": "[1440px] 1 sections, hero and footer included",
+      "fix": "A landing strip, not a page: six to nine sections, five on a thin prompt (layout.md § 3)"
+    }
+  ]
+}
