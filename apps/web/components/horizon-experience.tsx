@@ -170,7 +170,9 @@ export function HorizonExperience({
           <div className="h-value-copy">
             <p>{concept.description}</p>
             {!exploration && (
-              <p className="h-input-note">Designed for daily CSV data: date + value.</p>
+              <p className="h-input-note">
+                CSV/XLSX history: date + value, daily, weekly or monthly.
+              </p>
             )}
           </div>
           <div className="h-intro-actions">
@@ -186,8 +188,8 @@ export function HorizonExperience({
           </div>
           {!exploration && (
             <p className="h-preview-note">
-              Synthetic examples, not validated predictions. Uploads and live forecasting are
-              unavailable in this preview.
+              Synthetic public demo, not validated predictions. Imports and model jobs run in the
+              authenticated development workspace.
             </p>
           )}
         </div>

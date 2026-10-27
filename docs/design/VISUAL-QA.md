@@ -1,5 +1,15 @@
 # Visual critique and improvement log
 
+## Phase 03B follow-up (25 October 2026)
+
+The Phase 01 entries below are historical. Phase 03B retains the same identity and adds genuine native model results; their earlier mock-only limitations do not describe the current engine.
+
+1. **Onboarding observation/change/retest.** The first mobile/desktop captures showed the dialog title and Cancel moving out of view after validation focused its error. Constrained the dialog to the viewport and made only the content area scroll, with header and import action outside it. Retested Escape, focus return, failed imports remaining open and corrected mappings. Final evidence: `../phase-03b/evidence/onboarding-{1440,768,390}.png` (relative from this document).
+2. **Forecast legibility observation/change/retest.** A 144-month history compressed the 12-step horizon into a narrow strip. Added an explicitly labeled recent-history view and an all-observations option; exports remain complete. The saved SeasonalNaive overlay is visibly distinct from the real Timestral median and band. A constant baseline produces a zero-height SVG bounding box, so the browser assertion now checks attachment and rendered stroke instead of mistaking that geometry for an invisible line. The actual chart screenshot is still inspected.
+3. **Final responsive inspection.** Inspected genuine AirPassengers results at desktop/mobile, including the 58.3% coverage warning. Removed a generic overlap sentence that did not describe these disjoint backtest windows, tightened mobile metric layout to two columns and put the full warning list in a disclosure without removing it. Exact values, metadata, all warnings and exports remain available. All three workspace screenshot baselines were updated only after inspecting the intended modular layout changes; public baselines were preserved. A separate complete run without update mode is recorded in `docs/phase-03b/VERIFICATION.md`.
+
+These are developer critique/correction passes, not independent Claude approval. Chromium/axe and synthetic/public fixture checks do not certify accessibility, calibration, field performance or commercial readiness.
+
 Latest follow-up: [Phase 01 polish passes](polish/REVIEW.md) document the two separately scoped clarity/interaction correction passes and final consolidated verification. The historical redesign observations below remain preserved.
 
 Evidence is generated from the compiled local app in Chromium, with synthetic accounts/data. Every capture set includes the landing, auth, empty/loading, validation, dataset-ready, result and service-error states at 1440/768/390px. Delayed loading and injected 503 screenshots are explicitly named simulations. Browser exceptions, failed requests and document overflow are recorded in each observations.json.

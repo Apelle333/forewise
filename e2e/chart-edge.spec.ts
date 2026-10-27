@@ -11,6 +11,7 @@ test('signed data stays inside the plot and exact values remain available', asyn
   });
   expect(result.ok()).toBe(true);
   await page.goto('/workspace');
+  await page.getByRole('button', { name: 'Import data', exact: true }).click();
   await expect(page.locator('input[type=file]')).toBeEnabled();
   const csv =
     'date,value\n' +
@@ -21,7 +22,8 @@ test('signed data stays inside the plot and exact values remain available', asyn
   await page
     .locator('input[type=file]')
     .setInputFiles({ name: 'Net change.csv', mimeType: 'text/csv', buffer: Buffer.from(csv) });
-  await expect(page.getByRole('status')).toContainText('Dataset uploaded');
+  await page.getByRole('button', { name: 'Import dataset', exact: true }).click();
+  await expect(page.getByRole('status')).toContainText('Dataset saved');
   const coordinates = await page.locator('.history-line').getAttribute('points');
   for (const pair of coordinates!.split(' ')) {
     const y = Number(pair.split(',')[1]);

@@ -8,7 +8,7 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
     records = parse(csv, {
       columns: (header: string[]) => {
         if (header.length !== 2 || !header.includes('date') || !header.includes('value'))
-          throw new Error('Required columns: date,value.');
+          throw new Error('CSV must contain exactly date,value columns.');
         return header;
       },
       skip_empty_lines: true,
@@ -17,28 +17,37 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
       max_record_size: 2048,
     });
   } catch {
-    throw new Error('Invalid CSV. Use a date,value header and one observation per day.');
+    throw new Error('Invalid CSV format.');
   }
   if (records.length < 8 || records.length > 5000)
-    throw new Error('Upload between 8 and 5,000 daily observations.');
+    throw new Error('Upload between 8 and 5,000 observations.');
+
   const points = records
-    .map((row) => {
-      if (Object.keys(row).length !== 2 || !('date' in row) || !('value' in row))
-        throw new Error('Required columns: date,value.');
+    .map((row, i) => {
       const date = row.date;
+      const valueStr = row.value;
+      if (!date || valueStr === undefined)
+        throw new Error(`Missing date or value at row ${i + 2}.`);
       if (
         !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
         date.startsWith('0000') ||
         !Number.isFinite(Date.parse(date)) ||
         new Date(date).toISOString().slice(0, 10) !== date
       )
-        throw new Error('Dates must be valid YYYY-MM-DD values.');
-      const value = Number(row.value);
-      if (!row.value || !Number.isFinite(value) || Math.abs(value) > 1e12)
-        throw new Error('Values must be finite numbers between -1e12 and 1e12.');
+        throw new Error(`Invalid date format at row ${i + 2}. Use YYYY-MM-DD.`);
+      const value = Number(valueStr);
+      if (valueStr === '' || !Number.isFinite(value) || Math.abs(value) > 1e12)
+        throw new Error(`Invalid numeric value at row ${i + 2}.`);
       return { date, value };
     })
     .sort((a, b) => a.date.localeCompare(b.date));
+
+  // Check for duplicate timestamps
+  for (let i = 1; i < points.length; i++) {
+    if (points[i].date === points[i - 1].date)
+      throw new Error(`Duplicate timestamp found: ${points[i].date}. Please resolve duplicates.`);
+  }
+
   for (let i = 1; i < points.length; i++) {
     const previous = new Date(points[i - 1].date),
       current = new Date(points[i].date);
@@ -55,7 +64,7 @@ export function parseDataset(csv: string, frequency: Frequency = 'daily'): Point
         : gap === 86_400_000 * (frequency === 'weekly' ? 7 : 1);
     if (!valid)
       throw new Error(
-        `Use consecutive ${frequency} dates with no duplicates or missing periods. Monthly dates must all be month starts or month ends.`,
+        `Gap or inconsistency found between ${points[i - 1].date} and ${points[i].date}. Use consecutive ${frequency} dates.`,
       );
   }
   return points;

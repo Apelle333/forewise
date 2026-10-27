@@ -46,7 +46,7 @@ for (const width of [1440, 768, 390]) {
     await page.goto('/workspace');
     await expect(page.locator('.notice-mark')).toHaveText('↗');
     await expect(page.locator('.upload-symbol')).toHaveText('↥');
-    await expect(page.locator('input[type=file]')).toBeEnabled();
+    await expect(page.getByRole('button', { name: 'Import data', exact: true })).toBeEnabled();
     const empty = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       .analyze();
@@ -75,7 +75,7 @@ for (const width of [1440, 768, 390]) {
     await expect(page).toHaveScreenshot(`workspace-${width}.png`, {
       fullPage: true,
       animations: 'disabled',
-      mask: [page.locator('.profile'), page.getByRole('status')],
+      mask: [page.locator('.profile'), page.getByRole('status'), page.locator('.saved-forecast')],
       maxDiffPixelRatio: 0.002,
     });
   });

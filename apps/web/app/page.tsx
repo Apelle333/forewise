@@ -36,7 +36,7 @@ export default function Home() {
               <br />a single <em>line.</em>
             </h2>
             <p>
-              From daily observations to planning questions.
+              From observed history to planning questions.
               <br />
               Explore the idea. Understand its limits.
             </p>
@@ -52,8 +52,8 @@ export default function Home() {
                 has a history.
               </h3>
               <p>
-                The intended input is a CSV with one date and one value per day: units sold, revenue
-                or capacity hours. This public demo uses synthetic examples.
+                Import CSV or XLSX in the authenticated development workspace: daily, weekly or
+                monthly dates and values. This public demo uses synthetic daily examples.
               </p>
               <span className="h-chapter-detail">28 observations → a point of departure</span>
             </article>
@@ -108,7 +108,7 @@ export default function Home() {
           <a href="#demo" className="h-action">
             Try interactive demo <span aria-hidden="true">↗</span>
           </a>
-          <p>Phase 01 · Synthetic examples only · No uploads or live forecasting in this preview</p>
+          <p>Private beta preparation · Synthetic public demo · Not commercially launched</p>
         </section>
       </main>
       <footer className="h-footer">

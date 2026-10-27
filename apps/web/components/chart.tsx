@@ -11,6 +11,7 @@ export function Chart({
   unit = 'value',
   futureKind = 'mock',
   quantiles,
+  comparison,
 }: {
   history: Point[];
   future?: Point[];
@@ -19,14 +20,21 @@ export function Chart({
   unit?: string;
   futureKind?: 'mock' | 'forecast';
   quantiles?: { p10: Point[]; p50: Point[]; p90: Point[] } | null;
+  comparison?: Point[];
 }) {
   const id = useId().replaceAll(':', '');
   const [index, setIndex] = useState<number | null>(null),
     [table, setTable] = useState(false);
   const all = useMemo(() => [...history, ...future], [history, future]);
   const [min, max] = useMemo(
-    () => chartDomain([...all, ...(quantiles?.p10 || []), ...(quantiles?.p90 || [])]),
-    [all, quantiles],
+    () =>
+      chartDomain([
+        ...all,
+        ...(quantiles?.p10 || []),
+        ...(quantiles?.p90 || []),
+        ...(comparison || []),
+      ]),
+    [all, quantiles, comparison],
   );
   const total = all.length,
     active = Math.min(index ?? history.length - 1, total - 1),
@@ -46,6 +54,12 @@ export function Chart({
   const next = [...(history.length ? [history.at(-1)!] : []), ...future]
     .map((p, i) => `${x(history.length - 1 + i)},${y(p.value)}`)
     .join(' ');
+  const nextMedian =
+    quantiles && quantiles.p50
+      ? [...(history.length ? [history.at(-1)!] : []), ...quantiles.p50]
+          .map((p, i) => `${x(history.length - 1 + i)},${y(p.value)}`)
+          .join(' ')
+      : null;
   const split = x(history.length - 1);
   const mock = active >= history.length;
   const futureLabel =
@@ -56,6 +70,7 @@ export function Chart({
     futureKind === 'mock'
       ? formatDate(value)
       : new Date(`${value}T00:00:00Z`).toLocaleDateString('en-US', {
+          day: 'numeric',
           month: 'short',
           year: 'numeric',
           timeZone: 'UTC',
@@ -82,11 +97,17 @@ export function Chart({
               <i className="history-key" />
               Historical
             </span>
-            <span>
-              <i className="mock-key" />
-              {futureLabel}
-            </span>
+            {future.length > 0 ? (
+              <span>
+                <i className="mock-key" />
+                {futureLabel}
+              </span>
+            ) : null}
           </div>
+          {quantiles ? <p className="interval-note">Shaded P10–P90 / line P50</p> : null}
+          {comparison ? (
+            <p className="interval-note">Dotted line: saved SeasonalNaive baseline</p>
+          ) : null}
         </div>
         <div className="point-readout" data-testid="point-readout">
           <span>
@@ -96,6 +117,13 @@ export function Chart({
             {formatValue(point.value)}
             <small> {unit}</small>
           </strong>
+          {quantiles && mock ? (
+            <small>
+              P10 {formatValue(quantiles.p10[active - history.length].value)} / P50{' '}
+              {formatValue(quantiles.p50[active - history.length].value)} / P90{' '}
+              {formatValue(quantiles.p90[active - history.length].value)}
+            </small>
+          ) : null}
         </div>
       </figcaption>
       <div className="plot-surface">
@@ -158,7 +186,22 @@ export function Chart({
               <line x1={split} x2={split} y1="0" y2="260" className="chart-boundary" />
             ) : null}
             <polyline points={past} className="history-line" />
-            {future.length > 0 ? <polyline points={next} className="future-line" /> : null}
+            {comparison ? (
+              <polyline
+                data-testid="baseline-comparison"
+                points={comparison
+                  .map((p, i) => `${x(history.length + i)},${y(p.value)}`)
+                  .join(' ')}
+                className="comparison-line"
+              />
+            ) : null}
+            {future.length > 0 ? (
+              <polyline
+                points={nextMedian || next}
+                className="future-line"
+                style={quantiles ? { strokeWidth: 2 } : {}}
+              />
+            ) : null}
             <line x1={x(active)} x2={x(active)} y1="0" y2="260" className="chart-inspector" />
           </svg>
           <span
@@ -221,9 +264,11 @@ export function Chart({
                   {quantiles ? (
                     <>
                       <th scope="col">P10</th>
+                      <th scope="col">P50</th>
                       <th scope="col">P90</th>
                     </>
                   ) : null}
+                  {comparison ? <th scope="col">SeasonalNaive</th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -238,9 +283,15 @@ export function Chart({
                           {i < history.length ? '—' : quantiles.p10[i - history.length]?.value}
                         </td>
                         <td>
+                          {i < history.length ? '—' : quantiles.p50[i - history.length]?.value}
+                        </td>
+                        <td>
                           {i < history.length ? '—' : quantiles.p90[i - history.length]?.value}
                         </td>
                       </>
+                    ) : null}
+                    {comparison ? (
+                      <td>{i < history.length ? '—' : comparison[i - history.length]?.value}</td>
                     ) : null}
                   </tr>
                 ))}

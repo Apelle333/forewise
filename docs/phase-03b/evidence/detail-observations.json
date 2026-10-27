@@ -1,0 +1,12 @@
+{
+  "purpose": "authenticated saved real-model fixture inspection",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": true,
+  "pageErrors": [],
+  "axeViolations": 0,
+  "readout": "1961-12-01 FORECAST\n468.76 value\nP10 438.67 / P50 468.76 / P90 500.96",
+  "overflow": false
+}

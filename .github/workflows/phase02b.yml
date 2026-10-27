@@ -69,7 +69,8 @@ jobs:
         with:
           name: phase02b-cpu-validation
           path: |
-            docs/phase-02b/evidence/
+            .data/phase03b-e2e/
+            test-results/
             .data/checks/results.json
             .data/phase03a-ci-smoke.json
             .data/checks/*.log

@@ -12,7 +12,7 @@
     "preview": "python scripts/dev.py --production",
     "build": "npm run build -w @forewise/web",
     "typecheck": "npm run typecheck -w @forewise/web",
-    "test": "tsx --test packages/db/src/*.test.ts apps/web/tests/*.test.ts",
+    "test": "tsx --test --test-concurrency=1 packages/db/src/*.test.ts apps/web/tests/*.test.ts e2e/evidence-reporter.unit.ts",
     "test:e2e": "playwright test",
     "start": "npm run start -w @forewise/web",
     "lint": "eslint apps/web packages/db e2e scripts/*.mjs playwright.config.ts eslint.config.mjs --max-warnings=0",
@@ -39,5 +39,10 @@
   },
   "engines": {
     "node": ">=22.13"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
   }
 }

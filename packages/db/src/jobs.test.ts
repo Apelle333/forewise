@@ -95,6 +95,37 @@ for (const adapter of ['embedded', 'postgres'] as const) {
             'tenant context escaped its transaction',
           );
         });
+        // Only the trusted worker counts attempts; member retry cannot bypass its cap.
+        const retry = async (uid: string) =>
+          (
+            await asUser(db, uid, (tx) =>
+              tx.query<{ id: string | null }>('SELECT retry_forecast_job($1) AS id', [job]),
+            )
+          ).rows[0].id;
+        await db.query(
+          "UPDATE forecast_jobs SET status='failed',attempts=1,fence=7,worker_id='stale',lease_expires_at=now()-interval '1 minute' WHERE id=$1",
+          [job],
+        );
+        assert.equal(await retry(b), null, 'foreign tenant retried a job');
+        assert.equal(await retry(randomUUID()), null, 'missing membership retried a job');
+        assert.equal(await retry(a), job);
+        assert.equal(await retry(a), null, 'pending job was retried again');
+        const requeued = (
+          await db.query<{
+            attempts: number;
+            status: string;
+            fence: number;
+            worker_id: string | null;
+            lease_expires_at: unknown;
+          }>('SELECT * FROM forecast_jobs WHERE id=$1', [job])
+        ).rows[0];
+        assert.equal(requeued.status, 'pending');
+        assert.equal(requeued.attempts, 1);
+        assert.equal(Number(requeued.fence), 8);
+        assert.equal(requeued.worker_id, null);
+        assert.equal(requeued.lease_expires_at, null);
+        await db.query("UPDATE forecast_jobs SET status='failed',attempts=3 WHERE id=$1", [job]);
+        assert.equal(await retry(a), null, 'retry cap bypassed');
       } finally {
         await db.query('DELETE FROM users WHERE id IN ($1,$2)', [a, b]);
         await db.query('DELETE FROM workspaces WHERE id IN ($1,$2)', [wa, wb]);
